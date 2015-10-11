@@ -1,0 +1,34 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="startMarginBottomTop">25dp</dimen>
+    <dimen name="startMarginLeft">10dp</dimen>
+
+    <dimen name="moreMarginBottomTop">42dp</dimen>
+
+    <dimen name="helpMarginTop">45dp</dimen>
+    <dimen name="helpMarginBottom">40dp</dimen>
+
+    <dimen name="sizeButtonGamePanel">70dp</dimen>
+
+
+    <dimen name="textButtonStart">45sp</dimen>
+    <dimen name="textMoreAndHelp">25sp</dimen>
+
+    <dimen name="categoryWidthHeight">55.9999dp</dimen>
+    <dimen name="categoryPanelHeight">392dp</dimen>
+    <dimen name="categoryMarginTop">10dp</dimen>
+
+    <dimen name="paddingImageCategoryTop">15dp</dimen>
+    <dimen name="paddingImageCategoryBottom">15dp</dimen>
+    <dimen name="paddingImageCategoryRight">5dp</dimen>
+    <dimen name="paddingImageCategoryLeft">10dp</dimen>
+
+    <dimen name="sizeImageCategory">30dp</dimen>
+
+    <dimen name="margeRightListCategory">-2dp</dimen>
+
+    <dimen name="scrollButtonSize">45dp</dimen>
+    <dimen name="scrollButtonPadding">13dp</dimen>
+
+    <dimen name="panelAccessoryWidth">130dp</dimen>
+</resources>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/categoryWidthHeight"
+    android:layout_height="@dimen/categoryWidthHeight"
+    android:layout_gravity="right"
+    android:gravity="right">
+
+    <ImageView
+        android:id="@+id/button_category"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="right"
+        android:src="@drawable/btn_right" />
+
+    <ImageView
+        android:id="@+id/image_category"
+        android:layout_width="@dimen/sizeImageCategory"
+        android:layout_height="@dimen/sizeImageCategory"
+        android:layout_gravity="center"
+        android:layout_marginRight="@dimen/margeRightListCategory"
+        android:src="@drawable/hat_ic" />
+
+</FrameLayout>
