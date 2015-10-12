@@ -1,8 +1,5 @@
 package com.raccoonapps.worksimple.model;
 
-/**
- * Created by sanyok on 11.10.15.
- */
 public class Accessory {
 
     private Coordinates coordinates;

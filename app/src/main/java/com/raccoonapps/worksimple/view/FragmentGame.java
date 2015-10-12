@@ -26,9 +26,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * Created by sanyok on 08.10.15.
- */
 public class FragmentGame extends Fragment {
 
     private AdapterCategory adapterCategory;

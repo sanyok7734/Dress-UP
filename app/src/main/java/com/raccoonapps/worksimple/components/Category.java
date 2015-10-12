@@ -13,9 +13,6 @@ import com.raccoonapps.worksimple.model.CoordinatorElements;
 
 import java.util.ArrayList;
 
-/**
- * Created by sanyok on 10.10.15.
- */
 public class Category {
 
     private Context context;

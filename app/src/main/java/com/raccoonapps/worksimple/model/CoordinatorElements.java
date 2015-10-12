@@ -3,9 +3,6 @@ package com.raccoonapps.worksimple.model;
 import android.util.Log;
 import android.widget.ImageView;
 
-/**
- * Created by sanyok on 06.10.15.
- */
 public class CoordinatorElements {
 
     public static final String TAG = "COORDDEB";

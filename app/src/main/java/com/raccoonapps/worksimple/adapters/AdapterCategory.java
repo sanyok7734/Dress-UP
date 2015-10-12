@@ -13,9 +13,6 @@ import com.raccoonapps.worksimple.view.FragmentGame;
 
 import java.util.ArrayList;
 
-/**
- * Created by sanyok on 10.10.15.
- */
 public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHolder> {
 
     private ArrayList<Category> categories;

@@ -6,9 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by sanyok on 11.10.15.
- */
 public class AccessoryManager {
 
     private Map<String, ArrayList<Accessory>> accessoryCategoris = new HashMap<>();

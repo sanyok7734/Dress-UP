@@ -20,9 +20,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * Created by sanyok on 07.10.15.
- */
 public class FragmentStart extends Fragment {
 
     private static final String FONT_PATH = "fonts/PFArmonia-Bold.ttf";
