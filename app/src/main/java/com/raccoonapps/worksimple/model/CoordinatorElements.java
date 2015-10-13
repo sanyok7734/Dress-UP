@@ -35,7 +35,7 @@ public class CoordinatorElements {
 
             image.setImageDrawable(drawable);
         } else {
-            image.setImageResource(0);
+            image.setImageDrawable(null);
         }
     }
 

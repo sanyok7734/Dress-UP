@@ -40,7 +40,6 @@ public class FragmentGame extends Fragment {
 
     public static Bus bus = new Bus();
     private boolean scroll = true;
-    private int prevPosition = -1;
 
     @Bind(R.id.list_category)
     public RecyclerView listCategory;
@@ -103,16 +102,17 @@ public class FragmentGame extends Fragment {
     // pressing on accessory for him placement
     @Subscribe
     public void accessoryCodrinate(Integer position) {
-        if (prevPosition != position) {
+        if (category.getPositionAccessory() != position) {
             // получаем картинку в Bitmap и передаем координаты для корденирования элемента
             ArrayList<Accessory> accessories = category.getAccessories();
             BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(accessories.get(position).getImage());
             double X = accessories.get(position).getCoordinates().getX();
             double Y = accessories.get(position).getCoordinates().getY();
             category.setCoordinateImage(drawable, X, Y);
-            prevPosition = position;
+            category.setPositionAccessory(position);
         } else {
             category.setCoordinateImage(null, 0, 0);
+            category.setPositionAccessory(-1);
         }
     }
 

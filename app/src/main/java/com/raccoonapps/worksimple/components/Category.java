@@ -19,6 +19,8 @@ import java.util.ArrayList;
  */
 public class Category  implements Comparable<Category>{
     private int id ;
+    private int positionAccessory = -1;
+
     private Context context;
     private Drawable drawableCategory;
     private Drawable drawableButton;
@@ -108,6 +110,14 @@ public class Category  implements Comparable<Category>{
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getPositionAccessory() {
+        return positionAccessory;
+    }
+
+    public void setPositionAccessory(int positionAccessory) {
+        this.positionAccessory = positionAccessory;
     }
 
     @Override
