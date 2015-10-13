@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/relative_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
@@ -24,15 +23,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:src="@drawable/girls" />
-
-        <!--DELETE-->
-        <ImageView
-            android:id="@+id/volosy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="-100dp"
-            android:visibility="invisible" />
-        <!--&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
 
 
         <LinearLayout
@@ -64,11 +54,9 @@
 
 
     <!--Content Accessories-->
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/additional_panel"
         android:layout_width="@dimen/panelAccessoryWidth"
-        android:layout_height="match_parent"
-        android:visibility="invisible"/>
-
+        android:layout_height="match_parent" />
 </LinearLayout>
-

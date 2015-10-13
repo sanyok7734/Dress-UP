@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.WindowManager;
 
 import com.raccoonapps.worksimple.eventbus.BusProvider;
@@ -32,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
         this.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         screenWidth = displaymetrics.widthPixels;
         screenHeight = displaymetrics.heightPixels;
+
+        Log.d("COODRRNATORX", "screenWidth " + screenWidth);
+        Log.d("COODRRNATORX", "screenHeight " + screenHeight);
 
         BusProvider.getInstance().register(this);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,

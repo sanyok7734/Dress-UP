@@ -5,7 +5,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import android.widget.TextView;
 
 import com.raccoonapps.worksimple.R;
 import com.raccoonapps.worksimple.eventbus.BusProvider;
-import com.raccoonapps.worksimple.model.CoordinatorElements;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -57,7 +55,6 @@ public class FragmentStart extends Fragment {
         switch (button.getId()) {
             case R.id.button_start:
                 BusProvider.getInstance().post(new FragmentGame());
-                Log.d(CoordinatorElements.TAG, "StartStartEVENT");
                 break;
             case R.id.button_more:
                 Snackbar.make(getView(), "More", Snackbar.LENGTH_LONG).show();

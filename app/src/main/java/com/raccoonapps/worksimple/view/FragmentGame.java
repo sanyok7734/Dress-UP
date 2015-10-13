@@ -1,6 +1,8 @@
 package com.raccoonapps.worksimple.view;
 
+import android.animation.ObjectAnimator;
 import android.app.Fragment;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,15 +10,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 
 import com.raccoonapps.worksimple.R;
+import com.raccoonapps.worksimple.adapters.AdapterAccessory;
 import com.raccoonapps.worksimple.adapters.AdapterCategory;
 import com.raccoonapps.worksimple.components.Category;
 import com.raccoonapps.worksimple.model.Accessory;
 import com.raccoonapps.worksimple.model.AccessoryManager;
+import com.raccoonapps.worksimple.model.CategoryManager;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -33,7 +35,12 @@ public class FragmentGame extends Fragment {
 
     private AdapterCategory adapterCategory;
     private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView.LayoutManager layoutAccessory;
     private ArrayList<Category> itemCategories = new ArrayList<>();
+
+
+    private Category category;
+
 
     public static Bus bus = new Bus();
 
@@ -52,9 +59,17 @@ public class FragmentGame extends Fragment {
         View view = inflater.inflate(R.layout.content_play_game, container, false);
         ButterKnife.bind(this, view);
         bus.register(this);
-        itemCategories = getItemCategories();
 
-        adapterCategory = new AdapterCategory(itemCategories, getActivity());
+        itemCategories = getItemCategories();
+        for (int i = 0; i < itemCategories.size(); i++)
+            itemCategories.get(i).setId(i);
+
+        new CategoryManager(itemCategories);
+
+        layoutAccessory = new LinearLayoutManager(getActivity());
+        additionalPanel.setLayoutManager(layoutAccessory);
+
+        adapterCategory = new AdapterCategory(itemCategories);
         mLayoutManager = new LinearLayoutManager(getActivity());
         listCategory.setLayoutManager(mLayoutManager);
         listCategory.setAdapter(adapterCategory);
@@ -63,43 +78,54 @@ public class FragmentGame extends Fragment {
         return view;
     }
 
+    //нажатие на категорию
     @Subscribe
-    public void panelAccessoryShow(ArrayList<Accessory> accessories) {
-        if (additionalPanel.getVisibility() == View.INVISIBLE) {
-            TranslateAnimation anim = new TranslateAnimation(0, -additionalPanel.getWidth(), 0, 0);
-            anim.setDuration(700);
-            TranslateAnimation anim2 = new TranslateAnimation(0, -additionalPanel.getWidth(), 0, 0);
-            anim2.setDuration(700);
-            anim.setAnimationListener(new AnimationListener(true));
-            additionalPanel.startAnimation(anim);
-            contentGirl.startAnimation(anim2);
-        }
+    public void panelAccessoryShow(Category category) {
+        this.category = category;
+        additionalPanel.setAdapter(new AdapterAccessory(category.getAccessories()));
 
-        
+        ObjectAnimator animXPanel = ObjectAnimator.ofFloat(additionalPanel, "x", contentGirl.getWidth() - additionalPanel.getWidth());
+        ObjectAnimator animXScreen = ObjectAnimator.ofFloat(contentGirl, "x", -additionalPanel.getWidth());
+        animXPanel.setDuration(700);
+        animXScreen.setDuration(700);
+        animXPanel.start();
+        animXScreen.start();
+
+    }
+
+
+    // Нажатие на акссесуар для его размещения
+    @Subscribe
+    public void accessoryCodrinate(Integer position) {
+        // получаем картинку в Bitmap и передаем координаты для корденирования элемента
+        ArrayList<Accessory> accessories = category.getAccessories();
+        BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(accessories.get(position).getImage());
+        double X = accessories.get(position).getCoordinates().getX();
+        double Y = accessories.get(position).getCoordinates().getY();
+        category.setCoordinateImage(drawable, X, Y);
     }
 
     @Subscribe
     public void panelAccessoryHide(Boolean aBoolean) {
         if (!aBoolean) {
-            TranslateAnimation anim = new TranslateAnimation(0, additionalPanel.getWidth(), 0, 0);
-            anim.setDuration(700);
-            TranslateAnimation anim2 = new TranslateAnimation(0, additionalPanel.getWidth(), 0, 0);
-            anim2.setDuration(700);
-            anim.setAnimationListener(new AnimationListener(false));
-            additionalPanel.startAnimation(anim);
-            contentGirl.startAnimation(anim2);
+            ObjectAnimator animXPanel = ObjectAnimator.ofFloat(additionalPanel, "x", contentGirl.getWidth());
+            ObjectAnimator animXScreen = ObjectAnimator.ofFloat(contentGirl, "x", 0);
+            animXPanel.setDuration(700);
+            animXScreen.setDuration(700);
+            animXPanel.start();
+            animXScreen.start();
         }
     }
 
     private ArrayList<Category> getItemCategories() {
         ArrayList<Category> itemCategories = new ArrayList<>();
-        itemCategories.add(new Category(R.drawable.hair_ic, getActivity(), contentGirl, AccessoryManager.getInstance().getAccessory("Hair")));
-        itemCategories.add(new Category(R.drawable.hat_ic, getActivity(), contentGirl, null));
-        itemCategories.add(new Category(R.drawable.bag_ic, getActivity(), contentGirl, null));
-        itemCategories.add(new Category(R.drawable.dress_ic, getActivity(), contentGirl, null));
-        itemCategories.add(new Category(R.drawable.necklace_ic, getActivity(), contentGirl, null));
-        itemCategories.add(new Category(R.drawable.earrings_ic, getActivity(), contentGirl, null));
-        itemCategories.add(new Category(R.drawable.shoes_ic, getActivity(), contentGirl, null));
+        itemCategories.add(new Category(R.drawable.hair_ic, getActivity(), contentGirl, 3, AccessoryManager.getInstance().getAccessory("Hair")));
+        itemCategories.add(new Category(R.drawable.hat_ic, getActivity(), contentGirl, 1, AccessoryManager.getInstance().getAccessory("Hat")));
+        itemCategories.add(new Category(R.drawable.bag_ic, getActivity(), contentGirl, 2, null));
+        itemCategories.add(new Category(R.drawable.dress_ic, getActivity(), contentGirl, 5, null));
+        itemCategories.add(new Category(R.drawable.necklace_ic, getActivity(), contentGirl, 6, null));
+        itemCategories.add(new Category(R.drawable.earrings_ic, getActivity(), contentGirl, 8, null));
+        itemCategories.add(new Category(R.drawable.shoes_ic, getActivity(), contentGirl, 3, null));
         return itemCategories;
     }
 
@@ -116,46 +142,5 @@ public class FragmentGame extends Fragment {
             listCategory.smoothScrollBy(itemHeight, -itemHeight * countCategory);
             scroll = true;
         }
-
-
     }
-
-
-    private class AnimationListener implements Animation.AnimationListener {
-
-        private boolean isCheck;
-
-        public AnimationListener(boolean isCheck) {
-            this.isCheck = isCheck;
-        }
-
-        @Override
-        public void onAnimationStart(Animation animation) {
-
-        }
-
-        @Override
-        public void onAnimationEnd(Animation animation) {
-            if (isCheck) {
-                additionalPanel.clearAnimation();
-                contentGirl.clearAnimation();
-                additionalPanel.setTranslationX(-additionalPanel.getWidth());
-                contentGirl.setTranslationX(-additionalPanel.getWidth());
-                additionalPanel.setVisibility(View.VISIBLE);
-            } else {
-                additionalPanel.clearAnimation();
-                contentGirl.clearAnimation();
-                additionalPanel.setTranslationX(contentGirl.getWidth());
-                contentGirl.setTranslationX(0);
-                additionalPanel.setVisibility(View.INVISIBLE);
-            }
-        }
-
-        @Override
-        public void onAnimationRepeat(Animation animation) {
-
-        }
-    }
-
-
 }

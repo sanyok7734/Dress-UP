@@ -1,6 +1,5 @@
 package com.raccoonapps.worksimple.adapters;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +11,7 @@ import com.raccoonapps.worksimple.components.Category;
 import com.raccoonapps.worksimple.view.FragmentGame;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by sanyok on 10.10.15.
@@ -19,11 +19,10 @@ import java.util.ArrayList;
 public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHolder> {
 
     private ArrayList<Category> categories;
-    private Context context;
 
-    public AdapterCategory(ArrayList<Category> categories, Context context) {
+    public AdapterCategory(ArrayList<Category> categories) {
+        Collections.sort(categories);
         this.categories = categories;
-        this.context = context;
     }
 
     @Override
@@ -55,7 +54,7 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHo
                     category.setDrawableButton(R.drawable.btn_right_p);
                     category.setCheck(true);
                     notifyItemChanged(position);
-                    FragmentGame.bus.post(category.getAccessories());
+                    FragmentGame.bus.post(category);
                 }
             }
         });

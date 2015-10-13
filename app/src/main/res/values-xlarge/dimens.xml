@@ -30,6 +30,8 @@
     <dimen name="scrollButtonSize">100dp</dimen>
     <dimen name="scrollButtonPadding">25dp</dimen>
     
-    <dimen name="panelAccessoryWidth">250dp</dimen>
+    <dimen name="panelAccessoryWidth">210dp</dimen>
+
+    <dimen name="panelAccessoryMarginTop">20dp</dimen>
 
 </resources>

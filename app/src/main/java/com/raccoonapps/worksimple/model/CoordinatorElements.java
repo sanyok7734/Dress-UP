@@ -1,6 +1,7 @@
 package com.raccoonapps.worksimple.model;
 
-import android.util.Log;
+import android.graphics.drawable.BitmapDrawable;
+import android.view.View;
 import android.widget.ImageView;
 
 /**
@@ -8,28 +9,34 @@ import android.widget.ImageView;
  */
 public class CoordinatorElements {
 
-    public static final String TAG = "COORDDEB";
+    private View root;
+    private ImageView girlImage;
 
-    public static void imageCoordinator(double screenWidth, double screenHeight, double percentCoordinateImageX, double percentCoordinateImageY, ImageView image, ImageView girlImage) {
+    public CoordinatorElements(View root, ImageView girlImage) {
+        this.root = root;
+        this.girlImage = girlImage;
+    }
+
+    public void imageCoordinator(ImageView image, BitmapDrawable drawable, double percentCoordinateImageX, double percentCoordinateImageY) {
 
         double girlEndX = girlImage.getWidth();
         double girlEndY = girlImage.getHeight();
-        double lengthBeforeXGirl = screenWidth - girlImage.getX();
-        lengthBeforeXGirl = screenWidth - lengthBeforeXGirl;
-        double lengthBeforeYGirl = screenHeight - girlImage.getY();
-        lengthBeforeYGirl = screenHeight - lengthBeforeYGirl;
+        double lengthBeforeXGirl = root.getWidth() - girlImage.getX();
+        lengthBeforeXGirl = root.getWidth() - lengthBeforeXGirl;
+        double lengthBeforeYGirl = root.getHeight() - girlImage.getY();
+        lengthBeforeYGirl = root.getHeight() - lengthBeforeYGirl;
 
         double translationHairX = (girlEndX * percentCoordinateImageX) / 100;
         double translationHairY = (girlEndY * percentCoordinateImageY) / 100;
 
-        double centerHairsX = image.getWidth() / 2;
-        Log.d(TAG, "girlImage.getX() = " + girlImage.getX());
-        Log.d(TAG, "screenWidth = " + screenWidth);
-        Log.d(TAG, "girlEndX = " + girlEndX);
-        Log.d(TAG, "lengthBeforeXGirl = " + lengthBeforeXGirl);
+
+        double centerHairsX = drawable.getBitmap().getWidth() / 2;
+        double centerHairsY = drawable.getBitmap().getHeight() / 2;
 
         image.setTranslationX((float) (lengthBeforeXGirl + (translationHairX - centerHairsX)));
-        image.setTranslationY((float) (lengthBeforeYGirl + translationHairY));
+        image.setTranslationY((float) (lengthBeforeYGirl + (translationHairY - centerHairsY)));
+
+        image.setImageDrawable(drawable);
     }
 
 }
