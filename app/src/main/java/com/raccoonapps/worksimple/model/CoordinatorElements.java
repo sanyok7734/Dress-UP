@@ -4,9 +4,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
 import android.widget.ImageView;
 
-/**
- * Created by sanyok on 06.10.15.
- */
 public class CoordinatorElements {
 
     private View root;
