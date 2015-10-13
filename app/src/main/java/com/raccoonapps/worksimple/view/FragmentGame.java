@@ -1,5 +1,6 @@
 package com.raccoonapps.worksimple.view;
 
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Fragment;
 import android.graphics.drawable.BitmapDrawable;
@@ -38,13 +39,11 @@ public class FragmentGame extends Fragment {
     private RecyclerView.LayoutManager layoutAccessory;
     private ArrayList<Category> itemCategories = new ArrayList<>();
 
-
     private Category category;
 
-
     public static Bus bus = new Bus();
-
     private boolean scroll = true;
+    private int prevPosition = -1;
 
     @Bind(R.id.list_category)
     public RecyclerView listCategory;
@@ -74,11 +73,10 @@ public class FragmentGame extends Fragment {
         listCategory.setLayoutManager(mLayoutManager);
         listCategory.setAdapter(adapterCategory);
         listCategory.getItemAnimator().setSupportsChangeAnimations(false);
-
         return view;
     }
 
-    //нажатие на категорию
+    //click on category and open panel accessories
     @Subscribe
     public void panelAccessoryShow(Category category) {
         this.category = category;
@@ -86,34 +84,38 @@ public class FragmentGame extends Fragment {
 
         ObjectAnimator animXPanel = ObjectAnimator.ofFloat(additionalPanel, "x", contentGirl.getWidth() - additionalPanel.getWidth());
         ObjectAnimator animXScreen = ObjectAnimator.ofFloat(contentGirl, "x", -additionalPanel.getWidth());
-        animXPanel.setDuration(700);
-        animXScreen.setDuration(700);
-        animXPanel.start();
-        animXScreen.start();
-
+        AnimatorSet animSet = new AnimatorSet();
+        animSet.setDuration(700);
+        animSet.playTogether(animXPanel, animXScreen);
+        animSet.start();
     }
 
-
-    // Нажатие на акссесуар для его размещения
-    @Subscribe
-    public void accessoryCodrinate(Integer position) {
-        // получаем картинку в Bitmap и передаем координаты для корденирования элемента
-        ArrayList<Accessory> accessories = category.getAccessories();
-        BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(accessories.get(position).getImage());
-        double X = accessories.get(position).getCoordinates().getX();
-        double Y = accessories.get(position).getCoordinates().getY();
-        category.setCoordinateImage(drawable, X, Y);
-    }
-
+    //close panel accessories
     @Subscribe
     public void panelAccessoryHide(Boolean aBoolean) {
         if (!aBoolean) {
             ObjectAnimator animXPanel = ObjectAnimator.ofFloat(additionalPanel, "x", contentGirl.getWidth());
             ObjectAnimator animXScreen = ObjectAnimator.ofFloat(contentGirl, "x", 0);
-            animXPanel.setDuration(700);
-            animXScreen.setDuration(700);
-            animXPanel.start();
-            animXScreen.start();
+            AnimatorSet animSet = new AnimatorSet();
+            animSet.setDuration(700);
+            animSet.playTogether(animXPanel, animXScreen);
+            animSet.start();
+        }
+    }
+
+    // pressing on accessory for him placement
+    @Subscribe
+    public void accessoryCodrinate(Integer position) {
+        if (prevPosition != position) {
+            // получаем картинку в Bitmap и передаем координаты для корденирования элемента
+            ArrayList<Accessory> accessories = category.getAccessories();
+            BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(accessories.get(position).getImage());
+            double X = accessories.get(position).getCoordinates().getX();
+            double Y = accessories.get(position).getCoordinates().getY();
+            category.setCoordinateImage(drawable, X, Y);
+            prevPosition = position;
+        } else {
+            category.setCoordinateImage(null, 0, 0);
         }
     }
 
@@ -121,7 +123,7 @@ public class FragmentGame extends Fragment {
         ArrayList<Category> itemCategories = new ArrayList<>();
         itemCategories.add(new Category(R.drawable.hair_ic, getActivity(), contentGirl, 3, AccessoryManager.getInstance().getAccessory("Hair")));
         itemCategories.add(new Category(R.drawable.hat_ic, getActivity(), contentGirl, 1, AccessoryManager.getInstance().getAccessory("Hat")));
-        itemCategories.add(new Category(R.drawable.bag_ic, getActivity(), contentGirl, 2, null));
+        itemCategories.add(new Category(R.drawable.bag_ic, getActivity(), contentGirl, 2, AccessoryManager.getInstance().getAccessory("Bag")));
         itemCategories.add(new Category(R.drawable.dress_ic, getActivity(), contentGirl, 5, null));
         itemCategories.add(new Category(R.drawable.necklace_ic, getActivity(), contentGirl, 6, null));
         itemCategories.add(new Category(R.drawable.earrings_ic, getActivity(), contentGirl, 8, null));
@@ -142,5 +144,11 @@ public class FragmentGame extends Fragment {
             listCategory.smoothScrollBy(itemHeight, -itemHeight * countCategory);
             scroll = true;
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        bus.unregister(this);
     }
 }

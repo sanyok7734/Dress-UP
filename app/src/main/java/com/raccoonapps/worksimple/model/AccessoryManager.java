@@ -17,6 +17,7 @@ public class AccessoryManager {
     private AccessoryManager() {
         accessoryCategoris.put("Hair", getHair());
         accessoryCategoris.put("Hat", getHat());
+        accessoryCategoris.put("Bag", getBag());
     }
 
     public static AccessoryManager getInstance() {
@@ -47,8 +48,17 @@ public class AccessoryManager {
         hat.add(new Accessory(new Coordinates(36.50307, 2.95405), R.drawable.hat1));
         hat.add(new Accessory(new Coordinates(37.4235, 4.3763), R.drawable.hat2));
         hat.add(new Accessory(new Coordinates(36.81, 5.79869), R.drawable.hat3));
-
         return hat;
     }
 
+
+    private ArrayList<Accessory> getBag() {
+        ArrayList<Accessory> bag = new ArrayList<>();
+        bag.add(new Accessory(new Coordinates(7.66871, 67.39606), R.drawable.bag1));
+        bag.add(new Accessory(new Coordinates(7.05522, 65.64551), R.drawable.bag2));
+        bag.add(new Accessory(new Coordinates(5.21472, 66.52079), R.drawable.bag3));
+        bag.add(new Accessory(new Coordinates(7.36196, 65.09847), R.drawable.bag4));
+        bag.add(new Accessory(new Coordinates(6.74847, 65.20788), R.drawable.bag5));
+        return bag;
+    }
 }
