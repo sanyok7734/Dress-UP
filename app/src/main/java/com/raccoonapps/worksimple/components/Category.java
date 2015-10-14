@@ -14,10 +14,7 @@ import com.raccoonapps.worksimple.model.CoordinatorElements;
 import java.util.ArrayList;
 
 
-/**
- * Created by sanyok on 10.10.15.
- */
-public class Category  implements Comparable<Category>{
+public class Category implements Comparable<Category> {
     private int id ;
     private int positionAccessory = -1;
 
@@ -27,6 +24,7 @@ public class Category  implements Comparable<Category>{
     private boolean check = false;
 
     private int layer;
+    private String categoryTitle;
 
     private CoordinatorElements coordinatorElements;
 
@@ -118,6 +116,14 @@ public class Category  implements Comparable<Category>{
 
     public void setPositionAccessory(int positionAccessory) {
         this.positionAccessory = positionAccessory;
+    }
+
+    public String getCategoryTitle() {
+        return categoryTitle;
+    }
+
+    public void setCategoryTitle(String categoryTitle) {
+        this.categoryTitle = categoryTitle;
     }
 
     @Override

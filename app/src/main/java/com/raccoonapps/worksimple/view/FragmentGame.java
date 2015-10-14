@@ -55,7 +55,11 @@ public class FragmentGame extends Fragment {
         ButterKnife.bind(this, view);
         bus.register(this);
 
-        itemCategories = getItemCategories();
+        try {
+            itemCategories = getItemCategories();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         for (int i = 0; i < itemCategories.size(); i++)
             itemCategories.get(i).setId(i);
 
@@ -116,7 +120,7 @@ public class FragmentGame extends Fragment {
         }
     }
 
-    private ArrayList<Category> getItemCategories() {
+    private ArrayList<Category> getItemCategories() throws Exception {
         ArrayList<Category> itemCategories = new ArrayList<>();
         itemCategories.add(new Category(R.drawable.hair_ic, getActivity(), contentGirl, 3, AccessoryManager.getInstance().getAccessory("Hair")));
         itemCategories.add(new Category(R.drawable.hat_ic, getActivity(), contentGirl, 1, AccessoryManager.getInstance().getAccessory("Hat")));

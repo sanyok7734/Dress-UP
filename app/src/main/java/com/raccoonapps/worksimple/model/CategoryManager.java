@@ -8,9 +8,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-/**
- * Created by sanyok on 12.10.15.
- */
 public class CategoryManager {
 
     private ArrayList<Category> categoriesManager;
