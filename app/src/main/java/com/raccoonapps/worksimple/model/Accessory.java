@@ -20,19 +20,19 @@ public class Accessory {
         return image;
     }
 
-    @Override
-    public String toString() {
-        return "Accessory{" +
-                ", coordinates=" + coordinates +
-                ", image='" + image + '\'' +
-                '}';
-    }
-
     public boolean isInclude() {
         return include;
     }
 
     public void setInclude(boolean include) {
         this.include = include;
+    }
+
+    @Override
+    public String toString() {
+        return "Accessory [" +
+                "image=" + image +
+                ", coordinates=" + coordinates +
+                ']';
     }
 }
