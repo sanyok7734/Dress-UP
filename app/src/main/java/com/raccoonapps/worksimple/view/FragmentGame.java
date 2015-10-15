@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,6 @@ import com.raccoonapps.worksimple.adapters.AdapterCategory;
 import com.raccoonapps.worksimple.components.Category;
 import com.raccoonapps.worksimple.model.Accessory;
 import com.raccoonapps.worksimple.model.AccessoryManager;
-import com.raccoonapps.worksimple.model.CategoryManager;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -56,10 +56,6 @@ public class FragmentGame extends Fragment {
         bus.register(this);
 
         itemCategories = getItemCategories();
-        for (int i = 0; i < itemCategories.size(); i++)
-            itemCategories.get(i).setId(i);
-
-        new CategoryManager(itemCategories);
 
         layoutAccessory = new LinearLayoutManager(getActivity());
         additionalPanel.setLayoutManager(layoutAccessory);
@@ -69,6 +65,7 @@ public class FragmentGame extends Fragment {
         listCategory.setLayoutManager(mLayoutManager);
         listCategory.setAdapter(adapterCategory);
         listCategory.getItemAnimator().setSupportsChangeAnimations(false);
+
         return view;
     }
 
@@ -102,29 +99,26 @@ public class FragmentGame extends Fragment {
     // pressing on accessory for him placement
     @Subscribe
     public void accessoryCodrinate(Integer position) {
-        if (category.getPositionAccessory() != position) {
-            // получаем картинку в Bitmap и передаем координаты для корденирования элемента
-            ArrayList<Accessory> accessories = category.getAccessories();
-            BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(accessories.get(position).getImage());
-            double X = accessories.get(position).getCoordinates().getX();
-            double Y = accessories.get(position).getCoordinates().getY();
-            category.setCoordinateImage(drawable, X, Y);
-            category.setPositionAccessory(position);
-        } else {
-            category.setCoordinateImage(null, 0, 0);
-            category.setPositionAccessory(-1);
-        }
+        ArrayList<Accessory> accessories = category.getAccessories();
+        int tag = accessories.get(position).getImage();
+        // получаем картинку в Bitmap и передаем координаты для корденирования элемента
+        BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(accessories.get(position).getImage());
+        double X = accessories.get(position).getCoordinates().getX();
+        double Y = accessories.get(position).getCoordinates().getY();
+        category.setCoordinateImage(tag, drawable, X, Y);
+
+        Log.d("OVERFLOV", "добавить");
     }
 
     private ArrayList<Category> getItemCategories() {
         ArrayList<Category> itemCategories = new ArrayList<>();
-        itemCategories.add(new Category(R.drawable.hair_ic, getActivity(), contentGirl, 3, AccessoryManager.getInstance().getAccessory("Hair")));
-        itemCategories.add(new Category(R.drawable.hat_ic, getActivity(), contentGirl, 1, AccessoryManager.getInstance().getAccessory("Hat")));
-        itemCategories.add(new Category(R.drawable.bag_ic, getActivity(), contentGirl, 2, AccessoryManager.getInstance().getAccessory("Bag")));
-        itemCategories.add(new Category(R.drawable.dress_ic, getActivity(), contentGirl, 5, null));
-        itemCategories.add(new Category(R.drawable.necklace_ic, getActivity(), contentGirl, 6, null));
-        itemCategories.add(new Category(R.drawable.earrings_ic, getActivity(), contentGirl, 8, null));
-        itemCategories.add(new Category(R.drawable.shoes_ic, getActivity(), contentGirl, 3, null));
+        itemCategories.add(new Category(R.drawable.hair_ic, getActivity(), contentGirl, AccessoryManager.getInstance().getAccessory("Hair")));
+        itemCategories.add(new Category(R.drawable.hat_ic, getActivity(),  contentGirl, AccessoryManager.getInstance().getAccessory("Hat")));
+        itemCategories.add(new Category(R.drawable.bag_ic, getActivity(), contentGirl, AccessoryManager.getInstance().getAccessory("Bag")));
+        itemCategories.add(new Category(R.drawable.dress_ic, getActivity(), true, contentGirl, AccessoryManager.getInstance().getAccessory("Dress")));
+        itemCategories.add(new Category(R.drawable.necklace_ic, getActivity(), contentGirl, null));
+        itemCategories.add(new Category(R.drawable.earrings_ic, getActivity(), contentGirl, null));
+        itemCategories.add(new Category(R.drawable.shoes_ic, getActivity(), contentGirl, null));
         return itemCategories;
     }
 
@@ -144,7 +138,7 @@ public class FragmentGame extends Fragment {
     }
 
     @Override
-    public void onPause() {
+    public void onDestroy() {
         super.onPause();
         bus.unregister(this);
     }

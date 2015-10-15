@@ -1,15 +1,15 @@
 package com.raccoonapps.worksimple.model;
 
 import android.graphics.drawable.BitmapDrawable;
-import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 public class CoordinatorElements {
 
-    private View root;
+    private FrameLayout root;
     private ImageView girlImage;
 
-    public CoordinatorElements(View root, ImageView girlImage) {
+    public CoordinatorElements(FrameLayout root, ImageView girlImage) {
         this.root = root;
         this.girlImage = girlImage;
     }
@@ -35,7 +35,7 @@ public class CoordinatorElements {
 
             image.setImageDrawable(drawable);
         } else {
-            image.setImageDrawable(null);
+            root.removeView(image);
         }
     }
 

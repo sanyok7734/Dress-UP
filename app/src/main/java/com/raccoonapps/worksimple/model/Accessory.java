@@ -4,6 +4,7 @@ public class Accessory {
 
     private Coordinates coordinates;
     private int image;
+    private boolean include = false;
 
     public Accessory(Coordinates coordinates, int image) {
         this.coordinates = coordinates;
@@ -27,4 +28,11 @@ public class Accessory {
                 '}';
     }
 
+    public boolean isInclude() {
+        return include;
+    }
+
+    public void setInclude(boolean include) {
+        this.include = include;
+    }
 }
