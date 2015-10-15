@@ -11,14 +11,12 @@ import com.raccoonapps.worksimple.components.Category;
 import com.raccoonapps.worksimple.view.FragmentGame;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHolder> {
 
     private ArrayList<Category> categories;
 
     public AdapterCategory(ArrayList<Category> categories) {
-        Collections.sort(categories);
         this.categories = categories;
     }
 

@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.container, new FragmentStart());
         fragmentTransaction.commit();
-
     }
 
     @Subscribe
@@ -62,53 +61,5 @@ public class MainActivity extends AppCompatActivity {
         BusProvider.getInstance().unregister(this);
     }
 
-    /*        DisplayMetrics displaymetrics = new DisplayMetrics();
-        this.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        screenWidth = displaymetrics.widthPixels;
-        screenHeight = displaymetrics.heightPixels;
-
-
-        final ImageView frameLayout = (ImageView) findViewById(R.id.girl);
-
-        FrameLayout butHair = (FrameLayout) findViewById(R.id.but_hair);*/
-
-
-
-  /*      fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-                ImageView heirs = (ImageView) findViewById(R.id.volosy);
-                //TODO VISIBLE DELETE
-                heirs.setVisibility(View.VISIBLE);
-                CoordinatorElements.imageCoordinator(screenWidth, screenHeight, 36.19632, -0.37, heirs, frameLayout);
-
-            }
-        });*/
-
-
-   /* public void clickButtonPanel(View view) {
-        switch (view.getId()) {
-            case R.id.but_hair:
-
-                break;
-        }
-
-
-    }*/
-
-/*    public void showPanel(View panel, View morePanel) {
-        TranslateAnimation anim = new TranslateAnimation(0, -morePanel.getWidth(), 0, 0);
-        anim.setDuration(1000);
-        anim.setFillAfter(true);
-
-
-        TranslateAnimation anim2 = new TranslateAnimation(0, -morePanel.getWidth(), 0, 0);
-        anim2.setDuration(1000);
-        anim2.setFillAfter(true);
-        morePanel.startAnimation(anim);
-        panel.startAnimation(anim2);
-    }*/
 
 }
