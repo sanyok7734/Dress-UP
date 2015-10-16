@@ -28,7 +28,7 @@ public class ApplicationPropertiesLoader {
         return loader;
     }
 
-    public static enum BUTTONS {
+    public enum BUTTON {
         START, HELP, MORE, CATEGORY
     }
 
@@ -71,7 +71,7 @@ public class ApplicationPropertiesLoader {
         return json.toString();
     }
 
-    public int getButtonIdByName(BUTTONS button) throws JSONException {
+    public int getButtonIdByName(BUTTON button) throws JSONException {
         JSONObject buttons = properties.getJSONObject("general_data").getJSONObject("buttons");
         String buttonName = buttons.getString(button.name().toLowerCase());
         if (buttonName != null)
