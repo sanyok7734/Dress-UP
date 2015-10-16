@@ -22,22 +22,24 @@ public class CategoryWrapper {
     private boolean lamination = false;
 
     private Context context;
-    private FrameLayout screen;
     private Drawable drawableCategory;
     private Drawable drawableButton;
+    private FrameLayout screen;
     private ImageView accessory;
 
     private CoordinatorElements coordinatorElements;
 
+
     private List<ImageView> imageViews = new ArrayList<>();
     private List<Accessory> accessories = new ArrayList<>();
+
 
     public CategoryWrapper(Category category, Context context, FrameLayout contentGirl) {
         this.context = context;
         this.screen = contentGirl;
         ImageView girl = (ImageView) contentGirl.findViewById(R.id.girl);
-
-        //coordinator elements initialization - this is very informative comment
+        
+        //coordinator elements initialization
         coordinatorElements = new CoordinatorElements(screen, girl);
 
         //set accessory for girl
@@ -55,7 +57,7 @@ public class CategoryWrapper {
     }
 
     public void setDrawableButton(int buttonDrawable) {
-            drawableButton = context.getResources().getDrawable(buttonDrawable);
+        drawableButton = context.getResources().getDrawable(buttonDrawable);
     }
 
     public void setCoordinateImage(int tag, BitmapDrawable drawable, double X, double Y) {
