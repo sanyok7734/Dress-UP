@@ -32,4 +32,13 @@
     <dimen name="panelAccessoryWidth">170dp</dimen>
 
     <dimen name="panelAccessoryMarginTop">15dp</dimen>
+
+    <dimen name="buttonNextWidthHeight">80dp</dimen>
+    <dimen name="buttonNextTop">30dp</dimen>
+    <dimen name="buttonNextRight">30dp</dimen>
+    <dimen name="buttonNextBottom">30dp</dimen>
+    <dimen name="buttonNextImageBottom">24dp</dimen>
+    <dimen name="buttonNextImageTop">22dp</dimen>
+    <dimen name="buttonNextImageLeft">25dp</dimen>
+    <dimen name="buttonNextImageRight">23dp</dimen>
 </resources>
