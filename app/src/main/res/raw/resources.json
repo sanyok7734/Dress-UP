@@ -1,11 +1,14 @@
 {
   "general_data": {
+    "buttons": {
+      "more": "more_btn.png",
+      "start": "start_btn.png"
+    }
   },
   "categories": [
     {
       "category_title": "hair",
       "category_icon": "hair_ic.png",
-      "layer": 3,
       "category_resources": [
         {
           "file_name": "hair1.png",
@@ -54,7 +57,6 @@
     {
       "category_title": "bag",
       "category_icon": "bag_ic.png",
-      "layer": 2,
       "category_resources": [
         {
           "file_name": "bag1.png",
@@ -96,7 +98,6 @@
     {
       "category_title": "hat",
       "category_icon": "hat_ic.png",
-      "layer": 1,
       "category_resources": [
         {
           "file_name": "hat1.png",
