@@ -55,14 +55,14 @@ public class ApplicationPropertiesLoader {
             int layer = object.getInt("layer");
             JSONArray categoryResources = object.getJSONArray("category_resources");
             for (int j = 0; j < categoryResources.length(); j++) {
-                JSONObject accessoryObject = (JSONObject) categoryResources.get(i);
+                JSONObject accessoryObject = (JSONObject) categoryResources.get(j);
                 String fileName = accessoryObject.getString("file_name");
                 JSONArray coordinates = accessoryObject.getJSONArray("coordinates");
                 accessories.add(new Accessory
                         (new Coordinates(coordinates.getDouble(0), coordinates.getDouble(1)),
                                 context.getResources().getIdentifier("drawable/" + fileName.split("\\.")[0], null, context.getPackageName())));
             }
-            Category category = new Category(accessories, categoryTitle, categoryIcon, layer);
+            Category category = new Category(accessories, categoryTitle, categoryIcon);
             categories.add(category);
         }
         return categories;

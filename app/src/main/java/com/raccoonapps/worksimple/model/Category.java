@@ -7,13 +7,11 @@ public class Category {
     private List<Accessory> accessories;
     private String categoryTitle;
     private String categoryIcon;
-    private int layer;
 
-    public Category(List<Accessory> accessories, String categoryTitle, String categoryIcon, int layer) {
+    public Category(List<Accessory> accessories, String categoryTitle, String categoryIcon) {
         this.accessories = accessories;
         this.categoryTitle = categoryTitle;
-        this.categoryIcon = categoryIcon;
-        this.layer = layer;
+        this.categoryIcon = categoryIcon.split("\\.")[0];
     }
 
     public List<Accessory> getAccessories() {
@@ -28,15 +26,11 @@ public class Category {
         return categoryIcon;
     }
 
-    public int getLayer() {
-        return layer;
-    }
 
     @Override
     public String toString() {
         return "Category [" +
                 "categoryTitle='" + categoryTitle + '\'' +
-                ", layer=" + layer +
                 ", categoryIcon='" + categoryIcon + '\'' +
                 ", accessories=" + accessories +
                 ']';

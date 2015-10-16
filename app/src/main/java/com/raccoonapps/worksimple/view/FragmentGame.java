@@ -17,13 +17,15 @@ import android.widget.FrameLayout;
 import com.raccoonapps.worksimple.R;
 import com.raccoonapps.worksimple.adapters.AdapterAccessory;
 import com.raccoonapps.worksimple.adapters.AdapterCategory;
-import com.raccoonapps.worksimple.components.Category;
+import com.raccoonapps.worksimple.components.CategoryWrapper;
 import com.raccoonapps.worksimple.model.Accessory;
-import com.raccoonapps.worksimple.model.AccessoryManager;
+import com.raccoonapps.worksimple.model.ApplicationPropertiesLoader;
+import com.raccoonapps.worksimple.model.Category;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -34,9 +36,10 @@ public class FragmentGame extends Fragment {
     private AdapterCategory adapterCategory;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.LayoutManager layoutAccessory;
-    private ArrayList<Category> itemCategories = new ArrayList<>();
 
-    private Category category;
+    private List<CategoryWrapper> categoryWrappers = new ArrayList<>();
+
+    private CategoryWrapper categoryWrapper;
 
     public static Bus bus = new Bus();
     private boolean scroll = true;
@@ -55,26 +58,26 @@ public class FragmentGame extends Fragment {
         ButterKnife.bind(this, view);
         bus.register(this);
 
-        itemCategories = getItemCategories();
+        categoryWrappers = getCategoryWrappers();
 
 
         layoutAccessory = new LinearLayoutManager(getActivity());
         additionalPanel.setLayoutManager(layoutAccessory);
 
-        adapterCategory = new AdapterCategory(itemCategories);
+        adapterCategory = new AdapterCategory(categoryWrappers);
         mLayoutManager = new LinearLayoutManager(getActivity());
         listCategory.setLayoutManager(mLayoutManager);
         listCategory.setAdapter(adapterCategory);
-        listCategory.getItemAnimator().setChangeDuration(0);
+        listCategory.getItemAnimator().setSupportsChangeAnimations(false);
 
         return view;
     }
 
     //click on category and open panel accessories
     @Subscribe
-    public void panelAccessoryShow(Category category) {
-        this.category = category;
-        additionalPanel.setAdapter(new AdapterAccessory(category.getAccessories()));
+    public void panelAccessoryShow(CategoryWrapper categoryWrapper) {
+        this.categoryWrapper = categoryWrapper;
+        additionalPanel.setAdapter(new AdapterAccessory(categoryWrapper.getAccessories()));
 
         ObjectAnimator animXPanel = ObjectAnimator.ofFloat(additionalPanel, "x", contentGirl.getWidth() - additionalPanel.getWidth());
         ObjectAnimator animXScreen = ObjectAnimator.ofFloat(contentGirl, "x", -additionalPanel.getWidth());
@@ -100,39 +103,28 @@ public class FragmentGame extends Fragment {
     // pressing on accessory for him placement
     @Subscribe
     public void accessoryCodrinate(Integer position) {
-        ArrayList<Accessory> accessories = category.getAccessories();
+        List<Accessory> accessories = categoryWrapper.getAccessories();
         int tag = accessories.get(position).getImage();
         // получаем картинку в Bitmap и передаем координаты для корденирования элемента
         BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(accessories.get(position).getImage());
         double X = accessories.get(position).getCoordinates().getX();
         double Y = accessories.get(position).getCoordinates().getY();
-        category.setCoordinateImage(tag, drawable, X, Y);
+        categoryWrapper.setCoordinateImage(tag, drawable, X, Y);
 
         Log.d("OVERFLOV", "добавить");
     }
 
-    private ArrayList<Category> getItemCategories() {
-        ArrayList<Category> itemCategories = new ArrayList<>();
-        itemCategories.add(new Category(R.drawable.hair_ic, getActivity(), contentGirl, AccessoryManager.getInstance().getAccessory("Hair")));
-        itemCategories.add(new Category(R.drawable.hat_ic, getActivity(),  contentGirl, AccessoryManager.getInstance().getAccessory("Hat")));
-        itemCategories.add(new Category(R.drawable.bag_ic, getActivity(), contentGirl, AccessoryManager.getInstance().getAccessory("Bag")));
-        itemCategories.add(new Category(R.drawable.dress_ic, getActivity(), true, contentGirl, AccessoryManager.getInstance().getAccessory("Dress")));
-        itemCategories.add(new Category(R.drawable.necklace_ic, getActivity(), contentGirl, null));
-        itemCategories.add(new Category(R.drawable.earrings_ic, getActivity(), contentGirl, null));
-        itemCategories.add(new Category(R.drawable.shoes_ic, getActivity(), contentGirl, null));
-        return itemCategories;
-    }
 
     @OnClick(R.id.scroll_category)
     public void scrollCategory() {
         if (scroll) {
             int itemHeight = listCategory.getChildAt(0).getHeight();
-            int countCategory = itemCategories.size() - 7;
+            int countCategory = categoryWrappers.size() - 7;
             listCategory.smoothScrollBy(itemHeight, itemHeight * countCategory);
             scroll = false;
         } else {
             int itemHeight = listCategory.getChildAt(0).getHeight();
-            int countCategory = itemCategories.size() - 7;
+            int countCategory = categoryWrappers.size() - 7;
             listCategory.smoothScrollBy(itemHeight, -itemHeight * countCategory);
             scroll = true;
         }
@@ -142,5 +134,23 @@ public class FragmentGame extends Fragment {
     public void onDestroy() {
         super.onPause();
         bus.unregister(this);
+    }
+
+    private List<CategoryWrapper> getCategoryWrappers() {
+        List<CategoryWrapper> categoryWrappers = new ArrayList<>();
+
+        List<Category> categories = null;
+        try {
+            categories = ApplicationPropertiesLoader.getLoader(getActivity()).getAllCategories();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        for (Category category : categories) {
+            if (category.getCategoryTitle().equals("hat"))
+                categoryWrappers.add(new CategoryWrapper(category, getActivity(), true, contentGirl));
+            else
+                categoryWrappers.add(new CategoryWrapper(category, getActivity(), contentGirl));
+        }
+        return categoryWrappers;
     }
 }
