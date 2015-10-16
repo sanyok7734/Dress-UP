@@ -7,16 +7,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.raccoonapps.worksimple.R;
-import com.raccoonapps.worksimple.components.Category;
+import com.raccoonapps.worksimple.components.CategoryWrapper;
 import com.raccoonapps.worksimple.view.FragmentGame;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHolder> {
 
-    private ArrayList<Category> categories;
+    private List<CategoryWrapper> categories;
 
-    public AdapterCategory(ArrayList<Category> categories) {
+    public AdapterCategory(List<CategoryWrapper> categories) {
         this.categories = categories;
     }
 
@@ -28,28 +28,28 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHo
 
     @Override
     public void onBindViewHolder(final AdapterCategory.ViewHolder holder, final int position) {
-        final Category category = categories.get(position);
-        holder.iconCategory.setImageDrawable(category.getDrawableCategory());
-        holder.iconButton.setImageDrawable(category.getDrawableButton());
+        final CategoryWrapper categoryWrapper = categories.get(position);
+        holder.iconCategory.setImageDrawable(categoryWrapper.getDrawableCategory());
+        holder.iconButton.setImageDrawable(categoryWrapper.getDrawableButton());
 
         holder.iconButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (category.isCheck()) {
-                    category.setDrawableButton(R.drawable.btn_right);
-                    category.setCheck(false);
+                if (categoryWrapper.isSelectedCategory()) {
+                    categoryWrapper.setDrawableButton(R.drawable.btn_right);
+                    categoryWrapper.setSelectedCategory(false);
                     notifyItemChanged(position);
                     FragmentGame.bus.post(false);
                 } else {
                     for (int i = 0; i < categories.size(); i++) {
                         categories.get(i).setDrawableButton(R.drawable.btn_right);
-                        categories.get(i).setCheck(false);
+                        categories.get(i).setSelectedCategory(false);
                         notifyItemChanged(i);
                     }
-                    category.setDrawableButton(R.drawable.btn_right_p);
-                    category.setCheck(true);
+                    categoryWrapper.setDrawableButton(R.drawable.btn_right_p);
+                    categoryWrapper.setSelectedCategory(true);
                     notifyItemChanged(position);
-                    FragmentGame.bus.post(category);
+                    FragmentGame.bus.post(categoryWrapper);
                 }
             }
         });

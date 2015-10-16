@@ -9,30 +9,33 @@ import android.widget.ImageView;
 
 import com.raccoonapps.worksimple.R;
 import com.raccoonapps.worksimple.model.Accessory;
+import com.raccoonapps.worksimple.model.Category;
 import com.raccoonapps.worksimple.model.CoordinatorElements;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
-public class Category {
+public class CategoryWrapper {
+
+    private boolean selectedCategory = false;
+    private boolean overflow = false;
 
     private Context context;
     private Drawable drawableCategory;
     private Drawable drawableButton;
-    private boolean check = false;
-    private boolean overflow = false;
+    private FrameLayout screen;
 
     private CoordinatorElements coordinatorElements;
 
     private ImageView imageView;
     private ArrayList<ImageView> imageViews = new ArrayList<>();
-    private ArrayList<Accessory> accessories = new ArrayList<>();
-    FrameLayout screen;
+    private List<Accessory> accessories = new ArrayList<>();
 
 
-    public Category(int resourceDrawable, Context context, FrameLayout contentGirl, ArrayList<Accessory> accessories) {
+    public CategoryWrapper(Category category, Context context, FrameLayout contentGirl) {
         this.context = context;
-        screen = contentGirl;
+        this.screen = contentGirl;
         ImageView girl = (ImageView) contentGirl.findViewById(R.id.girl);
 
 
@@ -40,24 +43,16 @@ public class Category {
         coordinatorElements = new CoordinatorElements(screen, girl);
 
         //set accessory for girl
-        this.accessories = accessories;
+        this.accessories = category.getAccessories();
 
         //set image in button
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            drawableCategory = context.getDrawable(resourceDrawable);
-        } else {
-            drawableCategory = context.getResources().getDrawable(resourceDrawable);
-        }
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            drawableButton = context.getDrawable(R.drawable.btn_right);
-        } else {
-            drawableButton = context.getResources().getDrawable(R.drawable.btn_right);
-        }
+        int identifier = context.getResources().getIdentifier("drawable/" + category.getCategoryIcon(), null, context.getPackageName());
+        drawableCategory = context.getResources().getDrawable(identifier);
+        drawableButton = context.getResources().getDrawable(R.drawable.btn_right);
     }
 
-    public Category(int resourceDrawable, Context context, Boolean overflow, FrameLayout contentGirl, ArrayList<Accessory> accessories) {
-        this(resourceDrawable, context, contentGirl, accessories);
+    public CategoryWrapper(Category category, Context context, Boolean overflow, FrameLayout contentGirl) {
+        this(category, context, contentGirl);
         this.overflow = overflow;
     }
 
@@ -113,15 +108,15 @@ public class Category {
         return drawableButton;
     }
 
-    public boolean isCheck() {
-        return check;
+    public boolean isSelectedCategory() {
+        return selectedCategory;
     }
 
-    public void setCheck(boolean check) {
-        this.check = check;
+    public void setSelectedCategory(boolean selectedCategory) {
+        this.selectedCategory = selectedCategory;
     }
 
-    public ArrayList<Accessory> getAccessories() {
+    public List<Accessory> getAccessories() {
         return accessories;
     }
 }
