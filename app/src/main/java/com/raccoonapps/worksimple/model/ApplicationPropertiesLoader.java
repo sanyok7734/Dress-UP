@@ -29,7 +29,7 @@ public class ApplicationPropertiesLoader {
     }
 
     public enum BUTTON {
-        START, HELP, MORE, CATEGORY
+        START, MORE, CIRCLE, RIGHT
     }
 
     public List<Category> getAllCategories() throws JSONException {

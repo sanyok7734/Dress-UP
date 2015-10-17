@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import com.raccoonapps.worksimple.R;
 import com.raccoonapps.worksimple.adapters.AdapterAccessory;
@@ -21,6 +22,7 @@ import com.raccoonapps.worksimple.components.CategoryWrapper;
 import com.raccoonapps.worksimple.model.Accessory;
 import com.raccoonapps.worksimple.model.ApplicationPropertiesLoader;
 import com.raccoonapps.worksimple.model.Category;
+import com.raccoonapps.worksimple.model.Squeezing;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -50,6 +52,9 @@ public class FragmentGame extends Fragment {
     public RecyclerView additionalPanel;
     @Bind(R.id.content_girl)
     public FrameLayout contentGirl;
+    @Bind(R.id.girl)
+    public ImageView girlImage;
+
 
     @Nullable
     @Override
@@ -60,6 +65,13 @@ public class FragmentGame extends Fragment {
 
         categoryWrappers = getCategoryWrappers();
 
+        Log.d("OCCUPY", Squeezing.occupyWidthGirl() + "");
+        Log.d("OCCUPY", Squeezing.occupyHeightGirl() + "");
+        girlImage.setImageDrawable(Squeezing.getImageGirl());
+        ViewGroup.LayoutParams layoutParam = girlImage.getLayoutParams();
+        layoutParam.height = Squeezing.occupyHeightGirl();
+        layoutParam.width = Squeezing.occupyWidthGirl();
+        girlImage.setLayoutParams(layoutParam);
 
         layoutAccessory = new LinearLayoutManager(getActivity());
         additionalPanel.setLayoutManager(layoutAccessory);

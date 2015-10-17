@@ -14,9 +14,6 @@ import com.raccoonapps.worksimple.view.FragmentGame;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by sanyok on 11.10.15.
- */
 public class AdapterAccessory extends RecyclerView.Adapter<AdapterAccessory.ViewHolder> {
 
     private List<Accessory> accessories = new ArrayList<>();

@@ -2,7 +2,9 @@
   "general_data": {
     "buttons": {
       "more": "more_btn.png",
-      "start": "start_btn.png"
+      "start": "start_btn.png",
+      "circle": "btn_circle.png",
+      "right": "btn_right.png"
     }
   },
   "categories": [

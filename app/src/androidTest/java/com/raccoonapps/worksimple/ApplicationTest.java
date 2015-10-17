@@ -35,13 +35,14 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
     public void testGenerateJsonResource() throws JSONException {
         String categoryTitle = "shoes";
         String categoryIcon = categoryTitle + "_ic.png";
+        int accessoriesCount = 11;
 
         JSONObject category = new JSONObject();
         category.put("category_title", categoryTitle);
         category.put("category_icon", categoryIcon);
 
         JSONArray accessories = new JSONArray();
-        for (int i = 0; i < 11; i++) {
+        for (int i = 0; i < accessoriesCount; i++) {
             JSONObject accessory = new JSONObject();
             accessory.put("file_name", categoryTitle + (i + 1) + ".png");
             accessory.put("coordinates", new JSONArray());
@@ -51,5 +52,6 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         category.put("category_resources", accessories);
         Log.d("JSON", category.toString());
     }
+
 
 }

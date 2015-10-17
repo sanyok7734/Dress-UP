@@ -21,35 +21,74 @@
             android:id="@+id/girl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/girls" />
+            android:layout_gravity="center"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
 
-        <LinearLayout
-            android:layout_width="@dimen/categoryWidthHeight"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|center"
-            android:layout_marginRight="@dimen/margeRightListCategory"
-            android:layout_marginTop="@dimen/categoryMarginTop"
-            android:gravity="right"
-            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:orientation="vertical">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/list_category"
-                android:layout_width="@dimen/categoryWidthHeight"
-                android:layout_height="@dimen/categoryPanelHeight"
-                android:layout_gravity="right|center"
-                android:gravity="right"
-                android:overScrollMode="never" />
+                <FrameLayout
+                    android:layout_width="@dimen/buttonNextWidthHeight"
+                    android:layout_height="@dimen/buttonNextWidthHeight"
+                    android:layout_gravity="right|top"
+                    android:layout_marginBottom="@dimen/buttonNextTop"
+                    android:layout_marginRight="@dimen/buttonNextRight"
+                    android:layout_marginTop="@dimen/buttonNextTop"
+                    android:layout_weight="0.1">
 
-            <ImageView
-                android:id="@+id/scroll_category"
-                android:layout_width="@dimen/scrollButtonSize"
-                android:layout_height="@dimen/scrollButtonSize"
-                android:layout_gravity="center"
-                android:padding="@dimen/scrollButtonPadding"
-                android:src="@drawable/scroll_ic" />
-        </LinearLayout>
+                    <ImageView
+                        android:id="@+id/button_next"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/btn_circle" />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/buttonNextImageTop"
+                        android:layout_marginBottom="@dimen/buttonNextImageBottom"
+                        android:layout_marginRight="@dimen/buttonNextImageRight"
+                        android:layout_marginLeft="@dimen/buttonNextImageLeft"
+                        android:layout_gravity="center"
+                        android:src="@drawable/forward" />
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/margeRightListCategory"
+                    android:layout_gravity="right"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/list_category"
+                        android:layout_width="@dimen/categoryWidthHeight"
+                        android:layout_height="@dimen/categoryPanelHeight"
+                        android:layout_gravity="right|center"
+                        android:gravity="right"
+                        android:overScrollMode="never" />
+
+                    <ImageView
+                        android:id="@+id/scroll_category"
+                        android:layout_width="@dimen/scrollButtonSize"
+                        android:layout_height="@dimen/scrollButtonSize"
+                        android:layout_gravity="center"
+                        android:padding="@dimen/scrollButtonPadding"
+                        android:src="@drawable/scroll_ic" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </RelativeLayout>
     </FrameLayout>
 
 

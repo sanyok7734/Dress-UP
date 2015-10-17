@@ -15,7 +15,7 @@
     <dimen name="textMoreAndHelp">25sp</dimen>
 
     <dimen name="categoryWidthHeight">55.9999dp</dimen>
-    <dimen name="categoryPanelHeight">392dp</dimen>
+    <dimen name="categoryPanelHeight">380dp</dimen>
     <dimen name="categoryMarginTop">10dp</dimen>
 
     <dimen name="paddingImageCategoryTop">15dp</dimen>
@@ -32,4 +32,14 @@
 
     <dimen name="panelAccessoryWidth">100dp</dimen>
     <dimen name="panelAccessoryMarginTop">10dp</dimen>
+
+    <dimen name="buttonNextWidthHeight">50dp</dimen>
+    <dimen name="buttonNextTop">18dp</dimen>
+    <dimen name="buttonNextRight">16dp</dimen>
+    <dimen name="buttonNextBottom">18dp</dimen>
+    <dimen name="buttonNextImageBottom">14dp</dimen>
+    <dimen name="buttonNextImageTop">13dp</dimen>
+    <dimen name="buttonNextImageLeft">15dp</dimen>
+    <dimen name="buttonNextImageRight">13dp</dimen>
+
 </resources>
