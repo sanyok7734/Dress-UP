@@ -1,11 +1,14 @@
 {
   "general_data": {
+    "buttons": {
+      "more": "more_btn.png",
+      "start": "start_btn.png"
+    }
   },
   "categories": [
     {
       "category_title": "hair",
       "category_icon": "hair_ic.png",
-      "layer": 3,
       "category_resources": [
         {
           "file_name": "hair1.png",
@@ -54,7 +57,6 @@
     {
       "category_title": "bag",
       "category_icon": "bag_ic.png",
-      "layer": 2,
       "category_resources": [
         {
           "file_name": "bag1.png",
@@ -96,7 +98,6 @@
     {
       "category_title": "hat",
       "category_icon": "hat_ic.png",
-      "layer": 1,
       "category_resources": [
         {
           "file_name": "hat1.png",
@@ -117,6 +118,89 @@
           "coordinates": [
             36.81,
             5.79869
+          ]
+        }
+      ]
+    },
+    {
+      "category_title": "dress",
+      "category_icon": "dress_ic.png",
+      "category_resources": [
+        {
+          "file_name": "dress1.png",
+          "coordinates": [
+            44.47853,
+            30.30635
+          ]
+        },
+        {
+          "file_name": "dress2.png",
+          "coordinates": [
+            43.55828,
+            28.33698
+          ]
+        },
+        {
+          "file_name": "dress3.png",
+          "coordinates": [
+            42.94479,
+            28.5558
+          ]
+        },
+        {
+          "file_name": "dress4.png",
+          "coordinates": [
+            49.3865,
+            33.15098
+          ]
+        },
+        {
+          "file_name": "dress5.png",
+          "coordinates": [
+            42.63804,
+            29.7593
+          ]
+        },
+        {
+          "file_name": "dress6.png",
+          "coordinates": [
+            47.54601,
+            27.68053
+          ]
+        },
+        {
+          "file_name": "dress7.png",
+          "coordinates": [
+            43.86593,
+            31.83807
+          ]
+        },
+        {
+          "file_name": "dress8.png",
+          "coordinates": [
+            43.86593,
+            34.13567
+          ]
+        },
+        {
+          "file_name": "dress9.png",
+          "coordinates": [
+            44.78528,
+            32.60394
+          ]
+        },
+        {
+          "file_name": "dress10.png",
+          "coordinates": [
+            41.41104,
+            26.80525
+          ]
+        },
+        {
+          "file_name": "dress11.png",
+          "coordinates": [
+            43.55828,
+            28.33698
           ]
         }
       ]

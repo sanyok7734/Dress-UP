@@ -80,7 +80,7 @@ public class FragmentGame extends Fragment {
         mLayoutManager = new LinearLayoutManager(getActivity());
         listCategory.setLayoutManager(mLayoutManager);
         listCategory.setAdapter(adapterCategory);
-        listCategory.getItemAnimator().setSupportsChangeAnimations(false);
+        listCategory.getItemAnimator().setChangeDuration(0);
 
         return view;
     }

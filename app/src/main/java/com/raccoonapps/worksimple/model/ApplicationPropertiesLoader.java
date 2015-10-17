@@ -22,6 +22,39 @@ public class ApplicationPropertiesLoader {
     private JSONObject properties;
     private Context context;
 
+    public static ApplicationPropertiesLoader getLoader(Context context) throws Exception {
+        if (loader == null)
+            loader = new ApplicationPropertiesLoader(context);
+        return loader;
+    }
+
+    public static enum BUTTONS {
+        START, HELP, MORE, CATEGORY
+    }
+
+    public List<Category> getAllCategories() throws JSONException {
+        List<Category> categories = new ArrayList<>();
+        JSONArray categoriesFromJson = properties.getJSONArray("categories");
+        for (int i = 0; i < categoriesFromJson.length(); i++) {
+            JSONObject object = (JSONObject) categoriesFromJson.get(i);
+            List<Accessory> accessories = new ArrayList<>();
+            String categoryTitle = object.getString("category_title");
+            String categoryIcon = object.getString("category_icon");
+            JSONArray categoryResources = object.getJSONArray("category_resources");
+            for (int j = 0; j < categoryResources.length(); j++) {
+                JSONObject accessoryObject = (JSONObject) categoryResources.get(j);
+                String fileName = accessoryObject.getString("file_name");
+                JSONArray coordinates = accessoryObject.getJSONArray("coordinates");
+                accessories.add(new Accessory
+                        (new Coordinates(coordinates.getDouble(0), coordinates.getDouble(1)),
+                                context.getResources().getIdentifier("drawable/" + fileName.split("\\.")[0], null, context.getPackageName())));
+            }
+            Category category = new Category(accessories, categoryTitle, categoryIcon);
+            categories.add(category);
+        }
+        return categories;
+    }
+
     private ApplicationPropertiesLoader(Context context) throws Exception {
         this.context = context;
         properties = new JSONObject(convertInJson(context));
@@ -38,34 +71,11 @@ public class ApplicationPropertiesLoader {
         return json.toString();
     }
 
-    public static ApplicationPropertiesLoader getLoader(Context context) throws Exception {
-        if (loader == null)
-            loader = new ApplicationPropertiesLoader(context);
-        return loader;
+    public int getButtonIdByName(BUTTONS button) throws JSONException {
+        JSONObject buttons = properties.getJSONObject("general_data").getJSONObject("buttons");
+        String buttonName = buttons.getString(button.name().toLowerCase());
+        if (buttonName != null)
+            return context.getResources().getIdentifier("drawable/" + buttonName.split("\\.")[0], null, context.getPackageName());
+        return 0;
     }
-
-    public List<Category> getAllCategories() throws JSONException {
-        List<Category> categories = new ArrayList<>();
-        JSONArray categoriesFromJson = properties.getJSONArray("categories");
-        for (int i = 0; i < categoriesFromJson.length(); i++) {
-            JSONObject object = (JSONObject) categoriesFromJson.get(i);
-            List<Accessory> accessories = new ArrayList<>();
-            String categoryTitle = object.getString("category_title");
-            String categoryIcon = object.getString("category_icon");
-            int layer = object.getInt("layer");
-            JSONArray categoryResources = object.getJSONArray("category_resources");
-            for (int j = 0; j < categoryResources.length(); j++) {
-                JSONObject accessoryObject = (JSONObject) categoryResources.get(j);
-                String fileName = accessoryObject.getString("file_name");
-                JSONArray coordinates = accessoryObject.getJSONArray("coordinates");
-                accessories.add(new Accessory
-                        (new Coordinates(coordinates.getDouble(0), coordinates.getDouble(1)),
-                                context.getResources().getIdentifier("drawable/" + fileName.split("\\.")[0], null, context.getPackageName())));
-            }
-            Category category = new Category(accessories, categoryTitle, categoryIcon);
-            categories.add(category);
-        }
-        return categories;
-    }
-
 }
