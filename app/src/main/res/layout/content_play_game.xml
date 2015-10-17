@@ -21,8 +21,7 @@
             android:id="@+id/girl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/girls" />
+            android:layout_gravity="center"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -66,6 +65,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/margeRightListCategory"
                     android:layout_gravity="right"
                     android:layout_weight="1"
                     android:orientation="vertical">

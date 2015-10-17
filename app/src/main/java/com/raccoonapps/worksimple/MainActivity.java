@@ -3,6 +3,7 @@ package com.raccoonapps.worksimple;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.WindowManager;
 
 import com.raccoonapps.worksimple.eventbus.BusProvider;
+import com.raccoonapps.worksimple.model.Squeezing;
 import com.raccoonapps.worksimple.view.FragmentGame;
 import com.raccoonapps.worksimple.view.FragmentStart;
 import com.squareup.otto.Subscribe;
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         this.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         screenWidth = displaymetrics.widthPixels;
         screenHeight = displaymetrics.heightPixels;
+        calculateOccupy();
 
         Log.d("COODRRNATORX", "screenWidth " + screenWidth);
         Log.d("COODRRNATORX", "screenHeight " + screenHeight);
@@ -61,5 +64,10 @@ public class MainActivity extends AppCompatActivity {
         BusProvider.getInstance().unregister(this);
     }
 
+    //TODO image girl
+    private void calculateOccupy() {
+        BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(R.drawable.girls1);
+        Squeezing.squeezingPercentage(drawable, screenWidth, screenHeight);
+    }
 
 }
