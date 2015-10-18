@@ -55,7 +55,6 @@ public class FragmentGame extends Fragment {
     @Bind(R.id.girl)
     public ImageView girlImage;
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -63,15 +62,14 @@ public class FragmentGame extends Fragment {
         ButterKnife.bind(this, view);
         bus.register(this);
 
-        categoryWrappers = getCategoryWrappers();
 
-        Log.d("OCCUPY", Squeezing.occupyWidthGirl() + "");
-        Log.d("OCCUPY", Squeezing.occupyHeightGirl() + "");
-        girlImage.setImageDrawable(Squeezing.getImageGirl());
         ViewGroup.LayoutParams layoutParam = girlImage.getLayoutParams();
         layoutParam.height = Squeezing.occupyHeightGirl();
         layoutParam.width = Squeezing.occupyWidthGirl();
         girlImage.setLayoutParams(layoutParam);
+        girlImage.setImageDrawable(Squeezing.getImageGirl());
+        categoryWrappers = getCategoryWrappers();
+
 
         layoutAccessory = new LinearLayoutManager(getActivity());
         additionalPanel.setLayoutManager(layoutAccessory);
@@ -89,7 +87,7 @@ public class FragmentGame extends Fragment {
     @Subscribe
     public void panelAccessoryShow(CategoryWrapper categoryWrapper) {
         this.categoryWrapper = categoryWrapper;
-        additionalPanel.setAdapter(new AdapterAccessory(categoryWrapper.getAccessories()));
+        additionalPanel.setAdapter(new AdapterAccessory(categoryWrapper.getAccessories(), getActivity()));
 
         ObjectAnimator animXPanel = ObjectAnimator.ofFloat(additionalPanel, "x", contentGirl.getWidth() - additionalPanel.getWidth());
         ObjectAnimator animXScreen = ObjectAnimator.ofFloat(contentGirl, "x", -additionalPanel.getWidth());
@@ -157,6 +155,7 @@ public class FragmentGame extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         for (Category category : categories) {
             if (category.getCategoryTitle().equals("hat"))
                 categoryWrappers.add(new CategoryWrapper(category, getActivity(), true, contentGirl));

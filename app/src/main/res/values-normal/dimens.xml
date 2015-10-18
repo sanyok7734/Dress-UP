@@ -42,4 +42,7 @@
     <dimen name="buttonNextImageLeft">15dp</dimen>
     <dimen name="buttonNextImageRight">13dp</dimen>
 
+
+    <dimen name="buttonSoundMarginTop">5dp</dimen>
+
 </resources>

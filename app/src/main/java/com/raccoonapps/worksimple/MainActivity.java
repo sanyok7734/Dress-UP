@@ -7,7 +7,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.WindowManager;
 
 import com.raccoonapps.worksimple.eventbus.BusProvider;
@@ -37,8 +36,6 @@ public class MainActivity extends AppCompatActivity {
         screenHeight = displaymetrics.heightPixels;
         calculateOccupy();
 
-        Log.d("COODRRNATORX", "screenWidth " + screenWidth);
-        Log.d("COODRRNATORX", "screenHeight " + screenHeight);
 
         BusProvider.getInstance().register(this);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -66,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
     //TODO image girl
     private void calculateOccupy() {
-        BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(R.drawable.girls1);
+        BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(R.drawable.girls);
         Squeezing.squeezingPercentage(drawable, screenWidth, screenHeight);
     }
 

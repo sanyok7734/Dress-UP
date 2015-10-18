@@ -27,8 +27,8 @@ public class CoordinatorElements {
             double translationHairY = (girlEndY * percentCoordinateImageY) / 100;
 
 
-            double centerHairsX = drawable.getBitmap().getWidth() / 2;
-            double centerHairsY = drawable.getBitmap().getHeight() / 2;
+            double centerHairsX = Squeezing.occupyWidthAccessory(drawable)/ 2;
+            double centerHairsY = Squeezing.occupyHeightAccessory(drawable) / 2;
 
             image.setTranslationX((float) (lengthBeforeXGirl + (translationHairX - centerHairsX)));
             image.setTranslationY((float) (lengthBeforeYGirl + (translationHairY - centerHairsY)));

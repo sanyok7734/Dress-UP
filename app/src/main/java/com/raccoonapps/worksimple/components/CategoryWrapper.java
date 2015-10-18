@@ -11,6 +11,7 @@ import com.raccoonapps.worksimple.R;
 import com.raccoonapps.worksimple.model.Accessory;
 import com.raccoonapps.worksimple.model.Category;
 import com.raccoonapps.worksimple.model.CoordinatorElements;
+import com.raccoonapps.worksimple.model.Squeezing;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ public class CategoryWrapper {
     private Drawable drawableCategory;
     private Drawable drawableButton;
     private FrameLayout screen;
-    private ImageView accessory;
+    private ImageView accessoryImage;
 
     private CoordinatorElements coordinatorElements;
 
@@ -39,10 +40,11 @@ public class CategoryWrapper {
         this.screen = contentGirl;
         ImageView girl = (ImageView) contentGirl.findViewById(R.id.girl);
 
+
         //coordinator elements initialization
         coordinatorElements = new CoordinatorElements(screen, girl);
 
-        //set accessory for girl
+        //set accessor for girl
         this.accessories = category.getAccessories();
 
         //set image in button
@@ -61,40 +63,34 @@ public class CategoryWrapper {
     }
 
     public void setCoordinateImage(int tag, BitmapDrawable drawable, double X, double Y) {
+        for (int i = 0; i < imageViews.size(); i++) {
+            if (imageViews.get(i).getTag().equals(tag)) {
+                screen.removeView(imageViews.get(i));
+                imageViews.remove(imageViews.get(i));
+                return;
+            }
+        }
+
         if (!lamination) {
-            for (int i = 0; i < imageViews.size(); i++) {
-                if (imageViews.get(i).getTag().equals(tag)) {
-                    screen.removeView(imageViews.get(i));
-                    imageViews.remove(imageViews.get(i));
-                    return;
-                }
-            }
-            screen.removeView(accessory);
+            screen.removeView(accessoryImage);
             imageViews.removeAll(imageViews);
-            accessory = new ImageView(context);
-            LayoutParams layoutParam = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-            accessory.setLayoutParams(layoutParam);
-            accessory.setTag(tag);
-            screen.addView(accessory);
-            imageViews.add(accessory);
-            coordinatorElements.imageCoordinator(accessory, drawable, X, Y);
+            createImage(tag, drawable, X, Y);
         } else {
-            for (int i = 0; i < imageViews.size(); i++) {
-                if (imageViews.get(i).getTag().equals(tag)) {
-                    screen.removeView(imageViews.get(i));
-                    imageViews.remove(imageViews.get(i));
-                    return;
-                }
-            }
-            accessory = new ImageView(context);
-            LayoutParams layoutParam = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-            accessory.setLayoutParams(layoutParam);
-            accessory.setTag(tag);
-            imageViews.add(accessory);
-            screen.addView(accessory);
-            coordinatorElements.imageCoordinator(accessory, drawable, X, Y);
+            createImage(tag, drawable, X, Y);
         }
     }
+
+    private void createImage(int tag, BitmapDrawable drawable, double X, double Y) {
+        accessoryImage = new ImageView(context);
+        LayoutParams layoutParam = new LayoutParams(
+                Squeezing.occupyWidthAccessory(drawable), Squeezing.occupyHeightAccessory(drawable));
+        accessoryImage.setLayoutParams(layoutParam);
+        accessoryImage.setTag(tag);
+        imageViews.add(accessoryImage);
+        screen.addView(accessoryImage);
+        coordinatorElements.imageCoordinator(accessoryImage, drawable, X, Y);
+    }
+
 
     public Drawable getDrawableCategory() {
         return drawableCategory;
