@@ -5,7 +5,6 @@ import android.test.ApplicationTestCase;
 import android.test.FlakyTest;
 import android.util.Log;
 
-import com.raccoonapps.worksimple.model.ApplicationPropertiesLoader;
 import com.raccoonapps.worksimple.model.Category;
 
 import org.json.JSONArray;
@@ -13,6 +12,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+
+import static com.raccoonapps.worksimple.model.ApplicationPropertiesLoader.BUTTONS;
+import static com.raccoonapps.worksimple.model.ApplicationPropertiesLoader.getLoader;
 
 /**
  * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
@@ -25,9 +27,9 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
     @FlakyTest
     public void testPropertiesLoader() throws Exception {
         assertNotNull(getContext());
-        List<Category> categories = ApplicationPropertiesLoader.getLoader(getContext()).getAllCategories();
+        List<Category> categories = getLoader(getContext()).getAllCategories();
         assertNotNull(categories);
-        int buttonId = ApplicationPropertiesLoader.getLoader(getContext()).getButtonIdByName(ApplicationPropertiesLoader.BUTTONS.MORE);
+        int buttonId = getLoader(getContext()).getButtonIdByName(BUTTONS.MORE);
         assertNotSame(0, buttonId);
         Log.d("JUNIT", "Button id: " + buttonId);
     }

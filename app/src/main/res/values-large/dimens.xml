@@ -43,4 +43,7 @@
     <dimen name="buttonNextImageRight">23dp</dimen>
 
     <dimen name="buttonSoundMarginTop">10dp</dimen>
+
+    <dimen name="logoNinjaBottom">-12dp</dimen>
+    <dimen name="logoTextSize">25sp</dimen>
 </resources>

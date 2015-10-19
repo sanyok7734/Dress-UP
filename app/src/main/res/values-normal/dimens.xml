@@ -45,4 +45,7 @@
 
     <dimen name="buttonSoundMarginTop">5dp</dimen>
 
+
+    <dimen name="logoNinjaBottom">-11dp</dimen>
+    <dimen name="logoTextSize">15sp</dimen>
 </resources>

@@ -50,8 +50,8 @@
                         android:id="@+id/button_help"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/helpMarginTop"
                         android:layout_marginBottom="@dimen/helpMarginBottom"
+                        android:layout_marginTop="@dimen/helpMarginTop"
                         android:gravity="center"
                         android:text="@string/issue_symbol"
                         android:textColor="@color/whiteColor"
@@ -76,10 +76,10 @@
                         android:id="@+id/button_more"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_marginBottom="@dimen/moreMarginBottomTop"
                         android:layout_marginLeft="@dimen/startMarginLeft"
                         android:layout_marginRight="@dimen/startMarginLeft"
                         android:layout_marginTop="@dimen/moreMarginBottomTop"
-                        android:layout_marginBottom="@dimen/moreMarginBottomTop"
                         android:gravity="center"
                         android:text="@string/more"
                         android:textColor="@color/whiteColor"
@@ -104,10 +104,10 @@
                         android:id="@+id/button_start"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="@dimen/startMarginBottomTop"
                         android:layout_marginLeft="@dimen/startMarginLeft"
                         android:layout_marginTop="@dimen/startMarginBottomTop"
-                        android:layout_marginBottom="@dimen/startMarginBottomTop"
-                        android:layout_gravity="center"
                         android:gravity="center"
                         android:text="@string/start"
                         android:textColor="@color/whiteColor"
@@ -119,12 +119,34 @@
         </LinearLayout>
     </FrameLayout>
 
-    <ImageView
+    <LinearLayout
+        android:id="@+id/banner"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:scaleType="fitXY"
-        android:src="@drawable/baner"
-        android:visibility="visible" />
+        android:orientation="horizontal"
+        android:background="#38417c"
+        android:visibility="visible">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/logoNinjaBottom"
+            android:src="@drawable/logo_ninja"/>
+
+        <TextView
+            android:id="@+id/text_logo"
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:layout_height="match_parent"
+            android:paddingRight="16dp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="#adb9d1"
+            android:textSize="@dimen/logoTextSize"
+            android:text="This game is created in QuickAppNinja Free Game Builder"/>
+
+    </LinearLayout>
 
 </LinearLayout>
