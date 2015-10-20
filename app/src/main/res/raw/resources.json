@@ -5,6 +5,9 @@
       "start": "start_btn.png",
       "circle": "btn_circle.png",
       "right": "btn_right.png"
+    },
+    "sounds": {
+      "main": "main_theme.mp3"
     }
   },
   "categories": [
