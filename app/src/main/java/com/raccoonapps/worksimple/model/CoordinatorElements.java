@@ -4,6 +4,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.raccoonapps.worksimple.MainActivity;
+
 public class CoordinatorElements {
 
     private FrameLayout root;
@@ -37,6 +39,10 @@ public class CoordinatorElements {
         } else {
             root.removeView(image);
         }
+    }
+
+    public static float setCoordinatorGirlX(int widthImage, double percentCoordinateGirlX) {
+        return ((float)(((percentCoordinateGirlX* MainActivity.screenWidth)/100) - (widthImage/2)));
     }
 
 }

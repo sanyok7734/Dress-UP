@@ -3,7 +3,6 @@ package com.raccoonapps.worksimple.adapters;
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,16 +39,17 @@ public class AdapterAccessory extends RecyclerView.Adapter<AdapterAccessory.View
     public void onBindViewHolder(AdapterAccessory.ViewHolder holder, final int position) {
         final Accessory accessory = accessories.get(position);
         holder.iconAccessory.setImageResource(accessory.getImage());
+
         BitmapDrawable drawable = (BitmapDrawable) context.getResources().getDrawable(accessory.getImage());
         ViewGroup.LayoutParams params = holder.iconAccessory.getLayoutParams();
         params.height = (int) (Squeezing.occupy * drawable.getIntrinsicHeight()) / 100;
         params.width = (int) (Squeezing.occupy * drawable.getIntrinsicWidth()) / 100;
         holder.iconAccessory.setLayoutParams(params);
+
         holder.iconAccessory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentGame.bus.post(position);
-                Log.d("SANOOOO", "Click" + position);
             }
         });
     }

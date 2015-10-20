@@ -15,7 +15,7 @@
     <dimen name="textMoreAndHelp">25sp</dimen>
 
     <dimen name="categoryWidthHeight">55.9999dp</dimen>
-    <dimen name="categoryPanelHeight">380dp</dimen>
+    <dimen name="categoryPanelHeight">389dp</dimen>
     <dimen name="categoryMarginTop">10dp</dimen>
 
     <dimen name="paddingImageCategoryTop">15dp</dimen>

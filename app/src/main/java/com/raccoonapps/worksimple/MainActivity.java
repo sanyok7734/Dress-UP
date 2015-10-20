@@ -1,6 +1,7 @@
 package com.raccoonapps.worksimple;
 
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.graphics.drawable.BitmapDrawable;
@@ -11,7 +12,6 @@ import android.view.WindowManager;
 
 import com.raccoonapps.worksimple.eventbus.BusProvider;
 import com.raccoonapps.worksimple.model.Squeezing;
-import com.raccoonapps.worksimple.view.FragmentGame;
 import com.raccoonapps.worksimple.view.FragmentStart;
 import com.squareup.otto.Subscribe;
 
@@ -22,8 +22,8 @@ public class MainActivity extends AppCompatActivity {
     public static double screenWidth;
     public static double screenHeight;
 
-    FragmentManager fragmentManager;
-    FragmentTransaction fragmentTransaction;
+    public static FragmentManager fragmentManager;
+    private static FragmentTransaction fragmentTransaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +48,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Subscribe
-    public void startGame(FragmentGame fragmentGame) {
-        fragmentManager = getFragmentManager();
+    public void startGame(Fragment fragmentGame) {
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.container, fragmentGame);
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 

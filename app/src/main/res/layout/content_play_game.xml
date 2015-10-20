@@ -21,9 +21,10 @@
             android:id="@+id/girl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            android:background="#21222222"/>
 
         <RelativeLayout
+            android:id="@+id/content_game"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -64,6 +65,7 @@
                     android:layout_width="@dimen/buttonNextWidthHeight"
                     android:layout_height="@dimen/buttonNextWidthHeight"
                     android:layout_marginTop="@dimen/buttonSoundMarginTop"
+                    android:tag="play"
                     android:layout_weight="0.1">
 
                     <ImageView
