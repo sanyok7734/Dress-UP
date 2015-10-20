@@ -142,6 +142,7 @@ public class FragmentGame extends Fragment {
         }
     }
 
+
     @Override
     public void onDestroy() {
         super.onPause();
