@@ -32,6 +32,10 @@ public class ApplicationPropertiesLoader {
         START, MORE, CIRCLE, RIGHT
     }
 
+    public enum TRACK {
+        MAIN
+    }
+
     public List<Category> getAllCategories() throws JSONException {
         List<Category> categories = new ArrayList<>();
         JSONArray categoriesFromJson = properties.getJSONArray("categories");
@@ -55,6 +59,21 @@ public class ApplicationPropertiesLoader {
         return categories;
     }
 
+    public int getButtonIdByName(BUTTON button) throws JSONException {
+        JSONObject buttons = properties.getJSONObject("general_data").getJSONObject("buttons");
+        String buttonName = buttons.getString(button.name().toLowerCase());
+        if (buttonName != null)
+            return context.getResources().getIdentifier("drawable/" + buttonName.split("\\.")[0], null, context.getPackageName());
+        return 0;
+    }
+
+    public int getTrackIdByName(TRACK track) throws JSONException {
+        JSONObject sounds = properties.getJSONObject("general_data").getJSONObject("sounds");
+        String trackTitle = sounds.getString(track.name().toLowerCase());
+        if (trackTitle != null)
+            return context.getResources().getIdentifier("raw/" + trackTitle.split("\\.")[0], null, context.getPackageName());
+        return 0;
+    }
     private ApplicationPropertiesLoader(Context context) throws Exception {
         this.context = context;
         properties = new JSONObject(convertInJson(context));
@@ -71,11 +90,4 @@ public class ApplicationPropertiesLoader {
         return json.toString();
     }
 
-    public int getButtonIdByName(BUTTON button) throws JSONException {
-        JSONObject buttons = properties.getJSONObject("general_data").getJSONObject("buttons");
-        String buttonName = buttons.getString(button.name().toLowerCase());
-        if (buttonName != null)
-            return context.getResources().getIdentifier("drawable/" + buttonName.split("\\.")[0], null, context.getPackageName());
-        return 0;
-    }
 }

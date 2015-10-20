@@ -26,6 +26,7 @@ import com.raccoonapps.worksimple.model.ApplicationPropertiesLoader;
 import com.raccoonapps.worksimple.model.Category;
 import com.raccoonapps.worksimple.model.CoordinatorElements;
 import com.raccoonapps.worksimple.model.Squeezing;
+import com.raccoonapps.worksimple.music.MainPlayer;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -152,6 +153,7 @@ public class FragmentGame extends Fragment {
         }
     }
 
+
     @Override
     public void onDestroy() {
         super.onPause();
@@ -170,9 +172,11 @@ public class FragmentGame extends Fragment {
             case R.id.button_sound:
                 if (view.getTag().equals("play")) {
                     Toast.makeText(getActivity(), "Play", Toast.LENGTH_SHORT).show();
+                    MainPlayer.getInstance(getActivity()).mute();
                     view.setTag("stop");
                 } else {
                     Toast.makeText(getActivity(), "Stop", Toast.LENGTH_SHORT).show();
+                    MainPlayer.getInstance(getActivity()).unmute();
                     view.setTag("play");
                 }
                 break;

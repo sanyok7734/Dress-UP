@@ -11,7 +11,9 @@ import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
 import com.raccoonapps.worksimple.eventbus.BusProvider;
+import com.raccoonapps.worksimple.model.ApplicationPropertiesLoader;
 import com.raccoonapps.worksimple.model.Squeezing;
+import com.raccoonapps.worksimple.music.MainPlayer;
 import com.raccoonapps.worksimple.view.FragmentStart;
 import com.squareup.otto.Subscribe;
 
@@ -53,6 +55,13 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.container, fragmentGame);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+
+        MainPlayer player = MainPlayer.getInstance(getApplicationContext());
+        try {
+            player.play(ApplicationPropertiesLoader.getLoader(getApplicationContext()).getTrackIdByName(ApplicationPropertiesLoader.TRACK.MAIN));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -67,4 +76,15 @@ public class MainActivity extends AppCompatActivity {
         Squeezing.squeezingPercentage(drawable, screenWidth, screenHeight);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        MainPlayer.getInstance(getApplicationContext()).pause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MainPlayer.getInstance(getApplicationContext()).resume();
+    }
 }
