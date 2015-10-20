@@ -1,18 +1,17 @@
 package com.raccoonapps.worksimple;
 
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.WindowManager;
 
 import com.raccoonapps.worksimple.eventbus.BusProvider;
 import com.raccoonapps.worksimple.model.Squeezing;
-import com.raccoonapps.worksimple.view.FragmentGame;
 import com.raccoonapps.worksimple.view.FragmentStart;
 import com.squareup.otto.Subscribe;
 
@@ -23,8 +22,8 @@ public class MainActivity extends AppCompatActivity {
     public static double screenWidth;
     public static double screenHeight;
 
-    FragmentManager fragmentManager;
-    FragmentTransaction fragmentTransaction;
+    public static FragmentManager fragmentManager;
+    private static FragmentTransaction fragmentTransaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +36,6 @@ public class MainActivity extends AppCompatActivity {
         screenHeight = displaymetrics.heightPixels;
         calculateOccupy();
 
-        Log.d("COODRRNATORX", "screenWidth " + screenWidth);
-        Log.d("COODRRNATORX", "screenHeight " + screenHeight);
 
         BusProvider.getInstance().register(this);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -51,10 +48,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Subscribe
-    public void startGame(FragmentGame fragmentGame) {
-        fragmentManager = getFragmentManager();
+    public void startGame(Fragment fragmentGame) {
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.container, fragmentGame);
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 
@@ -66,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
     //TODO image girl
     private void calculateOccupy() {
-        BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(R.drawable.girls1);
+        BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(R.drawable.girls);
         Squeezing.squeezingPercentage(drawable, screenWidth, screenHeight);
     }
 

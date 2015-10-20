@@ -14,7 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.raccoonapps.worksimple.MainActivity;
 import com.raccoonapps.worksimple.R;
 import com.raccoonapps.worksimple.adapters.AdapterAccessory;
 import com.raccoonapps.worksimple.adapters.AdapterCategory;
@@ -22,6 +24,7 @@ import com.raccoonapps.worksimple.components.CategoryWrapper;
 import com.raccoonapps.worksimple.model.Accessory;
 import com.raccoonapps.worksimple.model.ApplicationPropertiesLoader;
 import com.raccoonapps.worksimple.model.Category;
+import com.raccoonapps.worksimple.model.CoordinatorElements;
 import com.raccoonapps.worksimple.model.Squeezing;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -43,18 +46,24 @@ public class FragmentGame extends Fragment {
 
     private CategoryWrapper categoryWrapper;
 
+    //TODO EVEN BUS
     public static Bus bus = new Bus();
     private boolean scroll = true;
 
-    @Bind(R.id.list_category)
-    public RecyclerView listCategory;
-    @Bind(R.id.additional_panel)
-    public RecyclerView additionalPanel;
-    @Bind(R.id.content_girl)
-    public FrameLayout contentGirl;
-    @Bind(R.id.girl)
-    public ImageView girlImage;
+    @Bind(R.id.list_category) RecyclerView listCategory;
+    @Bind(R.id.additional_panel) RecyclerView additionalPanel;
+    @Bind(R.id.content_girl) FrameLayout contentGirl;
+    @Bind(R.id.girl) ImageView girlImage;
 
+    //button game
+    @Bind(R.id.button_back_background) ImageView buttonBackBackground;
+    @Bind(R.id.button_back_image) ImageView buttonBackImage;
+
+    @Bind(R.id.button_sound_background) ImageView buttonSoundBackground;
+    @Bind(R.id.button_sound_image) ImageView buttonSoundImage;
+
+    @Bind(R.id.button_next_background) ImageView buttonNextBackground;
+    @Bind(R.id.button_next_image) ImageView buttonNextImage;
 
     @Nullable
     @Override
@@ -63,15 +72,16 @@ public class FragmentGame extends Fragment {
         ButterKnife.bind(this, view);
         bus.register(this);
 
-        categoryWrappers = getCategoryWrappers();
 
-        Log.d("OCCUPY", Squeezing.occupyWidthGirl() + "");
-        Log.d("OCCUPY", Squeezing.occupyHeightGirl() + "");
-        girlImage.setImageDrawable(Squeezing.getImageGirl());
         ViewGroup.LayoutParams layoutParam = girlImage.getLayoutParams();
         layoutParam.height = Squeezing.occupyHeightGirl();
         layoutParam.width = Squeezing.occupyWidthGirl();
         girlImage.setLayoutParams(layoutParam);
+        girlImage.setImageDrawable(Squeezing.getImageGirl());
+        girlImage.setTranslationX(CoordinatorElements.setCoordinatorGirlX(Squeezing.occupyWidthGirl(),50));
+
+        categoryWrappers = getCategoryWrappers();
+
 
         layoutAccessory = new LinearLayoutManager(getActivity());
         additionalPanel.setLayoutManager(layoutAccessory);
@@ -89,7 +99,7 @@ public class FragmentGame extends Fragment {
     @Subscribe
     public void panelAccessoryShow(CategoryWrapper categoryWrapper) {
         this.categoryWrapper = categoryWrapper;
-        additionalPanel.setAdapter(new AdapterAccessory(categoryWrapper.getAccessories()));
+        additionalPanel.setAdapter(new AdapterAccessory(categoryWrapper.getAccessories(), getActivity()));
 
         ObjectAnimator animXPanel = ObjectAnimator.ofFloat(additionalPanel, "x", contentGirl.getWidth() - additionalPanel.getWidth());
         ObjectAnimator animXScreen = ObjectAnimator.ofFloat(contentGirl, "x", -additionalPanel.getWidth());
@@ -148,6 +158,27 @@ public class FragmentGame extends Fragment {
         bus.unregister(this);
     }
 
+    @OnClick({R.id.button_back, R.id.button_next, R.id.button_sound})
+    public void onClickButton(View view){
+        switch (view.getId()){
+            case R.id.button_back:
+                MainActivity.fragmentManager.popBackStack();
+                break;
+            case R.id.button_next:
+               // BusProvider.getInstance().post(new ());
+                break;
+            case R.id.button_sound:
+                if (view.getTag().equals("play")) {
+                    Toast.makeText(getActivity(), "Play", Toast.LENGTH_SHORT).show();
+                    view.setTag("stop");
+                } else {
+                    Toast.makeText(getActivity(), "Stop", Toast.LENGTH_SHORT).show();
+                    view.setTag("play");
+                }
+                break;
+        }
+    }
+
     private List<CategoryWrapper> getCategoryWrappers() {
         List<CategoryWrapper> categoryWrappers = new ArrayList<>();
 
@@ -157,12 +188,17 @@ public class FragmentGame extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         for (Category category : categories) {
-            if (category.getCategoryTitle().equals("hat"))
+            if (category.getCategoryTitle().equals("dress"))
                 categoryWrappers.add(new CategoryWrapper(category, getActivity(), true, contentGirl));
             else
                 categoryWrappers.add(new CategoryWrapper(category, getActivity(), contentGirl));
         }
         return categoryWrappers;
     }
+
+
+
+
 }

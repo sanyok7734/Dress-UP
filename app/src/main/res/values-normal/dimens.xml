@@ -15,7 +15,7 @@
     <dimen name="textMoreAndHelp">25sp</dimen>
 
     <dimen name="categoryWidthHeight">55.9999dp</dimen>
-    <dimen name="categoryPanelHeight">380dp</dimen>
+    <dimen name="categoryPanelHeight">389dp</dimen>
     <dimen name="categoryMarginTop">10dp</dimen>
 
     <dimen name="paddingImageCategoryTop">15dp</dimen>
@@ -42,4 +42,10 @@
     <dimen name="buttonNextImageLeft">15dp</dimen>
     <dimen name="buttonNextImageRight">13dp</dimen>
 
+
+    <dimen name="buttonSoundMarginTop">5dp</dimen>
+
+
+    <dimen name="logoNinjaBottom">-11dp</dimen>
+    <dimen name="logoTextSize">15sp</dimen>
 </resources>

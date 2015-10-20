@@ -20,15 +20,10 @@ public class Squeezing {
 
         double occupyY = (80 * heightScreen) / 100;
         double occupyX = (80 * widthScreen) / 100;
-        Log.d("OCCUPY", "occupyY = " + occupyY);
-        Log.d("OCCUPY", "occupyX = " + occupyX);
-        Log.d("OCCUPY", "heightGirl = " + heightGirl);
-        Log.d("OCCUPY", "widthGirl = " + widthGirl);
 
         if (heightGirl > occupyY) {
             occupyY = heightGirl - occupyY;
             occupyY = (occupyY * 100) / heightGirl;
-            Log.d("OCCUPY", "LOL");
         } else {
             occupyY = 0;
         }
@@ -36,34 +31,38 @@ public class Squeezing {
         if (widthGirl > occupyX) {
             occupyX = widthGirl - occupyX;
             occupyX = (occupyX * 100) / widthGirl;
-            Log.d("OCCUPY", "BLA");
         } else {
             occupyX = 0;
         }
 
         if (occupyY >= occupyX) {
             occupy = 100 - occupyY;
-            Log.d("OCCUPY", "1");
         }
         if (occupyY <= occupyX) {
             occupy = 100 - occupyX;
-            Log.d("OCCUPY", "2");
         }
 
         if (occupyX == 0) {
             occupy = 100;
         }
-
-        Log.d("OCCUPY", "occupy = " + occupy);
-
     }
 
     public static int occupyWidthGirl() {
+        Log.d("ROOOT", "GW " + ((occupy * widthGirl) / 100));
         return (int) ((occupy * widthGirl) / 100);
     }
 
     public static int occupyHeightGirl() {
+        Log.d("ROOOT", "GH " + ((occupy * heightGirl) / 100));
         return (int) ((occupy * heightGirl) / 100);
+    }
+
+    public static int occupyWidthAccessory(BitmapDrawable drawable) {
+        return (int) ((occupy * drawable.getIntrinsicWidth()) / 100);
+    }
+
+    public static int occupyHeightAccessory(BitmapDrawable drawable) {
+        return (int) ((occupy * drawable.getIntrinsicHeight()) / 100);
     }
 
     public static BitmapDrawable getImageGirl() {

@@ -204,6 +204,178 @@
             43.55828,
             28.33698
           ]
+        },
+        {
+          "file_name": "pants1.png",
+          "coordinates": [
+            43.25153,
+            46.17068
+          ]
+        },
+        {
+          "file_name": "pants2.png",
+          "coordinates": [
+            43.25153,
+            46.17068
+          ]
+        },
+        {
+          "file_name": "pants3.png",
+          "coordinates": [
+            42.94479,
+            68.16193
+          ]
+        },
+        {
+          "file_name": "pants4.png",
+          "coordinates": [
+            46.62577,
+            68.59956
+          ]
+        },
+        {
+          "file_name": "pants5.png",
+          "coordinates": [
+            39.57055,
+            68.81838
+          ]
+        },
+        {
+          "file_name": "pants6.png",
+          "coordinates": [
+            42.94479,
+            58.53392
+          ]
+        },
+        {
+          "file_name": "pants7.png",
+          "coordinates": [
+            42.02454,
+            48.57768
+          ]
+        },
+        {
+          "file_name": "pants8.png",
+          "coordinates": [
+            49.07975,
+            52.95405
+          ]
+        },
+        {
+          "file_name": "pants9.png",
+          "coordinates": [
+            43.55828,
+            58.75274
+          ]
+        }
+      ]
+    },
+    {
+      "category_title": "necklace",
+      "category_icon": "necklace_ic.png",
+      "category_resources": [
+        {
+          "file_name": "necklace1.png",
+          "coordinates": [
+            39.8773,
+            24.07002
+          ]
+        },
+        {
+          "file_name": "necklace2.png",
+          "coordinates": [
+            40.4908,
+            23.41357
+          ]
+        },
+        {
+          "file_name": "necklace3.png",
+          "coordinates": [
+            39.2638,
+            21.88184
+          ]
+        },
+        {
+          "file_name": "necklace4.png",
+          "coordinates": [
+            40.4908,
+            21.77243
+          ]
+        },
+        {
+          "file_name": "necklace5.png",
+          "coordinates": [
+            40.4908,
+            21.88184
+          ]
+        }
+      ]
+    },
+    {
+      "category_title": "earrings",
+      "category_icon": "earrings_ic.png",
+      "category_resources": [
+        {
+          "file_name": "earrings1.png",
+          "coordinates": [
+            36.50307,
+            8.09628
+          ]
+        },
+        {
+          "file_name": "earrings2.png",
+          "coordinates": [
+            36.50307,
+            8.09628
+          ]
+        }
+      ]
+    },
+    {
+      "category_title": "shoes",
+      "category_icon": "shoes_ic.png",
+      "category_resources": [
+        {
+          "file_name": "shoes1.png",
+          "coordinates": [
+            38.34356,
+            94.20131
+          ]
+        },
+        {
+          "file_name": "shoes2.png",
+          "coordinates": [
+            38.34356,
+            94.20131
+          ]
+        },
+        {
+          "file_name": "shoes3.png",
+          "coordinates": [
+            37.73006,
+            96.71772
+          ]
+        },
+        {
+          "file_name": "shoes4.png",
+          "coordinates": [
+            38.34356,
+            94.31072
+          ]
+        },
+        {
+          "file_name": "shoes5.png",
+          "coordinates": [
+            38.03681,
+            95.51422
+          ]
+        },
+        {
+          "file_name": "shoes6.png",
+          "coordinates": [
+            37.73006,
+            95.40481
+          ]
         }
       ]
     }

@@ -4,6 +4,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.raccoonapps.worksimple.MainActivity;
+
 public class CoordinatorElements {
 
     private FrameLayout root;
@@ -27,8 +29,8 @@ public class CoordinatorElements {
             double translationHairY = (girlEndY * percentCoordinateImageY) / 100;
 
 
-            double centerHairsX = drawable.getBitmap().getWidth() / 2;
-            double centerHairsY = drawable.getBitmap().getHeight() / 2;
+            double centerHairsX = Squeezing.occupyWidthAccessory(drawable)/ 2;
+            double centerHairsY = Squeezing.occupyHeightAccessory(drawable) / 2;
 
             image.setTranslationX((float) (lengthBeforeXGirl + (translationHairX - centerHairsX)));
             image.setTranslationY((float) (lengthBeforeYGirl + (translationHairY - centerHairsY)));
@@ -37,6 +39,10 @@ public class CoordinatorElements {
         } else {
             root.removeView(image);
         }
+    }
+
+    public static float setCoordinatorGirlX(int widthImage, double percentCoordinateGirlX) {
+        return ((float)(((percentCoordinateGirlX* MainActivity.screenWidth)/100) - (widthImage/2)));
     }
 
 }
