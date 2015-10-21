@@ -8,8 +8,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -35,6 +35,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnTouch;
 
 public class FragmentGame extends Fragment {
 
@@ -50,20 +51,30 @@ public class FragmentGame extends Fragment {
     public static Bus bus = new Bus();
     private boolean scroll = true;
 
-    @Bind(R.id.list_category) RecyclerView listCategory;
-    @Bind(R.id.additional_panel) RecyclerView additionalPanel;
-    @Bind(R.id.content_girl) FrameLayout contentGirl;
-    @Bind(R.id.girl) ImageView girlImage;
+    @Bind(R.id.list_category)
+    RecyclerView listCategory;
+    @Bind(R.id.additional_panel)
+    RecyclerView additionalPanel;
+    @Bind(R.id.content_girl)
+    FrameLayout contentGirl;
+    @Bind(R.id.girl)
+    ImageView girlImage;
 
     //button game
-    @Bind(R.id.button_back_background) ImageView buttonBackBackground;
-    @Bind(R.id.button_back_image) ImageView buttonBackImage;
+    @Bind(R.id.button_back_background)
+    ImageView buttonBackBackground;
+    @Bind(R.id.button_back_image)
+    ImageView buttonBackImage;
 
-    @Bind(R.id.button_sound_background) ImageView buttonSoundBackground;
-    @Bind(R.id.button_sound_image) ImageView buttonSoundImage;
+    @Bind(R.id.button_sound_background)
+    ImageView buttonSoundBackground;
+    @Bind(R.id.button_sound_image)
+    ImageView buttonSoundImage;
 
-    @Bind(R.id.button_next_background) ImageView buttonNextBackground;
-    @Bind(R.id.button_next_image) ImageView buttonNextImage;
+    @Bind(R.id.button_next_background)
+    ImageView buttonNextBackground;
+    @Bind(R.id.button_next_image)
+    ImageView buttonNextImage;
 
     @Nullable
     @Override
@@ -78,7 +89,9 @@ public class FragmentGame extends Fragment {
         layoutParam.width = Squeezing.occupyWidthGirl();
         girlImage.setLayoutParams(layoutParam);
         girlImage.setImageDrawable(Squeezing.getImageGirl());
-        girlImage.setTranslationX(CoordinatorElements.setCoordinatorGirlX(Squeezing.occupyWidthGirl(),50));
+        //coordination girl
+        girlImage.setTranslationX(CoordinatorElements.setCoordinatorGirlX(Squeezing.occupyWidthGirl(), 50));
+        girlImage.setTranslationY(CoordinatorElements.setCoordinatorGirlY(Squeezing.occupyHeightGirl(), 50));
 
         categoryWrappers = getCategoryWrappers();
 
@@ -91,6 +104,10 @@ public class FragmentGame extends Fragment {
         listCategory.setLayoutManager(mLayoutManager);
         listCategory.setAdapter(adapterCategory);
         listCategory.getItemAnimator().setChangeDuration(0);
+
+/*        buttonSoundBackground.setOnTouchListener(this);
+        buttonNextBackground.setOnTouchListener(this);
+        buttonBackBackground.setOnTouchListener(this);*/
 
         return view;
     }
@@ -132,8 +149,6 @@ public class FragmentGame extends Fragment {
         double X = accessories.get(position).getCoordinates().getX();
         double Y = accessories.get(position).getCoordinates().getY();
         categoryWrapper.setCoordinateImage(tag, drawable, X, Y);
-
-        Log.d("OVERFLOV", "добавить");
     }
 
 
@@ -158,25 +173,35 @@ public class FragmentGame extends Fragment {
         bus.unregister(this);
     }
 
-    @OnClick({R.id.button_back, R.id.button_next, R.id.button_sound})
-    public void onClickButton(View view){
-        switch (view.getId()){
-            case R.id.button_back:
-                MainActivity.fragmentManager.popBackStack();
+
+    @OnTouch({R.id.button_back, R.id.button_next, R.id.button_sound})
+    public boolean onTouch(View v, MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN: // нажатие
+                v.setAlpha(0.8f);
                 break;
-            case R.id.button_next:
-               // BusProvider.getInstance().post(new ());
-                break;
-            case R.id.button_sound:
-                if (view.getTag().equals("play")) {
-                    Toast.makeText(getActivity(), "Play", Toast.LENGTH_SHORT).show();
-                    view.setTag("stop");
-                } else {
-                    Toast.makeText(getActivity(), "Stop", Toast.LENGTH_SHORT).show();
-                    view.setTag("play");
+
+            case MotionEvent.ACTION_UP: // отпускание
+                v.setAlpha(1);
+                switch (v.getId()) {
+                    case R.id.button_back:
+                        MainActivity.fragmentManager.popBackStack();
+                        break;
+                    case R.id.button_sound:
+                        if (v.getTag().equals("play")) {
+                            Toast.makeText(getActivity(), "Play", Toast.LENGTH_SHORT).show();
+                            v.setTag("stop");
+                        } else {
+                            Toast.makeText(getActivity(), "Stop", Toast.LENGTH_SHORT).show();
+                            v.setTag("play");
+                        }
+                        break;
+                    case R.id.button_next:
+                        break;
                 }
                 break;
         }
+        return true;
     }
 
     private List<CategoryWrapper> getCategoryWrappers() {
@@ -197,8 +222,4 @@ public class FragmentGame extends Fragment {
         }
         return categoryWrappers;
     }
-
-
-
-
 }

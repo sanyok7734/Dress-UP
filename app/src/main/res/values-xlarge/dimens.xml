@@ -26,13 +26,14 @@
     <dimen name="sizeImageCategory">60dp</dimen>
 
     <dimen name="margeRightListCategory">-4dp</dimen>
+    <dimen name="margeRightStart">-5dp</dimen>
 
     <dimen name="scrollButtonSize">100dp</dimen>
     <dimen name="scrollButtonPadding">25dp</dimen>
     
     <dimen name="panelAccessoryWidth">210dp</dimen>
 
-    <dimen name="panelAccessoryMarginTop">20dp</dimen>
+    <dimen name="panelAccessoryMarginTop">24dp</dimen>
 
     <dimen name="buttonNextWidthHeight">110dp</dimen>
     <dimen name="buttonNextTop">35dp</dimen>

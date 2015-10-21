@@ -18,8 +18,8 @@ public class CoordinatorElements {
 
     public void imageCoordinator(ImageView image, BitmapDrawable drawable, double percentCoordinateImageX, double percentCoordinateImageY) {
         if (drawable != null) {
-            double girlEndX = girlImage.getWidth();
-            double girlEndY = girlImage.getHeight();
+            double girlEndX = Squeezing.occupyWidthGirl();
+            double girlEndY = Squeezing.occupyHeightGirl();
             double lengthBeforeXGirl = root.getWidth() - girlImage.getX();
             lengthBeforeXGirl = root.getWidth() - lengthBeforeXGirl;
             double lengthBeforeYGirl = root.getHeight() - girlImage.getY();
@@ -29,8 +29,8 @@ public class CoordinatorElements {
             double translationHairY = (girlEndY * percentCoordinateImageY) / 100;
 
 
-            double centerHairsX = Squeezing.occupyWidthAccessory(drawable)/ 2;
-            double centerHairsY = Squeezing.occupyHeightAccessory(drawable) / 2;
+            double centerHairsX = ((Squeezing.occupyWidthAccessory(drawable)) / 2);
+            double centerHairsY = ((Squeezing.occupyHeightAccessory(drawable)) / 2);
 
             image.setTranslationX((float) (lengthBeforeXGirl + (translationHairX - centerHairsX)));
             image.setTranslationY((float) (lengthBeforeYGirl + (translationHairY - centerHairsY)));
@@ -43,6 +43,10 @@ public class CoordinatorElements {
 
     public static float setCoordinatorGirlX(int widthImage, double percentCoordinateGirlX) {
         return ((float)(((percentCoordinateGirlX* MainActivity.screenWidth)/100) - (widthImage/2)));
+    }
+
+    public static float setCoordinatorGirlY(int heightImage, double percentCoordinateGirlY) {
+        return ((float)(((percentCoordinateGirlY* MainActivity.screenHeight)/100) - (heightImage/2)));
     }
 
 }
