@@ -10,7 +10,6 @@ import android.widget.ImageView;
 
 import com.raccoonapps.worksimple.R;
 import com.raccoonapps.worksimple.model.Accessory;
-import com.raccoonapps.worksimple.model.Squeezing;
 import com.raccoonapps.worksimple.view.FragmentGame;
 
 import java.util.ArrayList;
@@ -37,12 +36,13 @@ public class AdapterAccessory extends RecyclerView.Adapter<AdapterAccessory.View
         final Accessory accessory = accessories.get(position);
         holder.iconAccessory.setImageResource(accessory.getImage());
 
+
+
         BitmapDrawable drawable = (BitmapDrawable) context.getResources().getDrawable(accessory.getImage());
         ViewGroup.LayoutParams params = holder.iconAccessory.getLayoutParams();
-        params.height = (int) (Squeezing.occupy * drawable.getIntrinsicHeight()) / 100;
-        params.width = (int) (Squeezing.occupy * drawable.getIntrinsicWidth()) / 100;
+        params.height = (int) (getOccupy(drawable.getIntrinsicWidth()) * drawable.getIntrinsicHeight()) / 100;
+        params.width =  (int) (getOccupy(drawable.getIntrinsicWidth()) * drawable.getIntrinsicWidth()) / 100;
         holder.iconAccessory.setLayoutParams(params);
-
         holder.iconAccessory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,6 +54,19 @@ public class AdapterAccessory extends RecyclerView.Adapter<AdapterAccessory.View
     @Override
     public int getItemCount() {
         return accessories.size();
+    }
+
+
+    private double getOccupy(int widthImage) {
+        double occupy;
+
+        int widthPanel = (int) context.getResources().getDimension(R.dimen.panelAccessoryWidth);
+        if (widthImage > widthPanel) {
+            occupy = (((widthImage - widthPanel) * 100) / widthImage);
+            return (100 - occupy);
+        } else {
+            return 100;
+        }
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

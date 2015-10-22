@@ -11,8 +11,10 @@ import android.support.v7.app.AlertDialog;
 import android.text.SpannableString;
 import android.text.util.Linkify;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,7 +24,7 @@ import com.raccoonapps.worksimple.eventbus.BusProvider;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
+import butterknife.OnTouch;
 
 public class FragmentStart extends Fragment {
 
@@ -43,6 +45,11 @@ public class FragmentStart extends Fragment {
 
     @Bind(R.id.text_logo) TextView textLogo;
     @Bind(R.id.banner) LinearLayout banner;
+
+
+    @Bind(R.id.frame_start) FrameLayout frameStart;
+    @Bind(R.id.frame_more) FrameLayout frameMore;
+    @Bind(R.id.frame_help) FrameLayout frameHelp;
 
     @Nullable
     @Override
@@ -72,34 +79,58 @@ public class FragmentStart extends Fragment {
         return view;
     }
 
-    @OnClick({ R.id.button_start, R.id.button_more, R.id.button_help })
-    public void onClick(TextView button){
-        switch (button.getId()) {
-            case R.id.button_start:
-                BusProvider.getInstance().post(new FragmentGame());
+    @OnTouch({ R.id.button_start, R.id.button_more, R.id.button_help })
+    public boolean onTouch(View button, MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                switch (button.getId()) {
+                    case R.id.button_start:
+                        frameStart.setAlpha(0.89f);
+                        break;
+                    case R.id.button_more:
+                        frameMore.setAlpha(0.89f);
+                        break;
+                    case R.id.button_help:
+                        frameHelp.setAlpha(0.8f);
+                        break;
+                }
                 break;
-            case R.id.button_more:
-                final Intent openLinkMore = new Intent(Intent.ACTION_VIEW, MORE);
-                startActivity(openLinkMore);
-                break;
-            case R.id.button_help:
 
-                final SpannableString s = new SpannableString("This amazing game was created with QuickApp Ninja builder. Easy build free-to-play games, upload it to Android market and make money from ads. You don't need any special skills and no coding is required. For more information please visit => http://quickappninja.com");
-                Linkify.addLinks(s, Linkify.ALL);
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage(s);
-                builder.setPositiveButton("Go", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        final Intent openLink = new Intent(Intent.ACTION_VIEW, ADDRES_BANNER);
-                        startActivity(openLink);
-                    }
-                });
-                builder.setNegativeButton("Cancel", null);
-                builder.show();
-
+            case MotionEvent.ACTION_UP:
+                switch (button.getId()) {
+                    case R.id.button_start:
+                        frameStart.setAlpha(1);
+                        BusProvider.getInstance().post(new FragmentGame());
+                        break;
+                    case R.id.button_more:
+                        frameMore.setAlpha(1);
+                        final Intent openLinkMore = new Intent(Intent.ACTION_VIEW, MORE);
+                        startActivity(openLinkMore);
+                        break;
+                    case R.id.button_help:
+                        frameHelp.setAlpha(1);
+                        final SpannableString string = new SpannableString("This amazing game was created with QuickApp Ninja builder. Easy build free-to-play games, upload it to Android market and make money from ads. You don't need any special skills and no coding is required. For more information please visit => http://quickappninja.com");
+                        showAlterDialog(string);
+                        break;
+                }
                 break;
         }
+        return true;
+    }
+
+    private void showAlterDialog(SpannableString s) {
+        Linkify.addLinks(s, Linkify.ALL);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(s);
+        builder.setPositiveButton("Go", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                final Intent openLink = new Intent(Intent.ACTION_VIEW, ADDRES_BANNER);
+                startActivity(openLink);
+            }
+        });
+        builder.setNegativeButton("Cancel", null);
+        builder.show();
     }
 }

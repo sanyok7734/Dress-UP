@@ -12,8 +12,10 @@ public class MainPlayer {
     private MediaPlayer player;
     private AudioManager audioManager;
 
+    private int currentTrack;
     private int currentPosition = 0;
     private float lastVolume;
+    private boolean isMuted = false;
 
     public static MainPlayer getInstance(Context context) {
         if (instance == null)
@@ -27,12 +29,17 @@ public class MainPlayer {
     }
 
     public void play(int trackId) {
-        if ((player != null) && player.isPlaying())
-            player.stop();
+        if (player != null) {
+            Log.d("PLAYER", "Assigning player null value");
+            player = null;
+        }
 
         player = MediaPlayer.create(this.context, trackId);
         player.setLooping(true);
+        if (isMuted)
+            player.setVolume(0, 0);
         player.start();
+        currentTrack = trackId;
     }
 
     public void stop() {
@@ -50,9 +57,18 @@ public class MainPlayer {
 
     public void resume() {
         if (player != null) {
+            if (isMuted)
+                player.setVolume(0, 0);
             player.seekTo(currentPosition);
             player.start();
+        } else {
+            play(currentTrack);
         }
+    }
+
+    public void resetPlayer() {
+        player = null;
+        currentPosition = 0;
     }
 
     public void mute() {
@@ -62,12 +78,18 @@ public class MainPlayer {
             lastVolume = streamVolume / (streamMaxVolume * 1f);
             Log.d("PLAYER", "Volume = " + lastVolume);
             player.setVolume(0, 0);
+            isMuted = true;
         }
     }
 
     public void unmute() {
         if (player != null) {
             player.setVolume(lastVolume, lastVolume);
+            isMuted = false;
         }
+    }
+
+    public boolean isMuted() {
+        return isMuted;
     }
 }
