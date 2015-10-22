@@ -1,35 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#fff"
+    android:clickable="true">
 
-    <ImageView
-        android:id="@+id/well_done_girl"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="matrix" />
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/root"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <View
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/well_done_girl"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="10"/>
-        <FrameLayout
-            android:id="@+id/banner"
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            android:scaleType="matrix" />
+
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="#38417c"
-            android:visibility="gone">
-            <include layout="@layout/banner"/>
-        </FrameLayout>
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="10" />
+
+            <FrameLayout
+                android:id="@+id/banner_well_done"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="#38417c"
+                android:visibility="invisible">
+
+                <include layout="@layout/banner" />
+            </FrameLayout>
+        </LinearLayout>
+
+    </FrameLayout>
 
     <!-- Buttons -->
     <RelativeLayout
+        android:id="@+id/buttons"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -210,5 +226,12 @@
                 android:src="@drawable/refresh" />
         </FrameLayout>
     </RelativeLayout>
+
+    <View
+        android:id="@+id/splash"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0"
+        android:background="#fff" />
 
 </RelativeLayout>

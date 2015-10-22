@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final int LAYOUT = R.layout.activity_main;
 
+
     public static double screenWidth;
     public static double screenHeight;
 
@@ -42,16 +43,19 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+
         fragmentManager = getFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.container, new FragmentStart());
         fragmentTransaction.commit();
+
     }
+
 
     @Subscribe
     public void startFragment(Fragment fragmentGame) {
         fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        //  fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.add(R.id.container, fragmentGame);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
@@ -63,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         BusProvider.getInstance().unregister(this);
+
     }
 
     //TODO image girl
@@ -82,4 +87,5 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         MainPlayer.getInstance(getApplicationContext()).resume();
     }
+
 }

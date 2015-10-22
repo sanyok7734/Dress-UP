@@ -242,6 +242,7 @@ public class FragmentGame extends Fragment {
                         fragmentWellDone.setArguments(bundle);
                         BusProvider.getInstance().post(fragmentWellDone);
 
+
                         break;
                 }
                 break;

@@ -76,7 +76,14 @@ public class FragmentStart extends Fragment {
             }
         });
 
+
+
         return view;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 
     @OnTouch({ R.id.button_start, R.id.button_more, R.id.button_help })
