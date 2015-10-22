@@ -1,5 +1,6 @@
 {
   "general_data": {
+    "app_logo": "logo.png",
     "buttons": {
       "more": "more_btn.png",
       "start": "start_btn.png",

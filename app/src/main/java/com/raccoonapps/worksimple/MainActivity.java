@@ -12,7 +12,6 @@ import android.view.WindowManager;
 
 import com.raccoonapps.worksimple.eventbus.BusProvider;
 import com.raccoonapps.worksimple.model.Squeezing;
-import com.raccoonapps.worksimple.music.MainPlayer;
 import com.raccoonapps.worksimple.view.FragmentStart;
 import com.squareup.otto.Subscribe;
 
@@ -74,18 +73,6 @@ public class MainActivity extends AppCompatActivity {
     private void calculateOccupy() {
         BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(R.drawable.girls);
         Squeezing.squeezingPercentage(drawable, screenWidth, screenHeight);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        MainPlayer.getInstance(getApplicationContext()).pause();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        MainPlayer.getInstance(getApplicationContext()).resume();
     }
 
 }

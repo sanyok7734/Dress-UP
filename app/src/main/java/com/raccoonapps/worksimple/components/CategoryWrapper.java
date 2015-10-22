@@ -73,7 +73,7 @@ public class CategoryWrapper {
 
         if (!lamination) {
             screen.removeView(accessoryImage);
-            imageViews.removeAll(imageViews);
+            imageViews.clear();
             createImage(tag, drawable, X, Y);
         } else {
             createImage(tag, drawable, X, Y);

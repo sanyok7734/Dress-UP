@@ -91,6 +91,7 @@ public class FragmentGame extends Fragment {
         ButterKnife.bind(this, view);
         bus.register(this);
 
+        MainPlayer.getInstance(getActivity()).resetPlayer();
         MainPlayer player = MainPlayer.getInstance(getActivity());
         try {
             player.play(ApplicationPropertiesLoader.getLoader(getActivity()).getTrackIdByName(ApplicationPropertiesLoader.TRACK.MAIN));
@@ -198,15 +199,15 @@ public class FragmentGame extends Fragment {
             case MotionEvent.ACTION_DOWN: // нажатие
                 v.setAlpha(0.8f);
                 break;
-
             case MotionEvent.ACTION_UP: // отпускание
                 v.setAlpha(1);
                 switch (v.getId()) {
                     case R.id.button_back:
                         MainActivity.fragmentManager.popBackStack();
-                        MainPlayer.getInstance(getActivity()).pause();
                         break;
                     case R.id.button_sound:
+                        boolean isMuted = MainPlayer.getInstance(getActivity()).isMuted();
+                        v.setTag(isMuted ? "stop" : "play");
                         if (v.getTag().equals("play")) {
                             MainPlayer.getInstance(getActivity()).mute();
                             v.setTag("stop");
@@ -214,6 +215,7 @@ public class FragmentGame extends Fragment {
                             MainPlayer.getInstance(getActivity()).unmute();
                             v.setTag("play");
                         }
+
                         break;
                     case R.id.button_next:
                         MainPlayer.getInstance(getActivity()).pause();
@@ -248,6 +250,18 @@ public class FragmentGame extends Fragment {
                 break;
         }
         return true;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MainPlayer.getInstance(getActivity()).resume();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        MainPlayer.getInstance(getActivity()).pause();
     }
 
     private List<CategoryWrapper> getCategoryWrappers() {

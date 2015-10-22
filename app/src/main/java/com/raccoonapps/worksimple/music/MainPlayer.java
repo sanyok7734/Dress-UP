@@ -12,8 +12,10 @@ public class MainPlayer {
     private MediaPlayer player;
     private AudioManager audioManager;
 
+    private int currentTrack;
     private int currentPosition = 0;
     private float lastVolume;
+    private boolean isMuted = false;
 
     public static MainPlayer getInstance(Context context) {
         if (instance == null)
@@ -27,13 +29,17 @@ public class MainPlayer {
     }
 
     public void play(int trackId) {
-        if ((player != null) && player.isPlaying())
-            player.stop();
+        if (player != null) {
+            Log.d("PLAYER", "Assigning player null value");
+            player = null;
+        }
 
         player = MediaPlayer.create(this.context, trackId);
-        Log.d("PLAYER", "Playing track with id = " + trackId);
         player.setLooping(true);
+        if (isMuted)
+            player.setVolume(0, 0);
         player.start();
+        currentTrack = trackId;
     }
 
     public void stop() {
@@ -46,30 +52,44 @@ public class MainPlayer {
         if (player != null && player.isPlaying()) {
             player.pause();
             currentPosition = player.getCurrentPosition();
-            Log.d("PLAYER", "Pausing on: " + currentPosition);
         }
     }
 
     public void resume() {
         if (player != null) {
-            Log.d("PLAYER", "Resuming from: " + currentPosition);
+            if (isMuted)
+                player.setVolume(0, 0);
             player.seekTo(currentPosition);
             player.start();
+        } else {
+            play(currentTrack);
         }
+    }
+
+    public void resetPlayer() {
+        player = null;
+        currentPosition = 0;
     }
 
     public void mute() {
         if (player != null) {
             float streamVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
             float streamMaxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-            lastVolume = ((streamVolume * 100 * 1.0f) / streamMaxVolume) / 100;
+            lastVolume = streamVolume / (streamMaxVolume * 1f);
+            Log.d("PLAYER", "Volume = " + lastVolume);
             player.setVolume(0, 0);
+            isMuted = true;
         }
     }
 
     public void unmute() {
         if (player != null) {
             player.setVolume(lastVolume, lastVolume);
+            isMuted = false;
         }
+    }
+
+    public boolean isMuted() {
+        return isMuted;
     }
 }
