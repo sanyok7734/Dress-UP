@@ -1,6 +1,214 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/well_done_girl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="matrix" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="10"/>
+        <FrameLayout
+            android:id="@+id/banner"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#38417c"
+            android:visibility="gone">
+            <include layout="@layout/banner"/>
+        </FrameLayout>
+    </LinearLayout>
+
+    <!-- Buttons -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/button_photo"
+            android:layout_width="@dimen/photoSize"
+            android:layout_height="@dimen/photoSize"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/buttonNextRight">
+
+            <ImageView
+                android:id="@+id/background_photo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:src="@drawable/photo_btn" />
+
+            <ImageView
+                android:id="@+id/icon_photo"
+                android:layout_width="@dimen/photoImageSize"
+                android:layout_height="@dimen/photoImageSize"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/photoBottom"
+                android:src="@drawable/photo" />
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="@dimen/sharingMarginBottom"
+            android:layout_marginLeft="@dimen/sharingMarginLeft"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/button_fb"
+                android:layout_width="@dimen/sharingWidth"
+                android:layout_height="@dimen/sharingHeight"
+                android:layout_marginBottom="@dimen/sharingBottom">
+
+                <ImageView
+                    android:id="@+id/background_fb"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/sharing_fb" />
+
+                <ImageView
+                    android:id="@+id/icon_fb"
+                    android:layout_width="@dimen/sharingSizeIconF"
+                    android:layout_height="@dimen/sharingSizeIconF"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="@dimen/sharingIconMarginBottom"
+                    android:src="@drawable/facebook" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/button_twi"
+                android:layout_width="@dimen/sharingWidth"
+                android:layout_height="@dimen/sharingHeight"
+                android:layout_marginBottom="@dimen/sharingBottom">
+
+                <ImageView
+                    android:id="@+id/background_twi"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/sharing_twi" />
+
+                <ImageView
+                    android:id="@+id/icon_twi"
+                    android:layout_width="@dimen/sharingSizeIcon"
+                    android:layout_height="@dimen/sharingSizeIcon"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="@dimen/sharingIconMarginBottom"
+                    android:src="@drawable/twitter" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/button_wa"
+                android:layout_width="@dimen/sharingWidth"
+                android:layout_height="@dimen/sharingHeight"
+                android:layout_marginBottom="@dimen/sharingBottom">
+
+                <ImageView
+                    android:id="@+id/background_wa"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/sharing_wa" />
+
+                <ImageView
+                    android:id="@+id/icon_wa"
+                    android:layout_width="@dimen/sharingSizeIcon"
+                    android:layout_height="@dimen/sharingSizeIcon"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="@dimen/sharingIconMarginBottom"
+                    android:src="@drawable/whatsapp" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/button_email"
+                android:layout_width="@dimen/sharingWidth"
+                android:layout_height="@dimen/sharingHeight">
+
+                <ImageView
+                    android:id="@+id/background_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/email" />
+
+                <ImageView
+                    android:id="@+id/icon_email"
+                    android:layout_width="@dimen/sharingSizeIcon"
+                    android:layout_height="@dimen/sharingSizeIcon"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="@dimen/sharingIconMarginBottom"
+                    android:src="@drawable/mail" />
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/button_back"
+            android:layout_width="@dimen/buttonNextWidthHeight"
+            android:layout_height="@dimen/buttonNextWidthHeight"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/buttonNextRight"
+            android:layout_marginTop="@dimen/buttonNextTop">
+
+            <ImageView
+                android:id="@+id/button_back_background"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/btn_circle" />
+
+            <ImageView
+                android:id="@+id/button_back_icon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/buttonNextImageBottom"
+                android:layout_marginLeft="@dimen/buttonNextImageRight"
+                android:layout_marginRight="@dimen/buttonNextImageLeft"
+                android:layout_marginTop="@dimen/buttonNextImageTop"
+                android:src="@drawable/back" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/button_restart"
+            android:layout_width="@dimen/buttonNextWidthHeight"
+            android:layout_height="@dimen/buttonNextWidthHeight"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/buttonNextTop"
+            android:layout_marginRight="@dimen/buttonNextRight"
+            android:layout_marginTop="@dimen/buttonNextTop">
+
+
+            <ImageView
+                android:id="@+id/button_restart_background"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/btn_circle" />
+
+            <ImageView
+                android:id="@+id/button_restart_icon"
+                android:layout_width="@dimen/restartSize"
+                android:layout_height="@dimen/restartSize"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/restartBottom"
+                android:src="@drawable/refresh" />
+        </FrameLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

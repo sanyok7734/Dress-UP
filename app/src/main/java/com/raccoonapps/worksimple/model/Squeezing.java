@@ -3,9 +3,6 @@ package com.raccoonapps.worksimple.model;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 
-/**
- * Created by sanyok on 16.10.15.
- */
 public class Squeezing {
     private Squeezing() {
     }

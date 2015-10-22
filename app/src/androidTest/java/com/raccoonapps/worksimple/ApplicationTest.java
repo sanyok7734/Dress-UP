@@ -13,7 +13,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-import static com.raccoonapps.worksimple.model.ApplicationPropertiesLoader.BUTTONS;
+import static com.raccoonapps.worksimple.model.ApplicationPropertiesLoader.BUTTON;
 import static com.raccoonapps.worksimple.model.ApplicationPropertiesLoader.getLoader;
 
 /**
@@ -29,22 +29,22 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         assertNotNull(getContext());
         List<Category> categories = getLoader(getContext()).getAllCategories();
         assertNotNull(categories);
-        int buttonId = getLoader(getContext()).getButtonIdByName(BUTTONS.MORE);
+        int buttonId = getLoader(getContext()).getButtonIdByName(BUTTON.MORE);
         assertNotSame(0, buttonId);
-        Log.d("JUNIT", "Button id: " + buttonId);
     }
 
     @FlakyTest
     public void testGenerateJsonResource() throws JSONException {
         String categoryTitle = "shoes";
         String categoryIcon = categoryTitle + "_ic.png";
+        int accessoriesCount = 11;
 
         JSONObject category = new JSONObject();
         category.put("category_title", categoryTitle);
         category.put("category_icon", categoryIcon);
 
         JSONArray accessories = new JSONArray();
-        for (int i = 0; i < 11; i++) {
+        for (int i = 0; i < accessoriesCount; i++) {
             JSONObject accessory = new JSONObject();
             accessory.put("file_name", categoryTitle + (i + 1) + ".png");
             accessory.put("coordinates", new JSONArray());
@@ -54,5 +54,6 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         category.put("category_resources", accessories);
         Log.d("JSON", category.toString());
     }
+
 
 }

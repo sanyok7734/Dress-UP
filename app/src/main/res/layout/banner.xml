@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/banner"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:background="#38417c"
+    android:visibility="visible">
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/logoNinjaBottom"
+        android:src="@drawable/logo_ninja"/>
+
+    <TextView
+        android:id="@+id/text_logo"
+        android:layout_width="0dp"
+        android:layout_weight="4"
+        android:layout_height="match_parent"
+        android:paddingRight="16dp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textColor="#adb9d1"
+        android:textSize="@dimen/logoTextSize"
+        android:text="This game is created in QuickAppNinja Free Game Builder"/>
+
+</LinearLayout>

@@ -49,4 +49,21 @@
 
     <dimen name="logoNinjaBottom">-11dp</dimen>
     <dimen name="logoTextSize">15sp</dimen>
+
+    <dimen name="photoSize">110dp</dimen>
+    <dimen name="photoRight">12dp</dimen>
+    <dimen name="photoBottom">3dp</dimen>
+    <dimen name="photoImageSize">60dp</dimen>
+
+    <dimen name="sharingWidth">65dp</dimen>
+    <dimen name="sharingHeight">55dp</dimen>
+    <dimen name="sharingBottom">5dp</dimen>
+    <dimen name="sharingMarginBottom">16dp</dimen>
+    <dimen name="sharingMarginLeft">25dp</dimen>
+    <dimen name="sharingSizeIcon">30dp</dimen>
+    <dimen name="sharingSizeIconF">25dp</dimen>
+    <dimen name="sharingIconMarginBottom">1dp</dimen>
+    <dimen name="restartSize">30dp</dimen>
+    <dimen name="restartBottom">2dp</dimen>
+
 </resources>

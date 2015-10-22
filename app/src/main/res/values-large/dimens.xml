@@ -36,7 +36,7 @@
 
     <dimen name="buttonNextWidthHeight">80dp</dimen>
     <dimen name="buttonNextTop">30dp</dimen>
-    <dimen name="buttonNextRight">30dp</dimen>
+    <dimen name="buttonNextRight">25dp</dimen>
     <dimen name="buttonNextBottom">30dp</dimen>
     <dimen name="buttonNextImageBottom">24dp</dimen>
     <dimen name="buttonNextImageTop">22dp</dimen>
@@ -47,4 +47,21 @@
 
     <dimen name="logoNinjaBottom">-12dp</dimen>
     <dimen name="logoTextSize">25sp</dimen>
+
+    <dimen name="photoSize">180dp</dimen>
+    <dimen name="photoRight">18dp</dimen>
+    <dimen name="photoBottom">3dp</dimen>
+    <dimen name="photoImageSize">100dp</dimen>
+
+    <dimen name="sharingWidth">95dp</dimen>
+    <dimen name="sharingHeight">85dp</dimen>
+    <dimen name="sharingBottom">1dp</dimen>
+    <dimen name="sharingMarginBottom">20dp</dimen>
+    <dimen name="sharingMarginLeft">30dp</dimen>
+    <dimen name="sharingSizeIcon">45dp</dimen>
+    <dimen name="sharingSizeIconF">40dp</dimen>
+    <dimen name="sharingIconMarginBottom">2dp</dimen>
+
+    <dimen name="restartSize">50dp</dimen>
+    <dimen name="restartBottom">3dp</dimen>
 </resources>

@@ -3,6 +3,7 @@ package com.raccoonapps.worksimple.view;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Fragment;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,18 +15,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
 
 import com.raccoonapps.worksimple.MainActivity;
 import com.raccoonapps.worksimple.R;
 import com.raccoonapps.worksimple.adapters.AdapterAccessory;
 import com.raccoonapps.worksimple.adapters.AdapterCategory;
 import com.raccoonapps.worksimple.components.CategoryWrapper;
+import com.raccoonapps.worksimple.eventbus.BusProvider;
 import com.raccoonapps.worksimple.model.Accessory;
 import com.raccoonapps.worksimple.model.ApplicationPropertiesLoader;
 import com.raccoonapps.worksimple.model.Category;
 import com.raccoonapps.worksimple.model.CoordinatorElements;
 import com.raccoonapps.worksimple.model.Squeezing;
+import com.raccoonapps.worksimple.music.MainPlayer;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -60,6 +63,11 @@ public class FragmentGame extends Fragment {
     @Bind(R.id.girl)
     ImageView girlImage;
 
+    @Bind(R.id.background)
+    ImageView background;
+    @Bind(R.id.content_game)
+    RelativeLayout contentGame;
+
     //button game
     @Bind(R.id.button_back_background)
     ImageView buttonBackBackground;
@@ -83,6 +91,12 @@ public class FragmentGame extends Fragment {
         ButterKnife.bind(this, view);
         bus.register(this);
 
+        MainPlayer player = MainPlayer.getInstance(getActivity());
+        try {
+            player.play(ApplicationPropertiesLoader.getLoader(getActivity()).getTrackIdByName(ApplicationPropertiesLoader.TRACK.MAIN));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         ViewGroup.LayoutParams layoutParam = girlImage.getLayoutParams();
         layoutParam.height = Squeezing.occupyHeightGirl();
@@ -109,6 +123,7 @@ public class FragmentGame extends Fragment {
         buttonNextBackground.setOnTouchListener(this);
         buttonBackBackground.setOnTouchListener(this);*/
 
+
         return view;
     }
 
@@ -124,6 +139,7 @@ public class FragmentGame extends Fragment {
         animSet.setDuration(700);
         animSet.playTogether(animXPanel, animXScreen);
         animSet.start();
+        additionalPanel.setTag("open");
     }
 
     //close panel accessories
@@ -136,6 +152,7 @@ public class FragmentGame extends Fragment {
             animSet.setDuration(700);
             animSet.playTogether(animXPanel, animXScreen);
             animSet.start();
+            additionalPanel.setTag("close");
         }
     }
 
@@ -167,6 +184,7 @@ public class FragmentGame extends Fragment {
         }
     }
 
+
     @Override
     public void onDestroy() {
         super.onPause();
@@ -186,17 +204,44 @@ public class FragmentGame extends Fragment {
                 switch (v.getId()) {
                     case R.id.button_back:
                         MainActivity.fragmentManager.popBackStack();
+                        MainPlayer.getInstance(getActivity()).pause();
                         break;
                     case R.id.button_sound:
                         if (v.getTag().equals("play")) {
-                            Toast.makeText(getActivity(), "Play", Toast.LENGTH_SHORT).show();
+                            MainPlayer.getInstance(getActivity()).mute();
                             v.setTag("stop");
                         } else {
-                            Toast.makeText(getActivity(), "Stop", Toast.LENGTH_SHORT).show();
+                            MainPlayer.getInstance(getActivity()).unmute();
                             v.setTag("play");
                         }
                         break;
                     case R.id.button_next:
+                        MainPlayer.getInstance(getActivity()).pause();
+
+                        background.setImageResource(R.drawable.welldone);
+                        contentGame.setVisibility(View.INVISIBLE);
+                        if (additionalPanel.getTag().equals("open")) {
+                            contentGirl.setTranslationX(0);
+                            additionalPanel.setVisibility(View.INVISIBLE);
+                        }
+                        View v1 = contentGirl.getRootView();
+                        v1.setDrawingCacheEnabled(true);
+                        Bitmap bitmap = v1.getDrawingCache();
+
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable("well_done", bitmap);
+
+                        background.setImageResource(R.drawable.game);
+                        contentGame.setVisibility(View.VISIBLE);
+                        if (additionalPanel.getTag().equals("open")) {
+                            contentGirl.setTranslationX(-additionalPanel.getWidth());
+                            additionalPanel.setVisibility(View.VISIBLE);
+                        }
+
+                        FragmentWellDone fragmentWellDone = new FragmentWellDone();
+                        fragmentWellDone.setArguments(bundle);
+                        BusProvider.getInstance().post(fragmentWellDone);
+
                         break;
                 }
                 break;

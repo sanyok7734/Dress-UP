@@ -12,6 +12,7 @@ import android.view.WindowManager;
 
 import com.raccoonapps.worksimple.eventbus.BusProvider;
 import com.raccoonapps.worksimple.model.Squeezing;
+import com.raccoonapps.worksimple.music.MainPlayer;
 import com.raccoonapps.worksimple.view.FragmentStart;
 import com.squareup.otto.Subscribe;
 
@@ -48,12 +49,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Subscribe
-    public void startGame(Fragment fragmentGame) {
+    public void startFragment(Fragment fragmentGame) {
         fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.container, fragmentGame);
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        fragmentTransaction.add(R.id.container, fragmentGame);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+
     }
+
 
     @Override
     protected void onDestroy() {
@@ -67,4 +71,15 @@ public class MainActivity extends AppCompatActivity {
         Squeezing.squeezingPercentage(drawable, screenWidth, screenHeight);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        MainPlayer.getInstance(getApplicationContext()).pause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MainPlayer.getInstance(getApplicationContext()).resume();
+    }
 }
