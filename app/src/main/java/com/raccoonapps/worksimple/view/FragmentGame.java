@@ -258,6 +258,12 @@ public class FragmentGame extends Fragment {
         MainPlayer.getInstance(getActivity()).resume();
     }
 
+    @Subscribe
+    public void subscribeSomeStuff(Boolean object) {
+        if (object)
+            MainPlayer.getInstance(getActivity()).pause();
+    }
+
     @Override
     public void onStop() {
         super.onStop();

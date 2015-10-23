@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -34,15 +35,17 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnTouch;
 
-/**
- * Created by sanyok on 21.10.15.
- */
 public class FragmentWellDone extends Fragment {
+
+
+    public static final String WHATSAPP = "whats";
+    public static final String INBOX = "inbox";
+    public static final String TWITTER = "twitter";
+    public static final String FACEBOOK = "facebook";
 
 
     @Bind(R.id.well_done_girl)
     ImageView wellDoneGirl;
-
     @Bind(R.id.splash)
     View splash;
     @Bind(R.id.root)
@@ -86,6 +89,8 @@ public class FragmentWellDone extends Fragment {
     ImageView backgroundPhoto;
     @Bind(R.id.icon_photo)
     ImageView iconPhoto;
+
+    private String girlImagePath;
 
 
     @Nullable
@@ -145,14 +150,17 @@ public class FragmentWellDone extends Fragment {
                         }
                         BusProvider.getInstanceMain().post(new FragmentGame());
                         break;
-                    //TODO sharing
                     case R.id.button_fb:
+                        shareInSocialNetwork(FACEBOOK, null, "Hello everyone, I've created nice girl");
                         break;
                     case R.id.button_twi:
+                        shareInSocialNetwork(TWITTER, null, "Hello everyone, I've created nice girl!!!");
                         break;
                     case R.id.button_wa:
+                        shareInSocialNetwork(WHATSAPP, null, "Hello, I've created nice girl");
                         break;
                     case R.id.button_email:
+                        shareInSocialNetwork(INBOX, null, "Hello, I've created nice girl");
                         break;
                 }
                 break;
@@ -162,33 +170,46 @@ public class FragmentWellDone extends Fragment {
 
 
     private void shareInSocialNetwork(String applicationName, String imagePath, String message) {
-        ArrayList<Intent> intents = new ArrayList<>();
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.setType("image/jpeg");
-        List<ResolveInfo> resolveInfos = getActivity().getPackageManager().queryIntentActivities(shareIntent, 0);
-        if (!resolveInfos.isEmpty()) {
-            for (ResolveInfo info : resolveInfos) {
-                Intent targetShare = new Intent(Intent.ACTION_SEND);
-                targetShare.setType("image/jpeg");
-                boolean isPackageNameContains = info.activityInfo.packageName.toLowerCase().contains(applicationName);
-                boolean isNameContains = info.activityInfo.name.toLowerCase().contains(applicationName);
-                if (isPackageNameContains || isNameContains) {
-                    targetShare.putExtra(Intent.EXTRA_SUBJECT, "Pretty-girl photo");
-                    targetShare.putExtra(Intent.EXTRA_TEXT, message);
-                    targetShare.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(imagePath)));
-                    targetShare.setPackage(info.activityInfo.packageName);
-                    intents.add(targetShare);
+        try {
+            ArrayList<Intent> intents = new ArrayList<>();
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("image/jpeg");
+            List<ResolveInfo> resolveInfos = getActivity().getPackageManager().queryIntentActivities(shareIntent, 0);
+            if (!resolveInfos.isEmpty()) {
+                for (ResolveInfo info : resolveInfos) {
+                    Intent targetShare = new Intent(Intent.ACTION_SEND);
+                    targetShare.setType("image/jpeg");
+                    boolean isPackageNameContains = info.activityInfo.packageName.toLowerCase().contains(applicationName);
+                    boolean isNameContains = info.activityInfo.name.toLowerCase().contains(applicationName);
+                    if (isPackageNameContains || isNameContains) {
+                        targetShare.putExtra(Intent.EXTRA_TEXT, message);
+                        targetShare.putExtra(Intent.EXTRA_SUBJECT, "Pretty-girl photo");
+                        Log.d("SHARING", "Image path = " + imagePath);
+                        targetShare.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(girlImagePath)));
+                        targetShare.setPackage(info.activityInfo.packageName);
+                        Log.d("SHARING", info.activityInfo.name);
+                        intents.add(targetShare);
+                        Log.d("SHARING", "Package name: " + targetShare.getPackage());
+                    }
                 }
+                Intent chooserIntent = Intent.createChooser(
+                        intents.remove(0), "Select application to share by this beautiful girl");
+                chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS,
+                        intents.toArray(new Parcelable[intents.size()]));
+                startActivity(chooserIntent);
             }
-            Intent chooserIntent = Intent.createChooser(
-                    intents.remove(0), "Select application to share by this beautiful girl");
-            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS,
-                    intents.toArray(new Parcelable[intents.size()]));
-            startActivity(chooserIntent);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-    //TODO PHOTO BUTTON
+    @Override
+    public void onResume() {
+        super.onResume();
+        BusProvider.getInstanceGame().post(true);
+    }
+
+    //TODO {PHOTO BUTTON, SAVING BEFORE SHARING}
     @OnTouch(R.id.button_photo)
     public boolean onTouchPhoto(View button, MotionEvent event) {
         switch (event.getAction()) {
@@ -199,15 +220,7 @@ public class FragmentWellDone extends Fragment {
             case MotionEvent.ACTION_UP:
                 button.setAlpha(1);
 
-                buttons.setVisibility(View.INVISIBLE);
-                banner.setVisibility(View.VISIBLE);
-                wellDoneGirl.setVisibility(View.VISIBLE);
-
-                View rootView = (View) root;
-                rootView.setDrawingCacheEnabled(true);
-                Bitmap bitmap = rootView.getDrawingCache();
-                buttons.setVisibility(View.VISIBLE);
-                banner.setVisibility(View.INVISIBLE);
+                Bitmap bitmap = getBitmap();
 
                 FileOutputStream fos = null;
                 try {
@@ -223,17 +236,29 @@ public class FragmentWellDone extends Fragment {
                     }
                     fos = new FileOutputStream(sdPath + "/" + "Dress_UP_"
                             + System.currentTimeMillis() + ".jpg");
-                    if (fos != null) {
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
-                        fos.flush();
-                        fos.close();
-                    }
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
+                    fos.flush();
+                    fos.close();
                 } catch (Exception e) {
                 }
                 splash();
                 break;
         }
         return true;
+    }
+
+    private Bitmap getBitmap() {
+        buttons.setVisibility(View.INVISIBLE);
+        banner.setVisibility(View.VISIBLE);
+        wellDoneGirl.setVisibility(View.VISIBLE);
+
+        View rootView = (View) root;
+        rootView.setDrawingCacheEnabled(true);
+        Bitmap bitmap = rootView.getDrawingCache();
+
+        buttons.setVisibility(View.VISIBLE);
+        banner.setVisibility(View.INVISIBLE);
+        return bitmap;
     }
 
     private void splash() {
