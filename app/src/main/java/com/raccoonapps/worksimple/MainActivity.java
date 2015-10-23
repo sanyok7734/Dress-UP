@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         calculateOccupy();
 
 
-        BusProvider.getInstance().register(this);
+        BusProvider.getInstanceMain().register(this);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        BusProvider.getInstance().unregister(this);
+        BusProvider.getInstanceMain().unregister(this);
 
     }
 

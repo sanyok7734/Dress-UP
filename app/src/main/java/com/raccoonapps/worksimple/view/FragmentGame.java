@@ -29,7 +29,6 @@ import com.raccoonapps.worksimple.model.Category;
 import com.raccoonapps.worksimple.model.CoordinatorElements;
 import com.raccoonapps.worksimple.model.Squeezing;
 import com.raccoonapps.worksimple.music.MainPlayer;
-import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -46,12 +45,12 @@ public class FragmentGame extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.LayoutManager layoutAccessory;
 
+    private Bitmap bitmap = null;
+
     private List<CategoryWrapper> categoryWrappers = new ArrayList<>();
 
     private CategoryWrapper categoryWrapper;
 
-    //TODO EVEN BUS
-    public static Bus bus = new Bus();
     private boolean scroll = true;
 
     @Bind(R.id.list_category)
@@ -89,7 +88,7 @@ public class FragmentGame extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.content_play_game, container, false);
         ButterKnife.bind(this, view);
-        bus.register(this);
+        BusProvider.getInstanceGame().register(this);
 
         MainPlayer.getInstance(getActivity()).resetPlayer();
         MainPlayer player = MainPlayer.getInstance(getActivity());
@@ -189,17 +188,39 @@ public class FragmentGame extends Fragment {
     @Override
     public void onDestroy() {
         super.onPause();
-        bus.unregister(this);
+        BusProvider.getInstanceGame().unregister(this);
     }
 
 
     @OnTouch({R.id.button_back, R.id.button_next, R.id.button_sound})
     public boolean onTouch(View v, MotionEvent event) {
+
+
         switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN: // нажатие
+            case MotionEvent.ACTION_DOWN: // press
                 v.setAlpha(0.8f);
+                if (v.getId() == R.id.button_next) {
+                    background.setImageResource(R.drawable.welldone);
+                    contentGame.setVisibility(View.INVISIBLE);
+                    if (additionalPanel.getTag().equals("open")) {
+                        contentGirl.setTranslationX(0);
+                        additionalPanel.setVisibility(View.INVISIBLE);
+                    }
+
+                    View v1 = contentGirl.getRootView();
+                    v1.setDrawingCacheEnabled(true);
+                    bitmap = v1.getDrawingCache();
+
+                    background.setImageResource(R.drawable.game);
+                    contentGame.setVisibility(View.VISIBLE);
+                    if (additionalPanel.getTag().equals("open")) {
+                        contentGirl.setTranslationX(-additionalPanel.getWidth());
+                        additionalPanel.setVisibility(View.VISIBLE);
+                    }
+
+                }
                 break;
-            case MotionEvent.ACTION_UP: // отпускание
+            case MotionEvent.ACTION_UP: // release
                 v.setAlpha(1);
                 switch (v.getId()) {
                     case R.id.button_back:
@@ -215,36 +236,15 @@ public class FragmentGame extends Fragment {
                             MainPlayer.getInstance(getActivity()).unmute();
                             v.setTag("play");
                         }
-
                         break;
                     case R.id.button_next:
                         MainPlayer.getInstance(getActivity()).pause();
 
-                        background.setImageResource(R.drawable.welldone);
-                        contentGame.setVisibility(View.INVISIBLE);
-                        if (additionalPanel.getTag().equals("open")) {
-                            contentGirl.setTranslationX(0);
-                            additionalPanel.setVisibility(View.INVISIBLE);
-                        }
-                        View v1 = contentGirl.getRootView();
-                        v1.setDrawingCacheEnabled(true);
-                        Bitmap bitmap = v1.getDrawingCache();
-
                         Bundle bundle = new Bundle();
                         bundle.putParcelable("well_done", bitmap);
-
-                        background.setImageResource(R.drawable.game);
-                        contentGame.setVisibility(View.VISIBLE);
-                        if (additionalPanel.getTag().equals("open")) {
-                            contentGirl.setTranslationX(-additionalPanel.getWidth());
-                            additionalPanel.setVisibility(View.VISIBLE);
-                        }
-
                         FragmentWellDone fragmentWellDone = new FragmentWellDone();
                         fragmentWellDone.setArguments(bundle);
-                        BusProvider.getInstance().post(fragmentWellDone);
-
-
+                        BusProvider.getInstanceMain().post(fragmentWellDone);
                         break;
                 }
                 break;
