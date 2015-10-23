@@ -37,13 +37,15 @@ import butterknife.OnTouch;
 
 public class FragmentWellDone extends Fragment {
 
-
-    public static final String WHATSAPP = "whats";
+    public static final String WHATSAPP = "whatsapp";
     public static final String INBOX = "inbox";
     public static final String TWITTER = "twitter";
     public static final String FACEBOOK = "facebook";
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> e7b476086e36a598ad1b863ac76ad09690ee7352
     @Bind(R.id.well_done_girl)
     ImageView wellDoneGirl;
     @Bind(R.id.splash)
@@ -126,9 +128,8 @@ public class FragmentWellDone extends Fragment {
         iconPhoto.setImageResource(R.drawable.photo);
     }
 
-
-    @OnTouch ({R.id.button_restart, R.id.button_back,
-               R.id.button_fb, R.id.button_twi, R.id.button_wa, R.id.button_email})
+    @OnTouch({R.id.button_restart, R.id.button_back,
+            R.id.button_fb, R.id.button_twi, R.id.button_wa, R.id.button_email})
     public boolean onTouch(View button, MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
@@ -137,6 +138,8 @@ public class FragmentWellDone extends Fragment {
 
             case MotionEvent.ACTION_UP:
                 button.setAlpha(1);
+                String filesDir = getActivity().getApplication().getFilesDir().getPath();
+                savePicture(filesDir);
                 switch (button.getId()) {
                     case R.id.button_back:
                         MainPlayer.getInstance(getActivity()).resume();
@@ -145,22 +148,22 @@ public class FragmentWellDone extends Fragment {
                         break;
                     case R.id.button_restart:
                         MainPlayer.getInstance(getActivity()).resetPlayer();
-                        for(int i = 0; i < MainActivity.fragmentManager.getBackStackEntryCount(); ++i) {
+                        for (int i = 0; i < MainActivity.fragmentManager.getBackStackEntryCount(); ++i) {
                             MainActivity.fragmentManager.popBackStack();
                         }
                         BusProvider.getInstanceMain().post(new FragmentGame());
                         break;
                     case R.id.button_fb:
-                        shareInSocialNetwork(FACEBOOK, null, "Hello everyone, I've created nice girl");
+                        shareInSocialNetwork(FACEBOOK, girlImagePath, "Hello everyone, I've created nice girl");
                         break;
                     case R.id.button_twi:
-                        shareInSocialNetwork(TWITTER, null, "Hello everyone, I've created nice girl!!!");
+                        shareInSocialNetwork(TWITTER, girlImagePath, "Hello everyone, I've created nice girl!!!");
                         break;
                     case R.id.button_wa:
-                        shareInSocialNetwork(WHATSAPP, null, "Hello, I've created nice girl");
+                        shareInSocialNetwork(WHATSAPP, girlImagePath, "Hello, I've created nice girl");
                         break;
                     case R.id.button_email:
-                        shareInSocialNetwork(INBOX, null, "Hello, I've created nice girl");
+                        shareInSocialNetwork(INBOX, girlImagePath, "Hello, I've created nice girl");
                         break;
                 }
                 break;
@@ -185,7 +188,7 @@ public class FragmentWellDone extends Fragment {
                         targetShare.putExtra(Intent.EXTRA_TEXT, message);
                         targetShare.putExtra(Intent.EXTRA_SUBJECT, "Pretty-girl photo");
                         Log.d("SHARING", "Image path = " + imagePath);
-                        targetShare.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(girlImagePath)));
+                        targetShare.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(imagePath)));
                         targetShare.setPackage(info.activityInfo.packageName);
                         Log.d("SHARING", info.activityInfo.name);
                         intents.add(targetShare);
@@ -193,7 +196,7 @@ public class FragmentWellDone extends Fragment {
                     }
                 }
                 Intent chooserIntent = Intent.createChooser(
-                        intents.remove(0), "Select application to share by this beautiful girl");
+                        intents.remove(0), "Select application to share by image");
                 chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS,
                         intents.toArray(new Parcelable[intents.size()]));
                 startActivity(chooserIntent);
@@ -216,35 +219,38 @@ public class FragmentWellDone extends Fragment {
             case MotionEvent.ACTION_DOWN:
                 button.setAlpha(0.8f);
                 break;
-
             case MotionEvent.ACTION_UP:
                 button.setAlpha(1);
-
-                Bitmap bitmap = getBitmap();
-
-                FileOutputStream fos = null;
-                try {
-                    File sdPath;
-                    if (!Environment.getExternalStorageState().equals(
-                            Environment.MEDIA_MOUNTED)) {
-                        sdPath = new File("Dress_UP");
-                    } else {
-                        sdPath = Environment.getExternalStorageDirectory();
-                        sdPath = new File(sdPath.getAbsolutePath() + "/" + "Dress_UP");
-                        // create directory
-                        sdPath.mkdirs();
-                    }
-                    fos = new FileOutputStream(sdPath + "/" + "Dress_UP_"
-                            + System.currentTimeMillis() + ".jpg");
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
-                    fos.flush();
-                    fos.close();
-                } catch (Exception e) {
+                File sdPath;
+                if (!Environment.getExternalStorageState().equals(
+                        Environment.MEDIA_MOUNTED)) {
+                    sdPath = new File("Dress_UP");
+                } else {
+                    sdPath = Environment.getExternalStorageDirectory();
+                    sdPath = new File(sdPath.getAbsolutePath() + "/" + "Dress_UP");
+                    // create directory
+                    sdPath.mkdirs();
                 }
+                savePicture(sdPath.getPath());
                 splash();
                 break;
         }
         return true;
+    }
+
+    private void savePicture(String rootPath) {
+        Bitmap bitmap = getBitmap();
+        FileOutputStream fos = null;
+        try {
+            String fullPath = rootPath + "/" + "Dress_UP_"
+                    + System.currentTimeMillis() + ".jpg";
+            fos = new FileOutputStream(fullPath);
+            girlImagePath = fullPath;
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
+            fos.flush();
+            fos.close();
+        } catch (Exception e) {
+        }
     }
 
     private Bitmap getBitmap() {
@@ -260,6 +266,7 @@ public class FragmentWellDone extends Fragment {
         banner.setVisibility(View.INVISIBLE);
         return bitmap;
     }
+
 
     private void splash() {
         ObjectAnimator animator = ObjectAnimator.ofFloat(splash, "Alpha", 0, 1);
