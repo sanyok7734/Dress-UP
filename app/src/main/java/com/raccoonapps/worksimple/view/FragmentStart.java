@@ -107,7 +107,7 @@ public class FragmentStart extends Fragment {
                 switch (button.getId()) {
                     case R.id.button_start:
                         frameStart.setAlpha(1);
-                        BusProvider.getInstance().post(new FragmentGame());
+                        BusProvider.getInstanceMain().post(new FragmentGame());
                         break;
                     case R.id.button_more:
                         frameMore.setAlpha(1);

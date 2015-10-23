@@ -1,5 +1,7 @@
 package com.raccoonapps.worksimple.view;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.app.Fragment;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
@@ -94,7 +96,7 @@ public class FragmentWellDone extends Fragment {
                         for(int i = 0; i < MainActivity.fragmentManager.getBackStackEntryCount(); ++i) {
                             MainActivity.fragmentManager.popBackStack();
                         }
-                        BusProvider.getInstance().post(new FragmentGame());
+                        BusProvider.getInstanceMain().post(new FragmentGame());
                         break;
                     case R.id.button_fb:
                         shareInSocialNetwork(FACEBOOK, null, "Hello everyone, I've created nice girl");
@@ -152,7 +154,7 @@ public class FragmentWellDone extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        FragmentGame.bus.post(true);
+        BusProvider.getInstanceGame().post(true);
     }
 
     //TODO {PHOTO BUTTON, SAVING BEFORE SHARING}
@@ -170,22 +172,24 @@ public class FragmentWellDone extends Fragment {
 
                 FileOutputStream fos = null;
                 try {
-                    File sdPath = Environment.getExternalStorageDirectory();
-                    sdPath = new File(sdPath.getAbsolutePath() + "/" + "Dress_UP");
-                    // create directory
-                    if (!sdPath.exists())
+                    File sdPath;
+                    if (!Environment.getExternalStorageState().equals(
+                            Environment.MEDIA_MOUNTED)) {
+                        sdPath = new File("Dress_UP");
+                    } else {
+                        sdPath = Environment.getExternalStorageDirectory();
+                        sdPath = new File(sdPath.getAbsolutePath() + "/" + "Dress_UP");
+                        // create directory
                         sdPath.mkdirs();
-
-                    girlImagePath = sdPath + "/" + "Dress_UP_"
-                            + System.currentTimeMillis() + ".jpg";
-                    fos = new FileOutputStream(girlImagePath);
-
+                    }
+                    fos = new FileOutputStream(sdPath + "/" + "Dress_UP_"
+                            + System.currentTimeMillis() + ".jpg");
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
                     fos.flush();
                     fos.close();
                 } catch (Exception e) {
                 }
-
+                splash();
                 break;
         }
         return true;
@@ -202,6 +206,33 @@ public class FragmentWellDone extends Fragment {
         buttons.setVisibility(View.VISIBLE);
         banner.setVisibility(View.INVISIBLE);
         return bitmap;
+    }
+
+    private void splash() {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(splash, "Alpha", 0, 1);
+        animator.setDuration(100).addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                splash.setAlpha(0);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+
+        animator.start();
     }
 
 }

@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.raccoonapps.worksimple.R;
+import com.raccoonapps.worksimple.eventbus.BusProvider;
 import com.raccoonapps.worksimple.model.Accessory;
-import com.raccoonapps.worksimple.view.FragmentGame;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +46,7 @@ public class AdapterAccessory extends RecyclerView.Adapter<AdapterAccessory.View
         holder.iconAccessory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentGame.bus.post(position);
+                BusProvider.getInstanceGame().post(position);
             }
         });
     }
