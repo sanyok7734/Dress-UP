@@ -71,9 +71,8 @@ public class FragmentWellDone extends Fragment {
     }
 
 
-
-    @OnTouch ({R.id.button_restart, R.id.button_back,
-               R.id.button_fb, R.id.button_twi, R.id.button_wa, R.id.button_email})
+    @OnTouch({R.id.button_restart, R.id.button_back,
+            R.id.button_fb, R.id.button_twi, R.id.button_wa, R.id.button_email})
     public boolean onTouch(View button, MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
@@ -92,7 +91,7 @@ public class FragmentWellDone extends Fragment {
                         break;
                     case R.id.button_restart:
                         MainPlayer.getInstance(getActivity()).resetPlayer();
-                        for(int i = 0; i < MainActivity.fragmentManager.getBackStackEntryCount(); ++i) {
+                        for (int i = 0; i < MainActivity.fragmentManager.getBackStackEntryCount(); ++i) {
                             MainActivity.fragmentManager.popBackStack();
                         }
                         BusProvider.getInstanceMain().post(new FragmentGame());
@@ -172,6 +171,7 @@ public class FragmentWellDone extends Fragment {
                 } else {
                     sdPath = Environment.getExternalStorageDirectory();
                     sdPath = new File(sdPath.getAbsolutePath() + "/" + "Dress_UP");
+                    // create directory
                     sdPath.mkdirs();
                 }
                 savePicture(sdPath.getPath());
@@ -208,6 +208,7 @@ public class FragmentWellDone extends Fragment {
         banner.setVisibility(View.INVISIBLE);
         return bitmap;
     }
+
 
     private void splash() {
         ObjectAnimator animator = ObjectAnimator.ofFloat(splash, "Alpha", 0, 1);
