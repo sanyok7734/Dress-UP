@@ -62,16 +62,14 @@
                 android:id="@+id/background_photo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:src="@drawable/photo_btn" />
+                android:layout_gravity="center"/>
 
             <ImageView
                 android:id="@+id/icon_photo"
                 android:layout_width="@dimen/photoImageSize"
                 android:layout_height="@dimen/photoImageSize"
                 android:layout_gravity="center"
-                android:layout_marginBottom="@dimen/photoBottom"
-                android:src="@drawable/photo" />
+                android:layout_marginBottom="@dimen/photoBottom"/>
 
         </FrameLayout>
 
@@ -94,16 +92,14 @@
                 <ImageView
                     android:id="@+id/background_fb"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/sharing_fb" />
+                    android:layout_height="match_parent"/>
 
                 <ImageView
                     android:id="@+id/icon_fb"
                     android:layout_width="@dimen/sharingSizeIconF"
                     android:layout_height="@dimen/sharingSizeIconF"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="@dimen/sharingIconMarginBottom"
-                    android:src="@drawable/facebook" />
+                    android:layout_marginBottom="@dimen/sharingIconMarginBottom"/>
 
             </FrameLayout>
 
@@ -116,16 +112,14 @@
                 <ImageView
                     android:id="@+id/background_twi"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/sharing_twi" />
+                    android:layout_height="match_parent"/>
 
                 <ImageView
                     android:id="@+id/icon_twi"
                     android:layout_width="@dimen/sharingSizeIcon"
                     android:layout_height="@dimen/sharingSizeIcon"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="@dimen/sharingIconMarginBottom"
-                    android:src="@drawable/twitter" />
+                    android:layout_marginBottom="@dimen/sharingIconMarginBottom"/>
 
             </FrameLayout>
 
@@ -138,16 +132,14 @@
                 <ImageView
                     android:id="@+id/background_wa"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/sharing_wa" />
+                    android:layout_height="match_parent"/>
 
                 <ImageView
                     android:id="@+id/icon_wa"
                     android:layout_width="@dimen/sharingSizeIcon"
                     android:layout_height="@dimen/sharingSizeIcon"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="@dimen/sharingIconMarginBottom"
-                    android:src="@drawable/whatsapp" />
+                    android:layout_marginBottom="@dimen/sharingIconMarginBottom"/>
 
             </FrameLayout>
 
@@ -159,16 +151,14 @@
                 <ImageView
                     android:id="@+id/background_email"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/email" />
+                    android:layout_height="match_parent"/>
 
                 <ImageView
                     android:id="@+id/icon_email"
                     android:layout_width="@dimen/sharingSizeIcon"
                     android:layout_height="@dimen/sharingSizeIcon"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="@dimen/sharingIconMarginBottom"
-                    android:src="@drawable/mail" />
+                    android:layout_marginBottom="@dimen/sharingIconMarginBottom"/>
 
             </FrameLayout>
 
@@ -185,8 +175,7 @@
             <ImageView
                 android:id="@+id/button_back_background"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/btn_circle" />
+                android:layout_height="match_parent"/>
 
             <ImageView
                 android:id="@+id/button_back_icon"
@@ -196,8 +185,7 @@
                 android:layout_marginBottom="@dimen/buttonNextImageBottom"
                 android:layout_marginLeft="@dimen/buttonNextImageRight"
                 android:layout_marginRight="@dimen/buttonNextImageLeft"
-                android:layout_marginTop="@dimen/buttonNextImageTop"
-                android:src="@drawable/back" />
+                android:layout_marginTop="@dimen/buttonNextImageTop"/>
         </FrameLayout>
 
         <FrameLayout
@@ -214,16 +202,14 @@
             <ImageView
                 android:id="@+id/button_restart_background"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/btn_circle" />
+                android:layout_height="match_parent"/>
 
             <ImageView
                 android:id="@+id/button_restart_icon"
                 android:layout_width="@dimen/restartSize"
                 android:layout_height="@dimen/restartSize"
                 android:layout_gravity="center"
-                android:layout_marginBottom="@dimen/restartBottom"
-                android:src="@drawable/refresh" />
+                android:layout_marginBottom="@dimen/restartBottom" />
         </FrameLayout>
     </RelativeLayout>
 
