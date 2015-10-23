@@ -8,7 +8,7 @@ import android.widget.ImageView;
 
 import com.raccoonapps.worksimple.R;
 import com.raccoonapps.worksimple.components.CategoryWrapper;
-import com.raccoonapps.worksimple.view.FragmentGame;
+import com.raccoonapps.worksimple.eventbus.BusProvider;
 
 import java.util.List;
 
@@ -39,7 +39,7 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHo
                     categoryWrapper.setDrawableButton(R.drawable.btn_right);
                     categoryWrapper.setSelectedCategory(false);
                     notifyItemChanged(position);
-                    FragmentGame.bus.post(false);
+                    BusProvider.getInstanceGame().post(false);
                 } else {
                     for (int i = 0; i < categories.size(); i++) {
                         categories.get(i).setDrawableButton(R.drawable.btn_right);
@@ -49,7 +49,7 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHo
                     categoryWrapper.setDrawableButton(R.drawable.btn_right_p);
                     categoryWrapper.setSelectedCategory(true);
                     notifyItemChanged(position);
-                    FragmentGame.bus.post(categoryWrapper);
+                    BusProvider.getInstanceGame().post(categoryWrapper);
                 }
             }
         });
