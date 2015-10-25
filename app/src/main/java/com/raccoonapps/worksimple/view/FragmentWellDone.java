@@ -38,7 +38,6 @@ import butterknife.OnTouch;
 public class FragmentWellDone extends Fragment {
 
     public static final String WHATSAPP = "whatsapp";
-    public static final String INBOX = "inbox";
     public static final String TWITTER = "twitter";
     public static final String FACEBOOK = "facebook";
 
@@ -70,6 +69,8 @@ public class FragmentWellDone extends Fragment {
         return view;
     }
 
+     /*TODO Image saves not right and I need to solve this.
+     This is IMPORTANT*/
 
     @OnTouch({R.id.button_restart, R.id.button_back,
             R.id.button_fb, R.id.button_twi, R.id.button_wa, R.id.button_email})
@@ -82,12 +83,15 @@ public class FragmentWellDone extends Fragment {
             case MotionEvent.ACTION_UP:
                 button.setAlpha(1);
                 String filesDir = getActivity().getApplication().getFilesDir().getPath();
-                savePicture(filesDir);
+                filesDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/WTF";
+                if (!new File(filesDir).exists()) {
+                    new File(filesDir).mkdirs();
+                }
+/*                savePicture(filesDir);*/
                 switch (button.getId()) {
                     case R.id.button_back:
                         MainPlayer.getInstance(getActivity()).resume();
                         MainActivity.fragmentManager.popBackStack();
-
                         break;
                     case R.id.button_restart:
                         MainPlayer.getInstance(getActivity()).resetPlayer();
@@ -106,7 +110,8 @@ public class FragmentWellDone extends Fragment {
                         shareInSocialNetwork(WHATSAPP, girlImagePath, "Hello, I've created nice girl");
                         break;
                     case R.id.button_email:
-                        shareInSocialNetwork(INBOX, girlImagePath, "Hello, I've created nice girl");
+                        girlImagePath = savePicture(filesDir);
+                        composeEmail("Dress-Up girl");
                         break;
                 }
                 break;
@@ -155,7 +160,23 @@ public class FragmentWellDone extends Fragment {
         BusProvider.getInstanceGame().post(true);
     }
 
-    //TODO {PHOTO BUTTON, SAVING BEFORE SHARING}
+
+    public void composeEmail(String subject) {
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+        emailIntent.setData(Uri.parse("mailto:"));
+        //emailIntent.setType("image/jpg");
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, "");
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        emailIntent.putExtra(Intent.EXTRA_TEXT, "Hello, look at this girl, that I've created");
+        ArrayList<Uri> uris = new ArrayList<>();
+        uris.add(Uri.fromFile(new File(girlImagePath)));
+        emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
+        Log.d("SHARING", "Sending image from path: " + uris.get(0).toString());
+        if (emailIntent.resolveActivity(getActivity().getPackageManager()) != null)
+            startActivity(emailIntent);
+    }
+
+    //TODO {PHOTO BUTTON}
     @OnTouch(R.id.button_photo)
     public boolean onTouchPhoto(View button, MotionEvent event) {
         switch (event.getAction()) {
@@ -174,26 +195,27 @@ public class FragmentWellDone extends Fragment {
                     // create directory
                     sdPath.mkdirs();
                 }
-                savePicture(sdPath.getPath());
+                savePicture("");
                 splash();
                 break;
         }
         return true;
     }
 
-    private void savePicture(String rootPath) {
+    private String savePicture(String rootPath) {
         Bitmap bitmap = getBitmap();
-        FileOutputStream fos = null;
+        FileOutputStream fos;
+        String fullPath = null;
         try {
-            String fullPath = rootPath + "/" + "Dress_UP_"
+            fullPath = rootPath + "/" + "Dress_UP_"
                     + System.currentTimeMillis() + ".jpg";
             fos = new FileOutputStream(fullPath);
-            girlImagePath = fullPath;
             bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
             fos.flush();
             fos.close();
         } catch (Exception e) {
         }
+        return fullPath == null ? "" : fullPath;
     }
 
     private Bitmap getBitmap() {
