@@ -42,10 +42,7 @@ public class FragmentWellDone extends Fragment {
     public static final String TWITTER = "twitter";
     public static final String FACEBOOK = "facebook";
 
-<<<<<<< HEAD
 
-=======
->>>>>>> e7b476086e36a598ad1b863ac76ad09690ee7352
     @Bind(R.id.well_done_girl)
     ImageView wellDoneGirl;
     @Bind(R.id.splash)
@@ -128,23 +125,19 @@ public class FragmentWellDone extends Fragment {
         iconPhoto.setImageResource(R.drawable.photo);
     }
 
-    @OnTouch({R.id.button_restart, R.id.button_back,
-            R.id.button_fb, R.id.button_twi, R.id.button_wa, R.id.button_email})
-    public boolean onTouch(View button, MotionEvent event) {
+
+    @OnTouch({R.id.button_restart, R.id.button_back})
+    public boolean onTouchHandler(View button, MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 button.setAlpha(0.8f);
                 break;
-
             case MotionEvent.ACTION_UP:
                 button.setAlpha(1);
-                String filesDir = getActivity().getApplication().getFilesDir().getPath();
-                savePicture(filesDir);
                 switch (button.getId()) {
                     case R.id.button_back:
                         MainPlayer.getInstance(getActivity()).resume();
                         MainActivity.fragmentManager.popBackStack();
-
                         break;
                     case R.id.button_restart:
                         MainPlayer.getInstance(getActivity()).resetPlayer();
@@ -153,6 +146,23 @@ public class FragmentWellDone extends Fragment {
                         }
                         BusProvider.getInstanceMain().post(new FragmentGame());
                         break;
+                }
+                break;
+        }
+        return true;
+    }
+
+    @OnTouch({R.id.button_fb, R.id.button_twi, R.id.button_wa, R.id.button_email})
+    public boolean onTouch(View button, MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                button.setAlpha(0.8f);
+                break;
+            case MotionEvent.ACTION_UP:
+                button.setAlpha(1);
+                String filesDir = getActivity().getApplication().getFilesDir().getPath();
+                savePicture(filesDir);
+                switch (button.getId()) {
                     case R.id.button_fb:
                         shareInSocialNetwork(FACEBOOK, girlImagePath, "Hello everyone, I've created nice girl");
                         break;
