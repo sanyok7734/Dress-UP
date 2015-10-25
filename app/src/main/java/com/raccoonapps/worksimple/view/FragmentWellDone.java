@@ -43,7 +43,6 @@ public class FragmentWellDone extends Fragment {
 
     @Bind(R.id.well_done_girl)
     ImageView wellDoneGirl;
-
     @Bind(R.id.splash)
     View splash;
     @Bind(R.id.root)
@@ -53,6 +52,41 @@ public class FragmentWellDone extends Fragment {
     @Bind(R.id.banner_well_done)
     FrameLayout banner;
 
+    @Bind(R.id.button_restart_background)
+    ImageView buttonRestartBackground;
+    @Bind(R.id.button_restart_icon)
+    ImageView buttonRestartIcon;
+
+    @Bind(R.id.button_back_background)
+    ImageView buttonBackBackground;
+    @Bind(R.id.button_back_icon)
+    ImageView buttonBackIcon;
+
+    @Bind(R.id.background_email)
+    ImageView backgroundEmail;
+    @Bind(R.id.icon_email)
+    ImageView iconEmail;
+
+    @Bind(R.id.background_wa)
+    ImageView backgroundWa;
+    @Bind(R.id.icon_wa)
+    ImageView iconWa;
+
+    @Bind(R.id.background_twi)
+    ImageView backgroundTwi;
+    @Bind(R.id.icon_twi)
+    ImageView iconTwi;
+
+    @Bind(R.id.background_fb)
+    ImageView backgroundFb;
+    @Bind(R.id.icon_fb)
+    ImageView iconFb;
+
+    @Bind(R.id.background_photo)
+    ImageView backgroundPhoto;
+    @Bind(R.id.icon_photo)
+    ImageView iconPhoto;
+
     private String girlImagePath;
 
 
@@ -61,6 +95,8 @@ public class FragmentWellDone extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.content_well_done, container, false);
         ButterKnife.bind(this, view);
+        setIcon();
+
         Bundle bundle = this.getArguments();
         Bitmap bitmap = bundle.getParcelable("well_done");
         BitmapDrawable wellDoneGirlImage = new BitmapDrawable(getResources(), bitmap);
@@ -69,8 +105,23 @@ public class FragmentWellDone extends Fragment {
         return view;
     }
 
-     /*TODO Image saves not right and I need to solve this.
-     This is IMPORTANT*/
+    //setIcon in button
+    private void setIcon() {
+        buttonRestartBackground.setImageResource(R.drawable.btn_circle);
+        buttonRestartIcon.setImageResource(R.drawable.refresh);
+        buttonBackBackground.setImageResource(R.drawable.btn_circle);
+        buttonBackIcon.setImageResource(R.drawable.back);
+        backgroundEmail.setImageResource(R.drawable.email);
+        iconEmail.setImageResource(R.drawable.mail);
+        backgroundWa.setImageResource(R.drawable.sharing_wa);
+        iconWa.setImageResource(R.drawable.whatsapp);
+        backgroundTwi.setImageResource(R.drawable.sharing_twi);
+        iconTwi.setImageResource(R.drawable.twitter);
+        backgroundFb.setImageResource(R.drawable.sharing_fb);
+        iconFb.setImageResource(R.drawable.facebook);
+        backgroundPhoto.setImageResource(R.drawable.photo_btn);
+        iconPhoto.setImageResource(R.drawable.photo);
+    }
 
     @OnTouch({R.id.button_restart, R.id.button_back,
             R.id.button_fb, R.id.button_twi, R.id.button_wa, R.id.button_email})
@@ -226,6 +277,7 @@ public class FragmentWellDone extends Fragment {
         View rootView = (View) root;
         rootView.setDrawingCacheEnabled(true);
         Bitmap bitmap = rootView.getDrawingCache();
+
         buttons.setVisibility(View.VISIBLE);
         banner.setVisibility(View.INVISIBLE);
         return bitmap;
