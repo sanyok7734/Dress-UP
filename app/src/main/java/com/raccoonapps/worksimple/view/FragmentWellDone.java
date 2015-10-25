@@ -4,13 +4,11 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.app.Fragment;
 import android.content.Intent;
-import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,8 +26,6 @@ import com.raccoonapps.worksimple.music.MainPlayer;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -40,6 +36,7 @@ public class FragmentWellDone extends Fragment {
     public static final String WHATSAPP = "whatsapp";
     public static final String TWITTER = "twitter";
     public static final String FACEBOOK = "facebook";
+    private final File externalStorageDirectory = Environment.getExternalStorageDirectory();
 
     @Bind(R.id.well_done_girl)
     ImageView wellDoneGirl;
@@ -87,8 +84,6 @@ public class FragmentWellDone extends Fragment {
     @Bind(R.id.icon_photo)
     ImageView iconPhoto;
 
-    private String girlImagePath;
-
 
     @Nullable
     @Override
@@ -105,7 +100,6 @@ public class FragmentWellDone extends Fragment {
         return view;
     }
 
-    //setIcon in button
     private void setIcon() {
         buttonRestartBackground.setImageResource(R.drawable.btn_circle);
         buttonRestartIcon.setImageResource(R.drawable.refresh);
@@ -133,12 +127,6 @@ public class FragmentWellDone extends Fragment {
 
             case MotionEvent.ACTION_UP:
                 button.setAlpha(1);
-                String filesDir = getActivity().getApplication().getFilesDir().getPath();
-                filesDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/WTF";
-                if (!new File(filesDir).exists()) {
-                    new File(filesDir).mkdirs();
-                }
-/*                savePicture(filesDir);*/
                 switch (button.getId()) {
                     case R.id.button_back:
                         MainPlayer.getInstance(getActivity()).resume();
@@ -152,17 +140,17 @@ public class FragmentWellDone extends Fragment {
                         BusProvider.getInstanceMain().post(new FragmentGame());
                         break;
                     case R.id.button_fb:
-                        shareInSocialNetwork(FACEBOOK, girlImagePath, "Hello everyone, I've created nice girl");
                         break;
                     case R.id.button_twi:
-                        shareInSocialNetwork(TWITTER, girlImagePath, "Hello everyone, I've created nice girl!!!");
                         break;
                     case R.id.button_wa:
-                        shareInSocialNetwork(WHATSAPP, girlImagePath, "Hello, I've created nice girl");
                         break;
                     case R.id.button_email:
-                        girlImagePath = savePicture(filesDir);
-                        composeEmail("Dress-Up girl");
+                        String externalStorageDirectory = Environment.getExternalStorageDirectory() + "/DRESS_UP";
+                        if (!new File(externalStorageDirectory).exists())
+                            new File(externalStorageDirectory).mkdirs();
+                        String cachedPicture = savePicture(externalStorageDirectory);
+                        shareViaEmail(cachedPicture);
                         break;
                 }
                 break;
@@ -170,61 +158,22 @@ public class FragmentWellDone extends Fragment {
         return true;
     }
 
-
-    private void shareInSocialNetwork(String applicationName, String imagePath, String message) {
-        try {
-            ArrayList<Intent> intents = new ArrayList<>();
-            Intent shareIntent = new Intent(Intent.ACTION_SEND);
-            shareIntent.setType("image/jpeg");
-            List<ResolveInfo> resolveInfos = getActivity().getPackageManager().queryIntentActivities(shareIntent, 0);
-            if (!resolveInfos.isEmpty()) {
-                for (ResolveInfo info : resolveInfos) {
-                    Intent targetShare = new Intent(Intent.ACTION_SEND);
-                    targetShare.setType("image/jpeg");
-                    boolean isPackageNameContains = info.activityInfo.packageName.toLowerCase().contains(applicationName);
-                    boolean isNameContains = info.activityInfo.name.toLowerCase().contains(applicationName);
-                    if (isPackageNameContains || isNameContains) {
-                        targetShare.putExtra(Intent.EXTRA_TEXT, message);
-                        targetShare.putExtra(Intent.EXTRA_SUBJECT, "Pretty-girl photo");
-                        Log.d("SHARING", "Image path = " + imagePath);
-                        targetShare.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(imagePath)));
-                        targetShare.setPackage(info.activityInfo.packageName);
-                        Log.d("SHARING", info.activityInfo.name);
-                        intents.add(targetShare);
-                        Log.d("SHARING", "Package name: " + targetShare.getPackage());
-                    }
-                }
-                Intent chooserIntent = Intent.createChooser(
-                        intents.remove(0), "Select application to share by image");
-                chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS,
-                        intents.toArray(new Parcelable[intents.size()]));
-                startActivity(chooserIntent);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private void shareViaEmail(String picturePath) {
+        Intent emailIntent = new Intent(android.content.Intent.ACTION_SENDTO);
+        Log.d("SHARING", "Image path = " + picturePath);
+        emailIntent.setType("application/image");
+        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Test Subject");
+        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "From My App");
+        File image = new File(picturePath);
+        emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(image));
+        emailIntent.setData(Uri.parse("mailto:"));
+        startActivity(Intent.createChooser(emailIntent, "Send mail..."));
     }
 
     @Override
     public void onResume() {
         super.onResume();
         BusProvider.getInstanceGame().post(true);
-    }
-
-
-    public void composeEmail(String subject) {
-        Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
-        emailIntent.setData(Uri.parse("mailto:"));
-        //emailIntent.setType("image/jpg");
-        emailIntent.putExtra(Intent.EXTRA_EMAIL, "");
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
-        emailIntent.putExtra(Intent.EXTRA_TEXT, "Hello, look at this girl, that I've created");
-        ArrayList<Uri> uris = new ArrayList<>();
-        uris.add(Uri.fromFile(new File(girlImagePath)));
-        emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
-        Log.d("SHARING", "Sending image from path: " + uris.get(0).toString());
-        if (emailIntent.resolveActivity(getActivity().getPackageManager()) != null)
-            startActivity(emailIntent);
     }
 
     //TODO {PHOTO BUTTON}
@@ -236,17 +185,10 @@ public class FragmentWellDone extends Fragment {
                 break;
             case MotionEvent.ACTION_UP:
                 button.setAlpha(1);
-                File sdPath;
-                if (!Environment.getExternalStorageState().equals(
-                        Environment.MEDIA_MOUNTED)) {
-                    sdPath = new File("Dress_UP");
-                } else {
-                    sdPath = Environment.getExternalStorageDirectory();
-                    sdPath = new File(sdPath.getAbsolutePath() + "/" + "Dress_UP");
-                    // create directory
-                    sdPath.mkdirs();
-                }
-                savePicture("");
+                if (externalStorageDirectory.exists())
+                    savePicture(externalStorageDirectory.toString());
+                else
+                    savePicture(getActivity().getApplication().getFilesDir().getAbsolutePath());
                 splash();
                 break;
         }

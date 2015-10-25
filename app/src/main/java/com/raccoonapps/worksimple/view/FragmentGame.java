@@ -255,7 +255,7 @@ public class FragmentGame extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        MainPlayer.getInstance(getActivity()).resume();
+        //MainPlayer.getInstance(getActivity()).resume();
     }
 
     @Subscribe
