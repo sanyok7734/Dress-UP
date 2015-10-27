@@ -133,6 +133,7 @@
         android:background="#38417c"
         android:visibility="visible">
 
+
         <include layout="@layout/banner"/>
 
     </LinearLayout>

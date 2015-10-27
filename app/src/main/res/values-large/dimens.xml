@@ -28,7 +28,7 @@
     <dimen name="margeRightStart">-4dp</dimen>
 
     <dimen name="scrollButtonSize">80dp</dimen>
-    <dimen name="scrollButtonPadding">22dp</dimen>
+    <dimen name="scrollButtonPadding">28dp</dimen>
 
     <dimen name="panelAccessoryWidth">170dp</dimen>
 

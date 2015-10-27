@@ -20,6 +20,8 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHo
         this.categories = categories;
     }
 
+
+
     @Override
     public AdapterCategory.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category, parent, false);
@@ -53,6 +55,8 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHo
                 }
             }
         });
+
+
     }
 
     @Override

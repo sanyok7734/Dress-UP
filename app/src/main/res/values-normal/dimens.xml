@@ -29,7 +29,7 @@
     <dimen name="margeRightStart">-3dp</dimen>
 
     <dimen name="scrollButtonSize">45dp</dimen>
-    <dimen name="scrollButtonPadding">13dp</dimen>
+    <dimen name="scrollButtonPadding">15dp</dimen>
 
     <dimen name="panelAccessoryWidth">100dp</dimen>
     <dimen name="panelAccessoryMarginTop">14dp</dimen>
@@ -47,7 +47,7 @@
     <dimen name="buttonSoundMarginTop">5dp</dimen>
 
 
-    <dimen name="logoNinjaBottom">-11dp</dimen>
+    <dimen name="logoNinjaBottom">-22dp</dimen>
     <dimen name="logoTextSize">15sp</dimen>
 
     <dimen name="photoSize">110dp</dimen>
