@@ -38,7 +38,6 @@ import butterknife.OnTouch;
 public class FragmentWellDone extends Fragment {
 
     public static final String WHATSAPP = "whatsapp";
-    public static final String INBOX = "inbox";
     public static final String TWITTER = "twitter";
     public static final String FACEBOOK = "facebook";
 
@@ -134,6 +133,14 @@ public class FragmentWellDone extends Fragment {
                 break;
             case MotionEvent.ACTION_UP:
                 button.setAlpha(1);
+
+                String filesDir = getActivity().getApplication().getFilesDir().getPath();
+                filesDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/WTF";
+                if (!new File(filesDir).exists()) {
+                    new File(filesDir).mkdirs();
+                }
+/*                savePicture(filesDir);*/
+
                 switch (button.getId()) {
                     case R.id.button_back:
                         MainPlayer.getInstance(getActivity()).resume();
@@ -173,7 +180,17 @@ public class FragmentWellDone extends Fragment {
                         shareInSocialNetwork(WHATSAPP, girlImagePath, "Hello, I've created nice girl");
                         break;
                     case R.id.button_email:
-                        shareInSocialNetwork(INBOX, girlImagePath, "Hello, I've created nice girl");
+                        /*girlImagePath = savePicture(filesDir);
+                        composeEmail("Dress-Up girl");*/
+                        girlImagePath = savePicture(filesDir);
+                        Intent emailIntent = new Intent(android.content.Intent.ACTION_SENDTO);
+                        emailIntent.setType("application/image");
+                        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Test Subject");
+                        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "From My App");
+                        emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file:///sdcard/lolo11445543900252.jpg"));
+                        emailIntent.setData(Uri.parse("mailto:"));
+                        startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+                        Log.d("SHARING", "Image path = " + "file://"+girlImagePath);
                         break;
                 }
                 break;
@@ -222,7 +239,24 @@ public class FragmentWellDone extends Fragment {
         BusProvider.getInstanceGame().post(true);
     }
 
-    //TODO {PHOTO BUTTON, SAVING BEFORE SHARING}
+
+    public void composeEmail(String subject) {
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+        emailIntent.setData(Uri.parse("mailto:"));
+
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, "");
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        emailIntent.putExtra(Intent.EXTRA_TEXT, "Hello, look at this girl, that I've created");
+        ArrayList<Uri> uris = new ArrayList<>();
+        uris.add(Uri.fromFile(new File(girlImagePath)));
+        emailIntent.setType("image/jpg");
+        emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
+        Log.d("SHARING", "Sending image from path: " + uris.get(0).toString());
+        if (emailIntent.resolveActivity(getActivity().getPackageManager()) != null)
+            startActivity(emailIntent);
+    }
+
+    //TODO {PHOTO BUTTON}
     @OnTouch(R.id.button_photo)
     public boolean onTouchPhoto(View button, MotionEvent event) {
         switch (event.getAction()) {
@@ -241,26 +275,27 @@ public class FragmentWellDone extends Fragment {
                     // create directory
                     sdPath.mkdirs();
                 }
-                savePicture(sdPath.getPath());
+                savePicture("");
                 splash();
                 break;
         }
         return true;
     }
 
-    private void savePicture(String rootPath) {
+    private String savePicture(String rootPath) {
         Bitmap bitmap = getBitmap();
-        FileOutputStream fos = null;
+        FileOutputStream fos;
+        String fullPath = null;
         try {
-            String fullPath = rootPath + "/" + "Dress_UP_"
+            fullPath = rootPath + "/" + "Dress_UP_"
                     + System.currentTimeMillis() + ".jpg";
             fos = new FileOutputStream(fullPath);
-            girlImagePath = fullPath;
             bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
             fos.flush();
             fos.close();
         } catch (Exception e) {
         }
+        return fullPath == null ? "" : fullPath;
     }
 
     private Bitmap getBitmap() {
