@@ -103,6 +103,10 @@ public class FragmentWellDone extends Fragment {
         BitmapDrawable wellDoneGirlImage = new BitmapDrawable(getResources(), bitmap);
 
         wellDoneGirl.setImageDrawable(wellDoneGirlImage);
+
+        //hide panel in screen FragmentGame
+        BusProvider.getInstanceGame().post("RefreshGameScreen");
+
         return view;
     }
 

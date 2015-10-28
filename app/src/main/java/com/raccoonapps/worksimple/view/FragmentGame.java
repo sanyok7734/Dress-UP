@@ -201,8 +201,8 @@ public class FragmentGame extends Fragment {
 
     //close panel accessories
     @Subscribe
-    public void panelAccessoryHide(Boolean aBoolean) {
-        if (!aBoolean) {
+    public void panelAccessoryHide(String panel) {
+        if (panel.equals("Panel")) {
             ObjectAnimator animXPanel = ObjectAnimator.ofFloat(additionalPanel, "x", contentGirl.getWidth());
             ObjectAnimator animXScreen = ObjectAnimator.ofFloat(contentGirl, "x", 0);
             AnimatorSet animSet = new AnimatorSet();
@@ -211,6 +211,7 @@ public class FragmentGame extends Fragment {
             animSet.start();
             additionalPanel.setTag("close");
         }
+        Log.d("TESTSANO", "panelAccessoryHide");
     }
 
     // pressing on accessory for him placement
@@ -251,31 +252,9 @@ public class FragmentGame extends Fragment {
 
     @OnTouch({R.id.button_back, R.id.button_next, R.id.button_sound})
     public boolean onTouch(View v, MotionEvent event) {
-
-
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN: // press
                 v.setAlpha(0.8f);
-                if (v.getId() == R.id.button_next) {
-                    background.setImageResource(R.drawable.welldone);
-                    contentGame.setVisibility(View.INVISIBLE);
-                    if (additionalPanel.getTag().equals("open")) {
-                        contentGirl.setTranslationX(0);
-                        additionalPanel.setVisibility(View.INVISIBLE);
-                    }
-
-                    View v1 = contentGirl.getRootView();
-                    v1.setDrawingCacheEnabled(true);
-                    bitmap = v1.getDrawingCache();
-
-                    background.setImageResource(R.drawable.game);
-                    contentGame.setVisibility(View.VISIBLE);
-                    if (additionalPanel.getTag().equals("open")) {
-                        contentGirl.setTranslationX(-additionalPanel.getWidth());
-                        additionalPanel.setVisibility(View.VISIBLE);
-                    }
-
-                }
                 break;
             case MotionEvent.ACTION_UP: // release
                 v.setAlpha(1);
@@ -297,6 +276,24 @@ public class FragmentGame extends Fragment {
                     case R.id.button_next:
                         MainPlayer.getInstance(getActivity()).pause();
 
+                        background.setImageResource(R.drawable.welldone);
+                        contentGame.setVisibility(View.INVISIBLE);
+                        if (additionalPanel.getTag().equals("open")) {
+                            contentGirl.setTranslationX(0);
+                            additionalPanel.setVisibility(View.INVISIBLE);
+                        }
+
+                        View v1 = contentGirl.getRootView();
+                        v1.setDrawingCacheEnabled(true);
+                        bitmap = v1.getDrawingCache();
+
+                        background.setImageResource(R.drawable.game);
+                        contentGame.setVisibility(View.VISIBLE);
+                        if (additionalPanel.getTag().equals("open")) {
+                            contentGirl.setTranslationX(-additionalPanel.getWidth());
+                            additionalPanel.setVisibility(View.VISIBLE);
+                        }
+
                         Bundle bundle = new Bundle();
                         bundle.putParcelable("well_done", bitmap);
                         FragmentWellDone fragmentWellDone = new FragmentWellDone();
@@ -309,6 +306,14 @@ public class FragmentGame extends Fragment {
         return true;
     }
 
+    @Subscribe
+    public void refreshScreen(String refresh) {
+        if (refresh.equals("RefreshGameScreen")){
+            panelAccessoryHide("Panel");
+            adapterCategory.resetCategoryIcon();
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -319,6 +324,7 @@ public class FragmentGame extends Fragment {
     public void subscribeSomeStuff(Boolean object) {
         if (object)
             MainPlayer.getInstance(getActivity()).pause();
+        Log.d("TESTSANO", "subscribeSomeStuff");
     }
 
     @Override
