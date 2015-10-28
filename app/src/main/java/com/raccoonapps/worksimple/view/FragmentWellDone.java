@@ -42,6 +42,12 @@ public class FragmentWellDone extends Fragment {
     public static final String FACEBOOK = "facebook";
 
 
+    /**
+     * Default pictures directory in Android
+     */
+    private final File externalStoragePicturesDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+
+
     @Bind(R.id.well_done_girl)
     ImageView wellDoneGirl;
     @Bind(R.id.splash)
@@ -88,8 +94,6 @@ public class FragmentWellDone extends Fragment {
     @Bind(R.id.icon_photo)
     ImageView iconPhoto;
 
-    private String girlImagePath;
-
 
     @Nullable
     @Override
@@ -110,7 +114,6 @@ public class FragmentWellDone extends Fragment {
         return view;
     }
 
-    //setIcon in button
     private void setIcon() {
         buttonRestartBackground.setImageResource(R.drawable.btn_circle);
         buttonRestartIcon.setImageResource(R.drawable.refresh);
@@ -138,12 +141,10 @@ public class FragmentWellDone extends Fragment {
             case MotionEvent.ACTION_UP:
                 button.setAlpha(1);
 
-                String filesDir = getActivity().getApplication().getFilesDir().getPath();
-                filesDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/WTF";
-                if (!new File(filesDir).exists()) {
-                    new File(filesDir).mkdirs();
-                }
-/*                savePicture(filesDir);*/
+                String externalStorageDirectory = Environment.getExternalStorageDirectory() + "/DRESS_UP";
+                if (!new File(externalStorageDirectory).exists())
+                    new File(externalStorageDirectory).mkdirs();
+                String cachedPicture = savePicture(externalStorageDirectory);
 
                 switch (button.getId()) {
                     case R.id.button_back:
@@ -169,32 +170,41 @@ public class FragmentWellDone extends Fragment {
             case MotionEvent.ACTION_DOWN:
                 button.setAlpha(0.8f);
                 break;
+
             case MotionEvent.ACTION_UP:
                 button.setAlpha(1);
-                String filesDir = getActivity().getApplication().getFilesDir().getPath();
-                savePicture(filesDir);
+                String externalStorageDirectory = Environment.getExternalStorageDirectory() + "/DRESS_UP";
+                if (!new File(externalStorageDirectory).exists())
+                    new File(externalStorageDirectory).mkdirs();
+                String cachedPicture = savePicture(externalStorageDirectory);
+
                 switch (button.getId()) {
+
+                    case R.id.button_back:
+                        MainPlayer.getInstance(getActivity()).resume();
+                        MainActivity.fragmentManager.popBackStack();
+                        break;
+
+                    case R.id.button_restart:
+                        MainPlayer.getInstance(getActivity()).resetPlayer();
+                        for (int i = 0; i < MainActivity.fragmentManager.getBackStackEntryCount(); ++i) {
+                            MainActivity.fragmentManager.popBackStack();
+                        }
+                        BusProvider.getInstanceMain().post(new FragmentGame());
+                        break;
+
                     case R.id.button_fb:
-                        shareInSocialNetwork(FACEBOOK, girlImagePath, "Hello everyone, I've created nice girl");
+                        // TODO FACEBOOK API NEEDED
+                        shareInSocialNetwork(FACEBOOK, cachedPicture, "Hello, look at this nice girl!!!");
                         break;
                     case R.id.button_twi:
-                        shareInSocialNetwork(TWITTER, girlImagePath, "Hello everyone, I've created nice girl!!!");
+                        shareInSocialNetwork(TWITTER, cachedPicture, "Hello, look at this nice girl!!!");
                         break;
                     case R.id.button_wa:
-                        shareInSocialNetwork(WHATSAPP, girlImagePath, "Hello, I've created nice girl");
+                        shareInSocialNetwork(WHATSAPP, cachedPicture, "Hello, look at this nice girl!!!");
                         break;
                     case R.id.button_email:
-                        /*girlImagePath = savePicture(filesDir);
-                        composeEmail("Dress-Up girl");*/
-                        girlImagePath = savePicture(filesDir);
-                        Intent emailIntent = new Intent(android.content.Intent.ACTION_SENDTO);
-                        emailIntent.setType("application/image");
-                        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Test Subject");
-                        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "From My App");
-                        emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file:///sdcard/lolo11445543900252.jpg"));
-                        emailIntent.setData(Uri.parse("mailto:"));
-                        startActivity(Intent.createChooser(emailIntent, "Send mail..."));
-                        Log.d("SHARING", "Image path = " + "file://"+girlImagePath);
+                        shareViaEmail(cachedPicture);
                         break;
                 }
                 break;
@@ -202,6 +212,17 @@ public class FragmentWellDone extends Fragment {
         return true;
     }
 
+    private void shareViaEmail(String picturePath) {
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+        Log.d("SHARING", "Image path = " + picturePath);
+        emailIntent.setType("message/rfc822");
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Test Subject");
+        emailIntent.putExtra(Intent.EXTRA_TEXT, "From My App");
+        File image = new File(picturePath);
+        emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(image));
+        emailIntent.setData(Uri.parse("mailto:"));
+        startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+    }
 
     private void shareInSocialNetwork(String applicationName, String imagePath, String message) {
         try {
@@ -244,22 +265,6 @@ public class FragmentWellDone extends Fragment {
     }
 
 
-    public void composeEmail(String subject) {
-        Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
-        emailIntent.setData(Uri.parse("mailto:"));
-
-        emailIntent.putExtra(Intent.EXTRA_EMAIL, "");
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
-        emailIntent.putExtra(Intent.EXTRA_TEXT, "Hello, look at this girl, that I've created");
-        ArrayList<Uri> uris = new ArrayList<>();
-        uris.add(Uri.fromFile(new File(girlImagePath)));
-        emailIntent.setType("image/jpg");
-        emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
-        Log.d("SHARING", "Sending image from path: " + uris.get(0).toString());
-        if (emailIntent.resolveActivity(getActivity().getPackageManager()) != null)
-            startActivity(emailIntent);
-    }
-
     //TODO {PHOTO BUTTON}
     @OnTouch(R.id.button_photo)
     public boolean onTouchPhoto(View button, MotionEvent event) {
@@ -269,17 +274,13 @@ public class FragmentWellDone extends Fragment {
                 break;
             case MotionEvent.ACTION_UP:
                 button.setAlpha(1);
-                File sdPath;
-                if (!Environment.getExternalStorageState().equals(
-                        Environment.MEDIA_MOUNTED)) {
-                    sdPath = new File("Dress_UP");
-                } else {
-                    sdPath = Environment.getExternalStorageDirectory();
-                    sdPath = new File(sdPath.getAbsolutePath() + "/" + "Dress_UP");
-                    // create directory
-                    sdPath.mkdirs();
+                if (externalStoragePicturesDirectory.exists()) {
+                    File fullPath = new File(externalStoragePicturesDirectory.getAbsolutePath() + "/DressUp");
+                    fullPath.mkdirs();
+                    savePicture(fullPath.getAbsolutePath());
                 }
-                savePicture("");
+                else
+                    savePicture(getActivity().getApplication().getFilesDir().getAbsolutePath());
                 splash();
                 break;
         }
@@ -297,7 +298,7 @@ public class FragmentWellDone extends Fragment {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
             fos.flush();
             fos.close();
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
         return fullPath == null ? "" : fullPath;
     }
