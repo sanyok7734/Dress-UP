@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -42,7 +43,7 @@ import butterknife.OnTouch;
 public class FragmentGame extends Fragment {
 
     private AdapterCategory adapterCategory;
-    private RecyclerView.LayoutManager mLayoutManager;
+    private LinearLayoutManager mLayoutManager;
     private RecyclerView.LayoutManager layoutAccessory;
 
     private Bitmap bitmap = null;
@@ -52,6 +53,7 @@ public class FragmentGame extends Fragment {
     private CategoryWrapper categoryWrapper;
 
     private boolean scroll = true;
+    private boolean isResumed = false;
 
     @Bind(R.id.list_category)
     RecyclerView listCategory;
@@ -61,6 +63,8 @@ public class FragmentGame extends Fragment {
     FrameLayout contentGirl;
     @Bind(R.id.girl)
     ImageView girlImage;
+    @Bind(R.id.scroll_category)
+    ImageView scrollCategory;
 
     @Bind(R.id.background)
     ImageView background;
@@ -82,6 +86,7 @@ public class FragmentGame extends Fragment {
     ImageView buttonNextBackground;
     @Bind(R.id.button_next_image)
     ImageView buttonNextImage;
+    private int visibleCategoriesCount;
 
     @Nullable
     @Override
@@ -119,12 +124,63 @@ public class FragmentGame extends Fragment {
         listCategory.setAdapter(adapterCategory);
         listCategory.getItemAnimator().setChangeDuration(0);
 
-/*        buttonSoundBackground.setOnTouchListener(this);
-        buttonNextBackground.setOnTouchListener(this);
-        buttonBackBackground.setOnTouchListener(this);*/
+        listCategory.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if(mLayoutManager.findFirstCompletelyVisibleItemPosition()==0) {
+                    Log.d("SCROLL", "TOP");
+                    scrollCategory.setImageResource(R.drawable.scroll_ic);
+                }
+                int allItemCategory = 0;
+                //TODO CHANGE IDEOTE
+                try {
+                    allItemCategory = ApplicationPropertiesLoader.getLoader(getActivity()).getAllCategories().size();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (mLayoutManager.findLastCompletelyVisibleItemPosition() == allItemCategory - 1) {
+                    Log.d("SCROLL", "END");
+                    scrollCategory.setImageResource(R.drawable.refresh);
+                }
+            }
+        });
 
+        ViewGroup.LayoutParams layoutParamList = listCategory.getLayoutParams();
+        layoutParamList.height = getCategoriesListHeight();
+        listCategory.setLayoutParams(layoutParamList);
 
         return view;
+    }
+
+    private int getCategoriesListHeight() {
+        int allItemCategory = 7;
+        double listHeight;
+        double nBtnSize = (int) getResources().getDimension(R.dimen.buttonNextWidthHeight);
+        double mTopBtnSize = (int) getResources().getDimension(R.dimen.buttonNextTop);
+        double mBottomBtnSize = (int) getResources().getDimension(R.dimen.buttonNextTop);
+        double scrBtnSize = (int) getResources().getDimension(R.dimen.scrollButtonSize);
+        double categoryItemHeight = (int) getResources().getDimension(R.dimen.categoryWidthHeight);
+
+        double sumSizeButton = nBtnSize + mTopBtnSize + mBottomBtnSize + scrBtnSize;
+        double categoryHeight = MainActivity.screenHeight - sumSizeButton;
+
+        visibleCategoriesCount = (int) (categoryHeight / categoryItemHeight);
+        //TODO ----------------------
+        try {
+           allItemCategory = ApplicationPropertiesLoader.getLoader(getActivity()).getAllCategories().size();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (allItemCategory <= visibleCategoriesCount) {
+            listHeight = allItemCategory * categoryItemHeight;
+            scrollCategory.setVisibility(View.GONE);
+        } else {
+            listHeight = visibleCategoriesCount * categoryItemHeight;
+            scrollCategory.setVisibility(View.VISIBLE);
+        }
+        return (int) listHeight;
     }
 
     //click on category and open panel accessories
@@ -144,8 +200,8 @@ public class FragmentGame extends Fragment {
 
     //close panel accessories
     @Subscribe
-    public void panelAccessoryHide(Boolean aBoolean) {
-        if (!aBoolean) {
+    public void panelAccessoryHide(String panel) {
+        if (panel.equals("Panel")) {
             ObjectAnimator animXPanel = ObjectAnimator.ofFloat(additionalPanel, "x", contentGirl.getWidth());
             ObjectAnimator animXScreen = ObjectAnimator.ofFloat(contentGirl, "x", 0);
             AnimatorSet animSet = new AnimatorSet();
@@ -154,6 +210,7 @@ public class FragmentGame extends Fragment {
             animSet.start();
             additionalPanel.setTag("close");
         }
+        Log.d("TESTSANO", "panelAccessoryHide");
     }
 
     // pressing on accessory for him placement
@@ -173,12 +230,12 @@ public class FragmentGame extends Fragment {
     public void scrollCategory() {
         if (scroll) {
             int itemHeight = listCategory.getChildAt(0).getHeight();
-            int countCategory = categoryWrappers.size() - 7;
+            int countCategory = categoryWrappers.size() - visibleCategoriesCount;
             listCategory.smoothScrollBy(itemHeight, itemHeight * countCategory);
             scroll = false;
         } else {
             int itemHeight = listCategory.getChildAt(0).getHeight();
-            int countCategory = categoryWrappers.size() - 7;
+            int countCategory = categoryWrappers.size() - visibleCategoriesCount;
             listCategory.smoothScrollBy(itemHeight, -itemHeight * countCategory);
             scroll = true;
         }
@@ -194,31 +251,9 @@ public class FragmentGame extends Fragment {
 
     @OnTouch({R.id.button_back, R.id.button_next, R.id.button_sound})
     public boolean onTouch(View v, MotionEvent event) {
-
-
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN: // press
                 v.setAlpha(0.8f);
-                if (v.getId() == R.id.button_next) {
-                    background.setImageResource(R.drawable.welldone);
-                    contentGame.setVisibility(View.INVISIBLE);
-                    if (additionalPanel.getTag().equals("open")) {
-                        contentGirl.setTranslationX(0);
-                        additionalPanel.setVisibility(View.INVISIBLE);
-                    }
-
-                    View v1 = contentGirl.getRootView();
-                    v1.setDrawingCacheEnabled(true);
-                    bitmap = v1.getDrawingCache();
-
-                    background.setImageResource(R.drawable.game);
-                    contentGame.setVisibility(View.VISIBLE);
-                    if (additionalPanel.getTag().equals("open")) {
-                        contentGirl.setTranslationX(-additionalPanel.getWidth());
-                        additionalPanel.setVisibility(View.VISIBLE);
-                    }
-
-                }
                 break;
             case MotionEvent.ACTION_UP: // release
                 v.setAlpha(1);
@@ -240,6 +275,24 @@ public class FragmentGame extends Fragment {
                     case R.id.button_next:
                         MainPlayer.getInstance(getActivity()).pause();
 
+                        background.setImageResource(R.drawable.welldone);
+                        contentGame.setVisibility(View.INVISIBLE);
+                        if (additionalPanel.getTag().equals("open")) {
+                            contentGirl.setTranslationX(0);
+                            additionalPanel.setVisibility(View.INVISIBLE);
+                        }
+
+                        View v1 = contentGirl.getRootView();
+                        v1.setDrawingCacheEnabled(true);
+                        bitmap = v1.getDrawingCache();
+
+                        background.setImageResource(R.drawable.game);
+                        contentGame.setVisibility(View.VISIBLE);
+                        if (additionalPanel.getTag().equals("open")) {
+                            contentGirl.setTranslationX(-additionalPanel.getWidth());
+                            additionalPanel.setVisibility(View.VISIBLE);
+                        }
+
                         Bundle bundle = new Bundle();
                         bundle.putParcelable("well_done", bitmap);
                         FragmentWellDone fragmentWellDone = new FragmentWellDone();
@@ -252,21 +305,34 @@ public class FragmentGame extends Fragment {
         return true;
     }
 
+    @Subscribe
+    public void refreshScreen(String refresh) {
+        if (refresh.equals("RefreshGameScreen")){
+            panelAccessoryHide("Panel");
+            adapterCategory.resetCategoryIcon();
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
-        //MainPlayer.getInstance(getActivity()).resume();
+        if (isResumed) {
+            MainPlayer.getInstance(getActivity()).resume();
+            isResumed = false;
+        }
     }
 
     @Subscribe
     public void subscribeSomeStuff(Boolean object) {
         if (object)
             MainPlayer.getInstance(getActivity()).pause();
+        Log.d("TESTSANO", "subscribeSomeStuff");
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        isResumed = true;
         MainPlayer.getInstance(getActivity()).pause();
     }
 

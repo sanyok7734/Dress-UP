@@ -105,6 +105,10 @@ public class FragmentWellDone extends Fragment {
         BitmapDrawable wellDoneGirlImage = new BitmapDrawable(getResources(), bitmap);
 
         wellDoneGirl.setImageDrawable(wellDoneGirlImage);
+
+        //hide panel in screen FragmentGame
+        BusProvider.getInstanceGame().post("RefreshGameScreen");
+
         return view;
     }
 
@@ -125,16 +129,16 @@ public class FragmentWellDone extends Fragment {
         iconPhoto.setImageResource(R.drawable.photo);
     }
 
-    @OnTouch({R.id.button_restart, R.id.button_back,
-            R.id.button_fb, R.id.button_twi, R.id.button_wa, R.id.button_email})
-    public boolean onTouch(View button, MotionEvent event) {
+
+    @OnTouch({R.id.button_restart, R.id.button_back})
+    public boolean onTouchHandler(View button, MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 button.setAlpha(0.8f);
                 break;
-
             case MotionEvent.ACTION_UP:
                 button.setAlpha(1);
+
                 String externalStorageDirectory = Environment.getExternalStorageDirectory() + "/DRESS_UP";
                 if (!new File(externalStorageDirectory).exists())
                     new File(externalStorageDirectory).mkdirs();
@@ -151,6 +155,40 @@ public class FragmentWellDone extends Fragment {
                         }
                         BusProvider.getInstanceMain().post(new FragmentGame());
                         break;
+                }
+                break;
+        }
+        return true;
+    }
+
+    @OnTouch({R.id.button_fb, R.id.button_twi, R.id.button_wa, R.id.button_email})
+    public boolean onTouch(View button, MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                button.setAlpha(0.8f);
+                break;
+
+            case MotionEvent.ACTION_UP:
+                button.setAlpha(1);
+                String externalStorageDirectory = Environment.getExternalStorageDirectory() + "/DRESS_UP";
+                if (!new File(externalStorageDirectory).exists())
+                    new File(externalStorageDirectory).mkdirs();
+                String cachedPicture = savePicture(externalStorageDirectory);
+                switch (button.getId()) {
+
+                    case R.id.button_back:
+                        MainPlayer.getInstance(getActivity()).resume();
+                        MainActivity.fragmentManager.popBackStack();
+                        break;
+
+                    case R.id.button_restart:
+                        MainPlayer.getInstance(getActivity()).resetPlayer();
+                        for (int i = 0; i < MainActivity.fragmentManager.getBackStackEntryCount(); ++i) {
+                            MainActivity.fragmentManager.popBackStack();
+                        }
+                        BusProvider.getInstanceMain().post(new FragmentGame());
+                        break;
+
                     case R.id.button_fb:
                         shareInSocialNetwork(FACEBOOK, cachedPicture, "");
                         break;
@@ -237,7 +275,9 @@ public class FragmentWellDone extends Fragment {
                 }
                 else
                     savePicture(getActivity().getApplication().getFilesDir().getAbsolutePath());
+                Log.d("SPLAH", "Before splashing");
                 splash();
+                Log.d("SPLAH", "After splashing");
                 break;
         }
         return true;

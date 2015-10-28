@@ -20,6 +20,8 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHo
         this.categories = categories;
     }
 
+
+
     @Override
     public AdapterCategory.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category, parent, false);
@@ -39,7 +41,7 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHo
                     categoryWrapper.setDrawableButton(R.drawable.btn_right);
                     categoryWrapper.setSelectedCategory(false);
                     notifyItemChanged(position);
-                    BusProvider.getInstanceGame().post(false);
+                    BusProvider.getInstanceGame().post("Panel");
                 } else {
                     for (int i = 0; i < categories.size(); i++) {
                         categories.get(i).setDrawableButton(R.drawable.btn_right);
@@ -53,6 +55,16 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHo
                 }
             }
         });
+
+
+    }
+
+    public void resetCategoryIcon() {
+        for (int i = 0; i < categories.size(); i++) {
+            categories.get(i).setDrawableButton(R.drawable.btn_right);
+            categories.get(i).setSelectedCategory(false);
+            notifyItemChanged(i);
+        }
     }
 
     @Override
