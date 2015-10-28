@@ -97,11 +97,7 @@ public class FragmentGame extends Fragment {
 
         MainPlayer.getInstance(getActivity()).resetPlayer();
         MainPlayer player = MainPlayer.getInstance(getActivity());
-        try {
-            player.play(ApplicationPropertiesLoader.getLoader(getActivity()).getTrackIdByName(ApplicationPropertiesLoader.TRACK.MAIN));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        player.play(ApplicationPropertiesLoader.getLoader(getActivity()).getTrackIdByName(ApplicationPropertiesLoader.TRACK.MAIN));
 
         ViewGroup.LayoutParams layoutParam = girlImage.getLayoutParams();
         layoutParam.height = Squeezing.occupyHeightGirl();
@@ -133,12 +129,7 @@ public class FragmentGame extends Fragment {
                     scrollCategory.setImageResource(R.drawable.scroll_ic);
                 }
                 int allItemCategory = 0;
-                //TODO CHANGE IDEOTE
-                try {
-                    allItemCategory = ApplicationPropertiesLoader.getLoader(getActivity()).getAllCategories().size();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                allItemCategory = ApplicationPropertiesLoader.getLoader(getActivity()).getAllCategories().size();
                 if (mLayoutManager.findLastCompletelyVisibleItemPosition() == allItemCategory - 1) {
                     Log.d("SCROLL", "END");
                     scrollCategory.setImageResource(R.drawable.refresh);
@@ -166,13 +157,7 @@ public class FragmentGame extends Fragment {
         double categoryHeight = MainActivity.screenHeight - sumSizeButton;
 
         visibleCategoriesCount = (int) (categoryHeight / categoryItemHeight);
-        //TODO ----------------------
-        try {
-           allItemCategory = ApplicationPropertiesLoader.getLoader(getActivity()).getAllCategories().size();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        allItemCategory = ApplicationPropertiesLoader.getLoader(getActivity()).getAllCategories().size();
         if (allItemCategory <= visibleCategoriesCount) {
             listHeight = allItemCategory * categoryItemHeight;
             scrollCategory.setVisibility(View.GONE);
@@ -183,7 +168,6 @@ public class FragmentGame extends Fragment {
         return (int) listHeight;
     }
 
-    //click on category and open panel accessories
     @Subscribe
     public void panelAccessoryShow(CategoryWrapper categoryWrapper) {
         this.categoryWrapper = categoryWrapper;
@@ -340,11 +324,7 @@ public class FragmentGame extends Fragment {
         List<CategoryWrapper> categoryWrappers = new ArrayList<>();
 
         List<Category> categories = null;
-        try {
-            categories = ApplicationPropertiesLoader.getLoader(getActivity()).getAllCategories();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        categories = ApplicationPropertiesLoader.getLoader(getActivity()).getAllCategories();
 
         for (Category category : categories) {
             if (category.getCategoryTitle().equals("dress"))
