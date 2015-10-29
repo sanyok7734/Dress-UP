@@ -25,7 +25,6 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHo
     }
 
 
-
     @Override
     public AdapterCategory.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category, parent, false);
@@ -36,35 +35,6 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHo
     public void onBindViewHolder(final AdapterCategory.ViewHolder holder, final int position) {
         final CategoryWrapper categoryWrapper = categories.get(position);
         holder.iconButton.setBackgroundDrawable(categoryWrapper.getDrawableButton());
-
-/*        holder.setClickListener(new ItemClickListener() {
-            @Override
-            public void onClick(View view, int position, boolean isLongClick) {
-                if (isLongClick) {
-                    holder.iconButton.setBackgroundDrawable(categoryWrapper.getDrawableButtonPressed());
-                } else {
-                    Toast.makeText(context, "1", Toast.LENGTH_SHORT).show();
-                    if (categoryWrapper.isSelectedCategory()) {
-                        categoryWrapper.setDrawableButton(categoryWrapper.getDrawableButtonDefault());
-                        categoryWrapper.setSelectedCategory(false);
-                        notifyItemChanged(position);
-                        BusProvider.getInstanceGame().post("Panel");
-                        Toast.makeText(context, "2", Toast.LENGTH_SHORT).show();
-                    } else {
-                        for (int i = 0; i < categories.size(); i++) {
-                            categories.get(i).setDrawableButton(categories.get(i).getDrawableButtonDefault());
-                            categories.get(i).setSelectedCategory(false);
-                            notifyItemChanged(i);
-                        }
-                        categoryWrapper.setDrawableButton(categoryWrapper.getDrawableButtonPressed());
-                        categoryWrapper.setSelectedCategory(true);
-                        notifyItemChanged(position);
-                        Toast.makeText(context, "3", Toast.LENGTH_SHORT).show();
-                        BusProvider.getInstanceGame().post(categoryWrapper);
-                    }
-                }
-            }
-        });*/
 
         holder.iconButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -85,11 +55,7 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHo
                             notifyItemChanged(position);
                             BusProvider.getInstanceGame().post("Panel");
                         } else {
-                            for (int i = 0; i < categories.size(); i++) {
-                                categories.get(i).setDrawableButton(categories.get(i).getDrawableButtonDefault());
-                                categories.get(i).setSelectedCategory(false);
-                                notifyItemChanged(i);
-                            }
+                            resetCategoryIcon();
                             categoryWrapper.setDrawableButton(categoryWrapper.getDrawableButtonPressed());
                             categoryWrapper.setSelectedCategory(true);
                             notifyItemChanged(position);
@@ -97,19 +63,15 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHo
                         }
                         break;
                     case MotionEvent.ACTION_CANCEL:
-                        holder.iconButton.setBackgroundDrawable(categoryWrapper.getDrawableButtonDefault());
+                        if (!categoryWrapper.isSelectedCategory()) {
+                            holder.iconButton.setBackgroundDrawable(categoryWrapper.getDrawableButtonDefault());
+                        }
                         break;
                 }
-
-
                 return true;
             }
         });
-
-
-
     }
-
 
 
     public void resetCategoryIcon() {
@@ -125,32 +87,13 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHo
         return categories.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder
-            implements View.OnClickListener, View.OnLongClickListener {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         public ImageButton iconButton;
-        private ItemClickListener clickListener;
 
         public ViewHolder(View itemView) {
             super(itemView);
             iconButton = (ImageButton) itemView.findViewById(R.id.button_category);
-         //   iconButton.setOnClickListener(this);
-           // iconButton.setOnLongClickListener(this);
-        }
-
-        public void setClickListener(ItemClickListener itemClickListener) {
-            this.clickListener = itemClickListener;
-        }
-
-        @Override
-        public void onClick(View v) {
-           // clickListener.onClick(v, getPosition(), false);
-        }
-
-        @Override
-        public boolean onLongClick(View v) {
-           // clickListener.onClick(v, getPosition(), true);
-            return false;
         }
     }
 }

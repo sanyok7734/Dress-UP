@@ -214,7 +214,6 @@ public class FragmentGame extends Fragment {
             animSet.start();
             additionalPanel.setTag("close");
         }
-        Log.d("TESTSANO", "panelAccessoryHide");
     }
 
     // pressing on accessory for him placement
@@ -327,7 +326,6 @@ public class FragmentGame extends Fragment {
     public void subscribeSomeStuff(Boolean object) {
         if (object)
             MainPlayer.getInstance(getActivity()).pause();
-        Log.d("TESTSANO", "subscribeSomeStuff");
     }
 
     @Override
@@ -354,68 +352,4 @@ public class FragmentGame extends Fragment {
         }
         return categoryWrappers;
     }
-
-   /* boolean lol;
-    @Override
-    public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-        View view = rv.findChildViewUnder(e.getX(), e.getY());
-        int position = rv.getChildPosition(view);
-        final CategoryWrapper category;
-
-        switch (e.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                category = categoryWrappers.get(position);
-                category.setDrawableButton(category.getDrawableButtonPressed());
-                adapterCategory.notifyItemChanged(position);
-                lol = true;
-                break;
-            case MotionEvent.ACTION_UP:
-                if (lol) {
-                    if (position != -1) {
-                        category = categoryWrappers.get(position);
-                        if (category.isSelectedCategory()) {
-                            category.setDrawableButton(category.getDrawableButtonDefault());
-                            category.setSelectedCategory(false);
-                            adapterCategory.notifyItemChanged(position);
-                            BusProvider.getInstanceGame().post("Panel");
-                        } else {
-                            for (int i = 0; i < categoryWrappers.size(); i++) {
-                                categoryWrappers.get(i).setDrawableButton(categoryWrappers.get(i).getDrawableButtonDefault());
-                                categoryWrappers.get(i).setSelectedCategory(false);
-                                adapterCategory.notifyItemChanged(i);
-                            }
-                            category.setDrawableButton(category.getDrawableButtonPressed());
-                            category.setSelectedCategory(true);
-                            adapterCategory.notifyItemChanged(position);
-                            BusProvider.getInstanceGame().post(category);
-                        }
-                    } else {
-                        for (int i = 0; i < categoryWrappers.size(); i++) {
-                            categoryWrappers.get(i).setDrawableButton(categoryWrappers.get(i).getDrawableButtonDefault());
-                            categoryWrappers.get(i).setSelectedCategory(false);
-                            adapterCategory.notifyItemChanged(i);
-                        }
-                    }
-                }
-                break;
-            case MotionEvent.ACTION_SCROLL:
-                lol = false;
-                for (int i = 0; i < categoryWrappers.size(); i++) {
-                    categoryWrappers.get(i).setDrawableButton(categoryWrappers.get(i).getDrawableButtonDefault());
-                    categoryWrappers.get(i).setSelectedCategory(false);
-                    adapterCategory.notifyItemChanged(i);
-                }
-                break;
-           *//* case MotionEvent.ACTION_BUTTON_PRESS:
-                lol = false;
-                for (int i = 0; i < categoryWrappers.size(); i++) {
-                    categoryWrappers.get(i).setDrawableButton(categoryWrappers.get(i).getDrawableButtonDefault());
-                    categoryWrappers.get(i).setSelectedCategory(false);
-                    adapterCategory.notifyItemChanged(i);
-                }
-                break;*//*
-        }
-        return false;
-    }*/
-
 }
