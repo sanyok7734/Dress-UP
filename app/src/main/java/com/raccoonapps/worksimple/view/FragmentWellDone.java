@@ -41,12 +41,10 @@ public class FragmentWellDone extends Fragment {
     public static final String TWITTER = "twitter";
     public static final String FACEBOOK = "facebook";
 
-
     /**
      * Default pictures directory in Android
      */
     private final File externalStoragePicturesDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-
 
     @Bind(R.id.well_done_girl)
     ImageView wellDoneGirl;
@@ -145,7 +143,6 @@ public class FragmentWellDone extends Fragment {
                 if (!new File(externalStorageDirectory).exists())
                     new File(externalStorageDirectory).mkdirs();
                 String cachedPicture = savePicture(externalStorageDirectory);
-
                 switch (button.getId()) {
                     case R.id.button_back:
                         MainPlayer.getInstance(getActivity()).resume();
@@ -177,7 +174,6 @@ public class FragmentWellDone extends Fragment {
                 if (!new File(externalStorageDirectory).exists())
                     new File(externalStorageDirectory).mkdirs();
                 String cachedPicture = savePicture(externalStorageDirectory);
-
                 switch (button.getId()) {
 
                     case R.id.button_back:
@@ -194,8 +190,7 @@ public class FragmentWellDone extends Fragment {
                         break;
 
                     case R.id.button_fb:
-                        // TODO FACEBOOK API NEEDED
-                        shareInSocialNetwork(FACEBOOK, cachedPicture, "Hello, look at this nice girl!!!");
+                        shareInSocialNetwork(FACEBOOK, cachedPicture, "");
                         break;
                     case R.id.button_twi:
                         shareInSocialNetwork(TWITTER, cachedPicture, "Hello, look at this nice girl!!!");
@@ -264,7 +259,6 @@ public class FragmentWellDone extends Fragment {
         BusProvider.getInstanceGame().post(true);
     }
 
-
     //TODO {PHOTO BUTTON}
     @OnTouch(R.id.button_photo)
     public boolean onTouchPhoto(View button, MotionEvent event) {
@@ -273,6 +267,7 @@ public class FragmentWellDone extends Fragment {
                 button.setAlpha(0.8f);
                 break;
             case MotionEvent.ACTION_UP:
+                splash();
                 button.setAlpha(1);
                 if (externalStoragePicturesDirectory.exists()) {
                     File fullPath = new File(externalStoragePicturesDirectory.getAbsolutePath() + "/DressUp");
@@ -281,7 +276,6 @@ public class FragmentWellDone extends Fragment {
                 }
                 else
                     savePicture(getActivity().getApplication().getFilesDir().getAbsolutePath());
-                splash();
                 break;
         }
         return true;
