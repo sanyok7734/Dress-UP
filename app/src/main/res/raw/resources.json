@@ -14,7 +14,8 @@
   "categories": [
     {
       "category_title": "hair",
-      "category_icon": "hair_ic.png",
+      "category_icon": "btn_right.png",
+      "category_icon_pressed": "btn_right_p.png",
       "category_resources": [
         {
           "file_name": "hair1.png",
@@ -62,7 +63,8 @@
     },
     {
       "category_title": "bag",
-      "category_icon": "bag_ic.png",
+      "category_icon": "btn_right.png",
+      "category_icon_pressed": "btn_right_p.png",
       "category_resources": [
         {
           "file_name": "bag1.png",
@@ -103,7 +105,8 @@
     },
     {
       "category_title": "hat",
-      "category_icon": "hat_ic.png",
+      "category_icon": "hat.png",
+      "category_icon_pressed": "hat_p.png",
       "category_resources": [
         {
           "file_name": "hat1.png",
@@ -130,7 +133,8 @@
     },
     {
       "category_title": "dress",
-      "category_icon": "dress_ic.png",
+      "category_icon": "btn_right.png",
+      "category_icon_pressed": "btn_right_p.png",
       "category_resources": [
         {
           "file_name": "dress1.png",
@@ -276,7 +280,8 @@
     },
     {
       "category_title": "necklace",
-      "category_icon": "necklace_ic.png",
+      "category_icon": "btn_right.png",
+      "category_icon_pressed": "btn_right_p.png",
       "category_resources": [
         {
           "file_name": "necklace1.png",
@@ -317,7 +322,8 @@
     },
     {
       "category_title": "earrings",
-      "category_icon": "earrings_ic.png",
+      "category_icon": "btn_right.png",
+      "category_icon_pressed": "btn_right_p.png",
       "category_resources": [
         {
           "file_name": "earrings1.png",
@@ -337,7 +343,8 @@
     },
     {
       "category_title": "shoes",
-      "category_icon": "shoes_ic.png",
+      "category_icon": "btn_right.png",
+      "category_icon_pressed": "btn_right_p.png",
       "category_resources": [
         {
           "file_name": "shoes1.png",
@@ -382,7 +389,22 @@
           ]
         }
       ]
-    }
+    },
+    {
+      "category_title": "shoes",
+      "category_icon": "btn_right.png",
+      "category_icon_pressed": "btn_right_p.png",
+      "category_resources": []},
+    {
+      "category_title": "shoes",
+      "category_icon": "btn_right.png",
+      "category_icon_pressed": "btn_right_p.png",
+      "category_resources": []},
+    {
+      "category_title": "shoes",
+      "category_icon": "btn_right.png",
+      "category_icon_pressed": "btn_right_p.png",
+      "category_resources": []}
   ]
 }
 

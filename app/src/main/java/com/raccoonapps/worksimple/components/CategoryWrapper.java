@@ -23,8 +23,11 @@ public class CategoryWrapper {
     private boolean lamination = false;
 
     private Context context;
-    private Drawable drawableCategory;
+    //private Drawable drawableCategory;
+    private Category category;
     private Drawable drawableButton;
+    private Drawable drawableButtonPressed;
+    private Drawable drawableButtonDefault;
     private FrameLayout screen;
     private ImageView accessoryImage;
 
@@ -38,6 +41,7 @@ public class CategoryWrapper {
     public CategoryWrapper(Category category, Context context, FrameLayout contentGirl) {
         this.context = context;
         this.screen = contentGirl;
+        this.category = category;
         ImageView girl = (ImageView) contentGirl.findViewById(R.id.girl);
 
 
@@ -49,8 +53,13 @@ public class CategoryWrapper {
 
         //set image in button
         int identifier = context.getResources().getIdentifier("drawable/" + category.getCategoryIcon(), null, context.getPackageName());
-        drawableCategory = context.getResources().getDrawable(identifier);
-        drawableButton = context.getResources().getDrawable(R.drawable.btn_right);
+        int identifierPressed = context.getResources().getIdentifier("drawable/" + category.getCategoryIconPressed(), null, context.getPackageName());
+        //заполняю в зависимости от текущего состояния
+        drawableButton = context.getResources().getDrawable(identifier);
+
+        //два состояния нажатое и дефолтное
+        drawableButtonPressed = context.getResources().getDrawable(identifierPressed);
+        drawableButtonDefault = context.getResources().getDrawable(identifier);
     }
 
     public CategoryWrapper(Category category, Context context, Boolean lamination, FrameLayout contentGirl) {
@@ -58,8 +67,20 @@ public class CategoryWrapper {
         this.lamination = lamination;
     }
 
-    public void setDrawableButton(int buttonDrawable) {
-        drawableButton = context.getResources().getDrawable(buttonDrawable);
+    public Drawable getDrawableButtonPressed() {
+        return drawableButtonPressed;
+    }
+
+    public Drawable getDrawableButtonDefault() {
+        return drawableButtonDefault;
+    }
+
+    public void setDrawableButton(Drawable buttonDrawable) {
+        drawableButton = buttonDrawable;
+    }
+
+    public Drawable getDrawableButton() {
+        return drawableButton;
     }
 
     public void setCoordinateImage(int tag, BitmapDrawable drawable, double X, double Y) {
@@ -91,14 +112,6 @@ public class CategoryWrapper {
         coordinatorElements.imageCoordinator(accessoryImage, drawable, X, Y);
     }
 
-
-    public Drawable getDrawableCategory() {
-        return drawableCategory;
-    }
-
-    public Drawable getDrawableButton() {
-        return drawableButton;
-    }
 
     public boolean isSelectedCategory() {
         return selectedCategory;

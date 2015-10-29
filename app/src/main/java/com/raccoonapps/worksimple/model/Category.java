@@ -7,11 +7,13 @@ public class Category {
     private List<Accessory> accessories;
     private String categoryTitle;
     private String categoryIcon;
+    private String categoryIconPressed;
 
-    public Category(List<Accessory> accessories, String categoryTitle, String categoryIcon) {
+    public Category(List<Accessory> accessories, String categoryTitle, String categoryIcon, String categoryIconPressed) {
         this.accessories = accessories;
         this.categoryTitle = categoryTitle;
         this.categoryIcon = categoryIcon.split("\\.")[0];
+        this.categoryIconPressed = categoryIconPressed.split("\\.")[0];
     }
 
     public List<Accessory> getAccessories() {
@@ -26,13 +28,17 @@ public class Category {
         return categoryIcon;
     }
 
+    public String getCategoryIconPressed() {
+        return categoryIconPressed;
+    }
 
     @Override
     public String toString() {
-        return "Category [" +
-                "categoryTitle='" + categoryTitle + '\'' +
+        return "Category{" +
+                "accessories=" + accessories +
+                ", categoryTitle='" + categoryTitle + '\'' +
                 ", categoryIcon='" + categoryIcon + '\'' +
-                ", accessories=" + accessories +
-                ']';
+                ", categoryIconPressed='" + categoryIconPressed + '\'' +
+                '}';
     }
 }

@@ -44,6 +44,7 @@ public class ApplicationPropertiesLoader {
             List<Accessory> accessories = new ArrayList<>();
             String categoryTitle = object.getString("category_title");
             String categoryIcon = object.getString("category_icon");
+            String categoryIconPressed = object.getString("category_icon_pressed");
             JSONArray categoryResources = object.getJSONArray("category_resources");
             for (int j = 0; j < categoryResources.length(); j++) {
                 JSONObject accessoryObject = (JSONObject) categoryResources.get(j);
@@ -53,7 +54,7 @@ public class ApplicationPropertiesLoader {
                         (new Coordinates(coordinates.getDouble(0), coordinates.getDouble(1)),
                                 context.getResources().getIdentifier("drawable/" + fileName.split("\\.")[0], null, context.getPackageName())));
             }
-            Category category = new Category(accessories, categoryTitle, categoryIcon);
+            Category category = new Category(accessories, categoryTitle, categoryIcon, categoryIconPressed);
             categories.add(category);
         }
         return categories;

@@ -5,19 +5,26 @@
     android:layout_gravity="right"
     android:gravity="right">
 
-    <ImageView
+<!--    <ImageView
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="right"
+        android:src="@drawable/btn_right" />-->
+    <ImageButton
         android:id="@+id/button_category"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="right"
-        android:src="@drawable/btn_right" />
+        android:background="@drawable/btn_right"/>
 
-    <ImageView
+
+<!--    <ImageView
         android:id="@+id/image_category"
         android:layout_width="@dimen/sizeImageCategory"
         android:layout_height="@dimen/sizeImageCategory"
         android:layout_gravity="center"
         android:layout_marginRight="@dimen/margeRightListCategory"
-        android:src="@drawable/hat_ic" />
+        android:src="@drawable/hat_ic" />-->
 
 </FrameLayout>
