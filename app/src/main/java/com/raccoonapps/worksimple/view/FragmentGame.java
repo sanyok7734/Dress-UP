@@ -10,7 +10,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,7 +37,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.OnTouch;
 
 public class FragmentGame extends Fragment {
@@ -77,18 +75,13 @@ public class FragmentGame extends Fragment {
     //button game
     @Bind(R.id.button_back_background)
     ImageView buttonBackBackground;
-    @Bind(R.id.button_back_image)
-    ImageView buttonBackImage;
 
     @Bind(R.id.button_sound_background)
     ImageView buttonSoundBackground;
-    @Bind(R.id.button_sound_image)
-    ImageView buttonSoundImage;
 
     @Bind(R.id.button_next_background)
     ImageView buttonNextBackground;
-    @Bind(R.id.button_next_image)
-    ImageView buttonNextImage;
+
     private int visibleCategoriesCount;
 
     @Nullable
@@ -127,15 +120,13 @@ public class FragmentGame extends Fragment {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if(mLayoutManager.findFirstCompletelyVisibleItemPosition()==0) {
-                    Log.d("SCROLL", "TOP");
-                    scrollCategory.setImageResource(R.drawable.scroll_ic);
+                if (mLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                    scrollCategory.setImageResource(R.drawable.scroll);
                 }
                 int allItemCategory = 0;
                 allItemCategory = ApplicationPropertiesLoader.getLoader(getActivity()).getAllCategories().size();
                 if (mLayoutManager.findLastCompletelyVisibleItemPosition() == allItemCategory - 1) {
-                    Log.d("SCROLL", "END");
-                    scrollCategory.setImageResource(R.drawable.refresh);
+                    scrollCategory.setImageResource(R.drawable.scroll_p);
                 }
             }
         });
@@ -163,12 +154,13 @@ public class FragmentGame extends Fragment {
         allItemCategory = ApplicationPropertiesLoader.getLoader(getActivity()).getAllCategories().size();
         if (allItemCategory <= visibleCategoriesCount) {
             listHeight = allItemCategory * categoryItemHeight;
+            listHeight = (listHeight + ((1 * categoryHeight) / 100));
             scrollCategory.setVisibility(View.GONE);
         } else {
             listHeight = visibleCategoriesCount * categoryItemHeight;
             scrollCategory.setVisibility(View.VISIBLE);
         }
-        return (int) listHeight;
+        return (int) (listHeight);
     }
 
     @Subscribe
@@ -229,6 +221,7 @@ public class FragmentGame extends Fragment {
                 v.setAlpha(1);
                 switch (v.getId()) {
                     case R.id.button_back:
+                        MainActivity.onClickStart = true;
                         MainActivity.fragmentManager.popBackStack();
                         break;
                     case R.id.button_sound:
@@ -243,32 +236,35 @@ public class FragmentGame extends Fragment {
                         }
                         break;
                     case R.id.button_next:
-                        MainPlayer.getInstance(getActivity()).pause();
+                        if (MainActivity.onClickWellDone) {
+                            MainActivity.onClickWellDone = false;
+                            MainPlayer.getInstance(getActivity()).pause();
 
-                        background.setImageResource(R.drawable.welldone);
-                        contentGame.setVisibility(View.INVISIBLE);
-                        if (additionalPanel.getTag().equals("open")) {
-                            contentGirl.setTranslationX(0);
-                            additionalPanel.setVisibility(View.INVISIBLE);
+                            background.setImageResource(R.drawable.welldone);
+                            contentGame.setVisibility(View.INVISIBLE);
+                            if (additionalPanel.getTag().equals("open")) {
+                                contentGirl.setTranslationX(0);
+                                additionalPanel.setVisibility(View.INVISIBLE);
+                            }
+
+                            View v1 = contentGirl.getRootView();
+                            v1.setDrawingCacheEnabled(true);
+                            bitmap = v1.getDrawingCache();
+
+                            background.setImageResource(R.drawable.game);
+                            contentGame.setVisibility(View.VISIBLE);
+                            if (additionalPanel.getTag().equals("open")) {
+                                contentGirl.setTranslationX(-additionalPanel.getWidth());
+                                additionalPanel.setVisibility(View.VISIBLE);
+                            }
+
+                            Bundle bundle = new Bundle();
+                            bundle.putParcelable("well_done", bitmap);
+                            FragmentWellDone fragmentWellDone = new FragmentWellDone();
+                            fragmentWellDone.setArguments(bundle);
+                            BusProvider.getInstanceMain().post(fragmentWellDone);
+                            break;
                         }
-
-                        View v1 = contentGirl.getRootView();
-                        v1.setDrawingCacheEnabled(true);
-                        bitmap = v1.getDrawingCache();
-
-                        background.setImageResource(R.drawable.game);
-                        contentGame.setVisibility(View.VISIBLE);
-                        if (additionalPanel.getTag().equals("open")) {
-                            contentGirl.setTranslationX(-additionalPanel.getWidth());
-                            additionalPanel.setVisibility(View.VISIBLE);
-                        }
-
-                        Bundle bundle = new Bundle();
-                        bundle.putParcelable("well_done", bitmap);
-                        FragmentWellDone fragmentWellDone = new FragmentWellDone();
-                        fragmentWellDone.setArguments(bundle);
-                        BusProvider.getInstanceMain().post(fragmentWellDone);
-                        break;
                 }
                 break;
         }
@@ -277,12 +273,12 @@ public class FragmentGame extends Fragment {
 
     @Subscribe
     public void refreshScreen(String refresh) {
-        if (refresh.equals("RefreshGameScreen")){
+        if (refresh.equals("RefreshGameScreen")) {
             panelAccessoryHide("Panel");
             adapterCategory.resetCategoryIcon();
             int itemHeight = listCategory.getChildAt(0).getHeight();
             int countCategory = categoryWrappers.size() - visibleCategoriesCount;
-            listCategory.smoothScrollBy(itemHeight, -itemHeight * countCategory-10);
+            listCategory.smoothScrollBy(itemHeight, -itemHeight * countCategory - 10);
         }
     }
 
@@ -293,6 +289,7 @@ public class FragmentGame extends Fragment {
             MainPlayer.getInstance(getActivity()).resume();
             isResumed = false;
         }
+        MainActivity.onClickWellDone = true;
     }
 
     @Subscribe
@@ -315,10 +312,7 @@ public class FragmentGame extends Fragment {
         categories = ApplicationPropertiesLoader.getLoader(getActivity()).getAllCategories();
 
         for (Category category : categories) {
-            if (category.getCategoryTitle().equals("dress"))
-                categoryWrappers.add(new CategoryWrapper(category, getActivity(), true, contentGirl));
-            else
-                categoryWrappers.add(new CategoryWrapper(category, getActivity(), contentGirl));
+            categoryWrappers.add(new CategoryWrapper(category, getActivity(), contentGirl));
         }
         return categoryWrappers;
     }

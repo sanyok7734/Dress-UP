@@ -48,17 +48,6 @@
                         android:id="@+id/button_back_background"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/btn_circle" />
-
-                    <ImageView
-                        android:id="@+id/button_back_image"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/buttonNextImageTop"
-                        android:layout_marginBottom="@dimen/buttonNextImageBottom"
-                        android:layout_marginLeft="@dimen/buttonNextImageRight"
-                        android:layout_marginRight="@dimen/buttonNextImageLeft"
-                        android:layout_gravity="center"
                         android:src="@drawable/back" />
                 </FrameLayout>
 
@@ -75,18 +64,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:tag="play"
-                        android:src="@drawable/btn_circle" />
+                        android:src="@drawable/music" />
 
-                    <ImageView
-                        android:id="@+id/button_sound_image"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/buttonNextImageTop"
-                        android:layout_marginBottom="@dimen/buttonNextImageBottom"
-                        android:layout_marginLeft="@dimen/buttonNextImageRight"
-                        android:layout_marginRight="@dimen/buttonNextImageLeft"
-                        android:layout_gravity="center"
-                        android:src="@drawable/sound_ic" />
                 </FrameLayout>
 
             </LinearLayout>
@@ -111,7 +90,7 @@
                 android:layout_height="@dimen/scrollButtonSize"
                 android:layout_gravity="center"
                 android:padding="@dimen/scrollButtonPadding"
-                android:src="@drawable/scroll_ic"
+                android:src="@drawable/scroll"
                 android:layout_below="@+id/list_category"
                 android:layout_alignRight="@+id/list_category"
                 android:layout_alignEnd="@+id/list_category" />
@@ -132,20 +111,8 @@
                     android:id="@+id/button_next_background"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/btn_circle"/>
+                    android:src="@drawable/forward"/>
 
-
-
-                <ImageView
-                    android:id="@+id/button_next_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="@dimen/buttonNextImageBottom"
-                    android:layout_marginLeft="@dimen/buttonNextImageLeft"
-                    android:layout_marginRight="@dimen/buttonNextImageRight"
-                    android:layout_marginTop="@dimen/buttonNextImageTop"
-                    android:src="@drawable/forward" />
             </FrameLayout>
 
         </RelativeLayout>

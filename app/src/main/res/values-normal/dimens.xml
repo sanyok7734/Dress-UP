@@ -1,12 +1,15 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="startMarginBottomTop">25dp</dimen>
-    <dimen name="startMarginLeft">10dp</dimen>
+    <dimen name="startMarginLeft">15dp</dimen>
 
     <dimen name="moreMarginBottomTop">42dp</dimen>
+    <dimen name="moreMarginLeftRight">5dp</dimen>
 
-    <dimen name="helpMarginTop">45dp</dimen>
-    <dimen name="helpMarginBottom">40dp</dimen>
+    <dimen name="bannerTop">-10dp</dimen>
+
+    <dimen name="helpMarginTop">42dp</dimen>
+    <dimen name="helpMarginBottom">44dp</dimen>
 
     <dimen name="sizeButtonGamePanel">70dp</dimen>
 

@@ -14,8 +14,8 @@
   "categories": [
     {
       "category_title": "hair",
-      "category_icon": "btn_right.png",
-      "category_icon_pressed": "btn_right_p.png",
+      "category_icon": "hair.png",
+      "category_icon_pressed": "hair_p.png",
       "category_resources": [
         {
           "file_name": "hair1.png",
@@ -63,8 +63,8 @@
     },
     {
       "category_title": "bag",
-      "category_icon": "btn_right.png",
-      "category_icon_pressed": "btn_right_p.png",
+      "category_icon": "bag.png",
+      "category_icon_pressed": "bag_p.png",
       "category_resources": [
         {
           "file_name": "bag1.png",
@@ -133,8 +133,8 @@
     },
     {
       "category_title": "dress",
-      "category_icon": "btn_right.png",
-      "category_icon_pressed": "btn_right_p.png",
+      "category_icon": "dress.png",
+      "category_icon_pressed": "dress_p.png",
       "category_resources": [
         {
           "file_name": "dress1.png",
@@ -212,7 +212,14 @@
             43.55828,
             28.33698
           ]
-        },
+        }
+      ]
+    },
+    {
+      "category_title": "dress",
+      "category_icon": "dress.png",
+      "category_icon_pressed": "dress_p.png",
+      "category_resources": [
         {
           "file_name": "pants1.png",
           "coordinates": [
@@ -280,8 +287,8 @@
     },
     {
       "category_title": "necklace",
-      "category_icon": "btn_right.png",
-      "category_icon_pressed": "btn_right_p.png",
+      "category_icon": "necklace.png",
+      "category_icon_pressed": "necklace_p.png",
       "category_resources": [
         {
           "file_name": "necklace1.png",
@@ -322,8 +329,8 @@
     },
     {
       "category_title": "earrings",
-      "category_icon": "btn_right.png",
-      "category_icon_pressed": "btn_right_p.png",
+      "category_icon": "earrings.png",
+      "category_icon_pressed": "earrings_p.png",
       "category_resources": [
         {
           "file_name": "earrings1.png",
@@ -343,8 +350,8 @@
     },
     {
       "category_title": "shoes",
-      "category_icon": "btn_right.png",
-      "category_icon_pressed": "btn_right_p.png",
+      "category_icon": "shoes.png",
+      "category_icon_pressed": "shoes_p.png",
       "category_resources": [
         {
           "file_name": "shoes1.png",
@@ -389,22 +396,7 @@
           ]
         }
       ]
-    },
-    {
-      "category_title": "shoes",
-      "category_icon": "btn_right.png",
-      "category_icon_pressed": "btn_right_p.png",
-      "category_resources": []},
-    {
-      "category_title": "shoes",
-      "category_icon": "btn_right.png",
-      "category_icon_pressed": "btn_right_p.png",
-      "category_resources": []},
-    {
-      "category_title": "shoes",
-      "category_icon": "btn_right.png",
-      "category_icon_pressed": "btn_right_p.png",
-      "category_resources": []}
+    }
   ]
 }
 

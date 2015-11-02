@@ -15,8 +15,7 @@
         android:id="@+id/button_category"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="right"
-        android:background="@drawable/btn_right"/>
+        android:layout_gravity="right"/>
 
 
 <!--    <ImageView

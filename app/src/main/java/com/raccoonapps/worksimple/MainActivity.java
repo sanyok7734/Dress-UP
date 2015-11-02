@@ -19,6 +19,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static final int LAYOUT = R.layout.activity_main;
 
+    public static boolean onClickStart = true;
+    public static boolean onClickWellDone = true;
 
     public static double screenWidth;
     public static double screenHeight;

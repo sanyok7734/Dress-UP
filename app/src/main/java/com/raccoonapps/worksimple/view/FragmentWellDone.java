@@ -113,20 +113,19 @@ public class FragmentWellDone extends Fragment {
     }
 
     private void setIcon() {
-        buttonRestartBackground.setImageResource(R.drawable.btn_circle);
-        buttonRestartIcon.setImageResource(R.drawable.refresh);
-        buttonBackBackground.setImageResource(R.drawable.btn_circle);
-        buttonBackIcon.setImageResource(R.drawable.back);
+        buttonRestartBackground.setImageResource(R.drawable.restart);
+
+        buttonBackBackground.setImageResource(R.drawable.back);
+
         backgroundEmail.setImageResource(R.drawable.email);
-        iconEmail.setImageResource(R.drawable.mail);
-        backgroundWa.setImageResource(R.drawable.sharing_wa);
-        iconWa.setImageResource(R.drawable.whatsapp);
-        backgroundTwi.setImageResource(R.drawable.sharing_twi);
-        iconTwi.setImageResource(R.drawable.twitter);
-        backgroundFb.setImageResource(R.drawable.sharing_fb);
-        iconFb.setImageResource(R.drawable.facebook);
-        backgroundPhoto.setImageResource(R.drawable.photo_btn);
-        iconPhoto.setImageResource(R.drawable.photo);
+
+        backgroundWa.setImageResource(R.drawable.wa);
+
+        backgroundTwi.setImageResource(R.drawable.tw);
+
+        backgroundFb.setImageResource(R.drawable.fb);
+
+        backgroundPhoto.setImageResource(R.drawable.photo);
     }
 
 
@@ -137,6 +136,7 @@ public class FragmentWellDone extends Fragment {
                 button.setAlpha(0.8f);
                 break;
             case MotionEvent.ACTION_UP:
+                MainActivity.onClickWellDone = true;
                 button.setAlpha(1);
 
                 String externalStorageDirectory = Environment.getExternalStorageDirectory() + "/DRESS_UP";
