@@ -30,7 +30,7 @@
                 android:layout_weight="10" />
 
             <FrameLayout
-                android:id="@+id/banner_well_done"
+                android:id="@+id/banner_layout"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"

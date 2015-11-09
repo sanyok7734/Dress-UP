@@ -54,7 +54,7 @@ public class FragmentWellDone extends Fragment {
     FrameLayout root;
     @Bind(R.id.buttons)
     RelativeLayout buttons;
-    @Bind(R.id.banner_well_done)
+    @Bind(R.id.banner_layout)
     FrameLayout banner;
 
     @Bind(R.id.button_restart_background)

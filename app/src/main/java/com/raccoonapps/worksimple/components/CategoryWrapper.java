@@ -44,7 +44,6 @@ public class CategoryWrapper {
         this.category = category;
         ImageView girl = (ImageView) contentGirl.findViewById(R.id.girl);
 
-
         //coordinator elements initialization
         coordinatorElements = new CoordinatorElements(screen, girl);
 

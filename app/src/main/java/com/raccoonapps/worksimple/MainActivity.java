@@ -19,9 +19,13 @@ public class MainActivity extends AppCompatActivity {
 
     public static final int LAYOUT = R.layout.activity_main;
 
+    public static final String FONT_PATH_LOGO = "fonts/PFArmonia-Reg.ttf";
+
     public static boolean onClickStart = true;
     public static boolean onClickWellDone = true;
 
+    public  double screenWidth1;
+    public  double screenHeight1;
     public static double screenWidth;
     public static double screenHeight;
 
@@ -37,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
         this.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         screenWidth = displaymetrics.widthPixels;
         screenHeight = displaymetrics.heightPixels;
+
+        screenWidth1 = displaymetrics.widthPixels;
+        screenHeight1 = displaymetrics.heightPixels;
         calculateOccupy();
 
 
@@ -74,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
     //TODO image girl jsone
     private void calculateOccupy() {
         BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(R.drawable.girls);
-        Squeezing.squeezingPercentage(drawable, screenWidth, screenHeight);
+        Squeezing.squeezingPercentage(drawable, screenWidth1, screenHeight1);
     }
 
 }

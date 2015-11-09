@@ -100,7 +100,8 @@ public class FragmentGame extends Fragment {
         layoutParam.width = Squeezing.occupyWidthGirl();
         girlImage.setLayoutParams(layoutParam);
         girlImage.setImageDrawable(Squeezing.getImageGirl());
-        //coordination girl
+
+        //TODO coordination girl
         girlImage.setTranslationX(CoordinatorElements.setCoordinatorGirlX(Squeezing.occupyWidthGirl(), 50));
         girlImage.setTranslationY(CoordinatorElements.setCoordinatorGirlY(Squeezing.occupyHeightGirl(), 50));
 

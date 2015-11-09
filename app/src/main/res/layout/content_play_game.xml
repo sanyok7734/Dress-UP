@@ -76,11 +76,10 @@
                 android:layout_width="@dimen/categoryWidthHeight"
                 android:layout_height="100dp"
                 android:overScrollMode="never"
-                android:layout_marginRight="@dimen/margeRightListCategory"
                 android:clickable="true"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
-                android:layout_centerVertical="true"
+                android:layout_below="@+id/button_next"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true" />
 
@@ -114,6 +113,7 @@
                     android:src="@drawable/forward"/>
 
             </FrameLayout>
+
 
         </RelativeLayout>
     </FrameLayout>

@@ -2,9 +2,10 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:background="#38417c"
+    android:layout_gravity="bottom"
     android:visibility="visible">
 
     <ImageView
@@ -19,12 +20,10 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:paddingRight="8dp"
         android:gravity="center"
         android:textStyle="bold"
         android:textColor="#adb9d1"
         android:textSize="@dimen/logoTextSize"
-        android:text="This game is created in QuickAppNinja Free Game Builder"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center" />
 
 </LinearLayout>

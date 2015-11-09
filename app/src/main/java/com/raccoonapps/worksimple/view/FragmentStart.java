@@ -1,6 +1,7 @@
 package com.raccoonapps.worksimple.view;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -14,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -30,10 +32,10 @@ import butterknife.OnTouch;
 public class FragmentStart extends Fragment {
 
 
-    private static final String FONT_PATH_LOGO = "fonts/PFArmonia-Reg.ttf";
-
     private static final Uri ADDRESS_BANNER = Uri.parse("https://quickappninja.com/");
     private static final Uri MORE = Uri.parse("https://quickappninja.com/showcase/");
+
+    private View view;
 
     @Bind(R.id.button_start)
     TextView buttonStart;
@@ -56,50 +58,74 @@ public class FragmentStart extends Fragment {
     @Bind(R.id.frame_help)
     FrameLayout frameHelp;
 
-    @Bind(R.id.banner_logo)
-    ImageView bannerLogo;
+
+    private static TextView textLogo;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.content_start_game, container, false);
+        view = inflater.inflate(R.layout.content_start_game, container, false);
         ButterKnife.bind(this, view);
-        Typeface typefaceLogo = Typeface.createFromAsset(getActivity().getAssets(), FONT_PATH_LOGO);
+
+        textLogo = (TextView) view.findViewById(R.id.text_logo);
+
+        return view;
+    }
+
+
+    public static void preferenceBanner(View view, final Context context, boolean visible) {
+
+        Typeface typefaceLogo = Typeface.createFromAsset(context.getAssets(), MainActivity.FONT_PATH_LOGO);
 
         FrameLayout banner = (FrameLayout) view.findViewById(R.id.banner_layout);
-        TextView textLogo = (TextView) view.findViewById(R.id.text_logo);
-
+        final ImageView bannerLogo = (ImageView) view.findViewById(R.id.banner_logo);
         textLogo.setTypeface(typefaceLogo);
+        textLogo.setText("This game is created in QuickAppNinja Free Game Builder");
+
+        final ViewGroup.LayoutParams layoutParamsBanner = banner.getLayoutParams();
+        layoutParamsBanner.height = (int) ((8 * MainActivity.screenHeight) / 100);
+        ViewGroup.LayoutParams layoutParamsLogoBanner = bannerLogo.getLayoutParams();
+        layoutParamsLogoBanner.height = layoutParamsBanner.height - ((20 * layoutParamsBanner.height) / 100);
+        layoutParamsLogoBanner.width = ((174 * layoutParamsLogoBanner.height) / 100);
+
+        ViewTreeObserver vto = textLogo.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                textLogo.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                int heightLine = textLogo.getLineHeight();
+                int countLine = textLogo.getLineCount();
+
+                int freeH = layoutParamsBanner.height - (heightLine * countLine);
+                int x = freeH / (countLine + 1);
+                textLogo.setHeight(layoutParamsBanner.height);
+                textLogo.setLineSpacing(x, 1);
+                textLogo.setPadding(0, x, x * 2, 0);
+            }
+        });
 
 
-
-
-        //TODO VISIBLE/GONE BANNER
-        banner.setVisibility(View.VISIBLE);
+        if (visible)
+            banner.setVisibility(View.VISIBLE);
 
         final Intent openLink = new Intent(Intent.ACTION_VIEW, ADDRESS_BANNER);
         banner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(openLink);
+                context.startActivity(openLink);
             }
         });
 
-
-
-        ViewGroup.LayoutParams layoutParamsBanner = banner.getLayoutParams();
-        layoutParamsBanner.height = (int) ((8 * MainActivity.screenHeight) / 100);
-        ViewGroup.LayoutParams layoutParamsLogoBanner = bannerLogo.getLayoutParams();
-        layoutParamsLogoBanner.height = layoutParamsBanner.height - ((20*layoutParamsBanner.height)/100);
-        layoutParamsLogoBanner.width = ((174 * layoutParamsLogoBanner.height) / 100);
-        return view;
     }
+
 
     @Override
     public void onResume() {
         super.onResume();
         MainActivity.onClickStart = true;
         MainActivity.onClickWellDone = true;
+
+        preferenceBanner(view, getActivity(), true);
     }
 
     @OnTouch({R.id.button_start, R.id.button_more, R.id.button_help})
