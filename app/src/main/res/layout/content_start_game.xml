@@ -121,7 +121,6 @@
         android:id="@+id/banner_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-
         android:orientation="horizontal"
         android:background="#38417c"
         android:visibility="visible">

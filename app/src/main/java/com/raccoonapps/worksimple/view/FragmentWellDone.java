@@ -41,6 +41,7 @@ public class FragmentWellDone extends Fragment {
     public static final String TWITTER = "twitter";
     public static final String FACEBOOK = "facebook";
 
+    private View view;
     /**
      * Default pictures directory in Android
      */
@@ -96,7 +97,7 @@ public class FragmentWellDone extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.content_well_done, container, false);
+        view = inflater.inflate(R.layout.content_well_done, container, false);
         ButterKnife.bind(this, view);
         setIcon();
 
@@ -112,19 +113,20 @@ public class FragmentWellDone extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        BusProvider.getInstanceGame().post(true);
+        MainActivity.preferenceBanner(view, getActivity(), false);
+    }
+
     private void setIcon() {
         buttonRestartBackground.setImageResource(R.drawable.restart);
-
         buttonBackBackground.setImageResource(R.drawable.back);
-
         backgroundEmail.setImageResource(R.drawable.email);
-
         backgroundWa.setImageResource(R.drawable.wa);
-
         backgroundTwi.setImageResource(R.drawable.tw);
-
         backgroundFb.setImageResource(R.drawable.fb);
-
         backgroundPhoto.setImageResource(R.drawable.photo);
     }
 
@@ -251,12 +253,6 @@ public class FragmentWellDone extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        BusProvider.getInstanceGame().post(true);
     }
 
     //TODO {PHOTO BUTTON}
