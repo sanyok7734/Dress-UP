@@ -3,7 +3,6 @@ package com.raccoonapps.worksimple.components;
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -11,7 +10,6 @@ import com.raccoonapps.worksimple.R;
 import com.raccoonapps.worksimple.model.Accessory;
 import com.raccoonapps.worksimple.model.Category;
 import com.raccoonapps.worksimple.model.CoordinatorElements;
-import com.raccoonapps.worksimple.model.Squeezing;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,12 +27,12 @@ public class CategoryWrapper {
     private Drawable drawableButtonPressed;
     private Drawable drawableButtonDefault;
     private FrameLayout screen;
-    private ImageView accessoryImage;
+    private AccessoryWrapper accessoryImage = null;
 
     private CoordinatorElements coordinatorElements;
 
 
-    private List<ImageView> imageViews = new ArrayList<>();
+    private List<AccessoryWrapper> imageViews = new ArrayList<>();
     private List<Accessory> accessories = new ArrayList<>();
 
 
@@ -85,16 +83,18 @@ public class CategoryWrapper {
 
     public void setCoordinateImage(int tag, BitmapDrawable drawable, double X, double Y) {
         for (int i = 0; i < imageViews.size(); i++) {
-            if (imageViews.get(i).getTag().equals(tag)) {
-                screen.removeView(imageViews.get(i));
+            if (imageViews.get(i).getTag() == tag) {
+                screen.removeView(imageViews.get(i).getAccessoryImage());
                 imageViews.remove(imageViews.get(i));
                 return;
             }
         }
 
         if (!lamination) {
-            screen.removeView(accessoryImage);
-            imageViews.clear();
+            if (accessoryImage != null) {
+                screen.removeView(accessoryImage.getAccessoryImage());
+                imageViews.clear();
+            }
             createImage(tag, drawable, X, Y);
         } else {
             createImage(tag, drawable, X, Y);
@@ -102,13 +102,11 @@ public class CategoryWrapper {
     }
 
     private void createImage(int tag, BitmapDrawable drawable, double X, double Y) {
-        accessoryImage = new ImageView(context);
-        LayoutParams layoutParam = new LayoutParams(
-                Squeezing.occupyWidthAccessory(drawable), Squeezing.occupyHeightAccessory(drawable));
-        accessoryImage.setLayoutParams(layoutParam);
+        accessoryImage = new AccessoryWrapper(context);
         accessoryImage.setTag(tag);
+        accessoryImage.setAccessoryImage(drawable);
         imageViews.add(accessoryImage);
-        screen.addView(accessoryImage);
+        screen.addView(accessoryImage.getAccessoryImage());
         coordinatorElements.imageCoordinator(accessoryImage, drawable, X, Y);
     }
 

@@ -5,6 +5,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.raccoonapps.worksimple.MainActivity;
+import com.raccoonapps.worksimple.components.AccessoryWrapper;
 
 public class CoordinatorElements {
 
@@ -16,7 +17,7 @@ public class CoordinatorElements {
         this.girlImage = girlImage;
     }
 
-    public void imageCoordinator(ImageView image, BitmapDrawable drawable, double percentCoordinateImageX, double percentCoordinateImageY) {
+    public void imageCoordinator(AccessoryWrapper image, BitmapDrawable drawable, double percentCoordinateImageX, double percentCoordinateImageY) {
         if (drawable != null) {
             double girlEndX = Squeezing.occupyWidthGirl();
             double girlEndY = Squeezing.occupyHeightGirl();
@@ -32,12 +33,12 @@ public class CoordinatorElements {
             double centerHairsX = ((Squeezing.occupyWidthAccessory(drawable)) / 2);
             double centerHairsY = ((Squeezing.occupyHeightAccessory(drawable)) / 2);
 
-            image.setTranslationX((float) (lengthBeforeXGirl + (translationHairX - centerHairsX)));
-            image.setTranslationY((float) (lengthBeforeYGirl + (translationHairY - centerHairsY)));
+            image.getAccessoryImage().setTranslationX((float) (lengthBeforeXGirl + (translationHairX - centerHairsX)));
+            image.getAccessoryImage().setTranslationY((float) (lengthBeforeYGirl + (translationHairY - centerHairsY)));
 
             image.setImageDrawable(drawable);
         } else {
-            root.removeView(image);
+            root.removeView(image.getAccessoryImage());
         }
     }
 

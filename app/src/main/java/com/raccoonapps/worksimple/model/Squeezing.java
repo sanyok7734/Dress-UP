@@ -18,8 +18,8 @@ public class Squeezing {
         widthGirl = drawable.getIntrinsicWidth();
         heightGirl = drawable.getIntrinsicHeight();
 
-        double occupyY = (80 * heightScreen) / 100;
-        double occupyX = (80 * widthScreen) / 100;
+        double occupyY = (50 * heightScreen) / 100;
+        double occupyX = (50 * widthScreen) / 100;
 
         if (heightGirl > occupyY) {
             occupyY = heightGirl - occupyY;
