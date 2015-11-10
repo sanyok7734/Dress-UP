@@ -15,16 +15,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.raccoonapps.worksimple.MainActivity;
 import com.raccoonapps.worksimple.R;
+import com.raccoonapps.worksimple.controller.ApplicationPropertiesLoader;
 import com.raccoonapps.worksimple.eventbus.BusProvider;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnTouch;
+
+import static com.raccoonapps.worksimple.controller.ApplicationPropertiesLoader.getLoader;
 
 public class FragmentStart extends Fragment {
 
@@ -53,6 +57,8 @@ public class FragmentStart extends Fragment {
     @Bind(R.id.frame_help)
     FrameLayout frameHelp;
 
+    @Bind(R.id.background)
+    LinearLayout background;
 
     private static TextView textLogo;
 
@@ -61,13 +67,20 @@ public class FragmentStart extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.content_start_game, container, false);
         ButterKnife.bind(this, view);
-
+        setIcon();
         return view;
     }
 
+    private void setIcon() {
+        imageHelp.setImageResource(setIcon(ApplicationPropertiesLoader.BUTTON.FAQ));
+        imageMore.setImageResource(setIcon(ApplicationPropertiesLoader.BUTTON.MORE));
+        imageStart.setImageResource(setIcon(ApplicationPropertiesLoader.BUTTON.START));
+        background.setBackgroundResource(getLoader(getActivity()).getImageIdByName(ApplicationPropertiesLoader.IMAGE.SPLASH));
+    }
 
-
-
+    private int setIcon(ApplicationPropertiesLoader.BUTTON button) {
+        return getLoader(getActivity()).getButtonIdByName(button);
+    }
 
     @Override
     public void onResume() {

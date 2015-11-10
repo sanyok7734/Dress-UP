@@ -15,8 +15,7 @@
             android:id="@+id/background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:src="@drawable/game" />
+            android:scaleType="fitXY"/>
 
 
         <ImageView
@@ -47,8 +46,7 @@
                     <ImageView
                         android:id="@+id/button_back_background"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/back" />
+                        android:layout_height="match_parent" />
                 </FrameLayout>
 
                 <FrameLayout
@@ -63,8 +61,7 @@
                         android:id="@+id/button_sound_background"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:tag="play"
-                        android:src="@drawable/music" />
+                        android:tag="play"/>
 
                 </FrameLayout>
 
@@ -89,7 +86,6 @@
                 android:layout_height="@dimen/scrollButtonSize"
                 android:layout_gravity="center"
                 android:padding="@dimen/scrollButtonPadding"
-                android:src="@drawable/scroll"
                 android:layout_below="@+id/list_category"
                 android:layout_alignRight="@+id/list_category"
                 android:layout_alignEnd="@+id/list_category" />
@@ -109,8 +105,7 @@
                 <ImageView
                     android:id="@+id/button_next_background"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/forward"/>
+                    android:layout_height="match_parent"/>
 
             </FrameLayout>
 

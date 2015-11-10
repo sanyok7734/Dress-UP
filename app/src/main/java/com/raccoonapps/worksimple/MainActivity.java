@@ -20,6 +20,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.raccoonapps.worksimple.controller.ApplicationPropertiesLoader;
 import com.raccoonapps.worksimple.eventbus.BusProvider;
 import com.raccoonapps.worksimple.controller.Squeezing;
 import com.raccoonapps.worksimple.view.FragmentStart;
@@ -94,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
     //TODO image girl jsone
     private void calculateOccupy() {
-        BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(R.drawable.girls);
+        BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(ApplicationPropertiesLoader.getLoader(getApplicationContext()).getImageIdByName(ApplicationPropertiesLoader.IMAGE.GIRL));
         Squeezing.squeezingPercentage(drawable, screenWidth1, screenHeight1);
     }
 
@@ -105,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
         FrameLayout banner = (FrameLayout) view.findViewById(R.id.banner_layout);
         final TextView textLogo = (TextView) view.findViewById(R.id.text_logo);
         final ImageView bannerLogo = (ImageView) view.findViewById(R.id.banner_logo);
+        bannerLogo.setBackgroundResource(ApplicationPropertiesLoader.getLoader(context).getImageIdByName(ApplicationPropertiesLoader.IMAGE.NINJA));
 
         textLogo.setTypeface(typefaceLogo);
         textLogo.setText("This game is created in QuickAppNinja Free Game Builder");

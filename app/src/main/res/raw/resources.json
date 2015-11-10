@@ -4,7 +4,8 @@
       "girl": "girls.png",
       "game_bg": "game.png",
       "splash": "splash.png",
-      "welldone_bg": "welldone.png"
+      "welldone_bg": "welldone.png",
+      "ninja": "ninja.png"
     },
     "buttons": {
       "back": "back.png",
@@ -411,36 +412,6 @@
           ]
         }
       ]
-    },
-    {
-      "category_title": "shoes",
-      "category_icon": "shoes.png",
-      "category_icon_pressed": "shoes_p.png",
-      "category_resources": []
-    },
-    {
-      "category_title": "shoes",
-      "category_icon": "shoes.png",
-      "category_icon_pressed": "shoes_p.png",
-      "category_resources": []
-    },
-    {
-      "category_title": "shoes",
-      "category_icon": "shoes.png",
-      "category_icon_pressed": "shoes_p.png",
-      "category_resources": []
-    },
-    {
-      "category_title": "shoes",
-      "category_icon": "shoes.png",
-      "category_icon_pressed": "shoes_p.png",
-      "category_resources": []
-    },
-    {
-      "category_title": "shoes",
-      "category_icon": "shoes.png",
-      "category_icon_pressed": "shoes_p.png",
-      "category_resources": []
     }
   ]
 }

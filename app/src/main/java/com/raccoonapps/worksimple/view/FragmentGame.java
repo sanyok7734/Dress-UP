@@ -25,12 +25,11 @@ import com.raccoonapps.worksimple.adapters.AdapterCategory;
 import com.raccoonapps.worksimple.components.AccessoryWrapper;
 import com.raccoonapps.worksimple.components.CategoryWrapper;
 import com.raccoonapps.worksimple.controller.AccessoryController;
-import com.raccoonapps.worksimple.eventbus.BusProvider;
-import com.raccoonapps.worksimple.model.Accessory;
-import com.raccoonapps.worksimple.controller.ApplicationPropertiesLoader;
-import com.raccoonapps.worksimple.model.Category;
 import com.raccoonapps.worksimple.controller.ElementsCoordinator;
 import com.raccoonapps.worksimple.controller.Squeezing;
+import com.raccoonapps.worksimple.eventbus.BusProvider;
+import com.raccoonapps.worksimple.model.Accessory;
+import com.raccoonapps.worksimple.model.Category;
 import com.raccoonapps.worksimple.music.MainPlayer;
 import com.squareup.otto.Subscribe;
 
@@ -41,6 +40,11 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnTouch;
+
+import static com.raccoonapps.worksimple.controller.ApplicationPropertiesLoader.BUTTON;
+import static com.raccoonapps.worksimple.controller.ApplicationPropertiesLoader.IMAGE;
+import static com.raccoonapps.worksimple.controller.ApplicationPropertiesLoader.TRACK;
+import static com.raccoonapps.worksimple.controller.ApplicationPropertiesLoader.getLoader;
 
 public class FragmentGame extends Fragment {
 
@@ -93,10 +97,11 @@ public class FragmentGame extends Fragment {
         View view = inflater.inflate(R.layout.content_play_game, container, false);
         ButterKnife.bind(this, view);
         BusProvider.getInstanceGame().register(this);
+        setIcon();
 
         MainPlayer.getInstance(getActivity()).resetPlayer();
         MainPlayer player = MainPlayer.getInstance(getActivity());
-        player.play(ApplicationPropertiesLoader.getLoader(getActivity()).getTrackIdByName(ApplicationPropertiesLoader.TRACK.MAIN));
+        player.play(getLoader(getActivity()).getTrackIdByName(TRACK.MAIN));
 
         ViewGroup.LayoutParams layoutParam = girlImage.getLayoutParams();
         layoutParam.height = Squeezing.occupyHeightGirl();
@@ -126,12 +131,12 @@ public class FragmentGame extends Fragment {
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (mLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
-                    scrollCategory.setImageResource(R.drawable.scroll);
+                    scrollCategory.setImageResource(setIcon(BUTTON.SCROLL));
                 }
                 int allItemCategory = 0;
-                allItemCategory = ApplicationPropertiesLoader.getLoader(getActivity()).getAllCategories().size();
+                allItemCategory = getLoader(getActivity()).getAllCategories().size();
                 if (mLayoutManager.findLastCompletelyVisibleItemPosition() == allItemCategory - 1) {
-                    scrollCategory.setImageResource(R.drawable.scroll_p);
+                    scrollCategory.setImageResource(setIcon(BUTTON.SCROLL_PRESSED));
                 }
             }
         });
@@ -141,6 +146,18 @@ public class FragmentGame extends Fragment {
         listCategory.setLayoutParams(layoutParamList);
 
         return view;
+    }
+
+    private void setIcon() {
+        scrollCategory.setImageResource(setIcon(BUTTON.SCROLL));
+        buttonNextBackground.setImageResource(setIcon(BUTTON.FORWARD));
+        buttonSoundBackground.setImageResource(setIcon(BUTTON.MUSIC));
+        buttonBackBackground.setImageResource(setIcon(BUTTON.BACK));
+        background.setImageResource(getLoader(getActivity()).getImageIdByName(IMAGE.GAME_BG));
+    }
+
+    private int setIcon(BUTTON button) {
+        return getLoader(getActivity()).getButtonIdByName(button);
     }
 
     @OnTouch(R.id.content_girl)
@@ -195,7 +212,7 @@ public class FragmentGame extends Fragment {
         double categoryHeight = MainActivity.screenHeight - sumSizeButton;
 
         visibleCategoriesCount = (int) (categoryHeight / categoryItemHeight);
-        allItemCategory = ApplicationPropertiesLoader.getLoader(getActivity()).getAllCategories().size();
+        allItemCategory = getLoader(getActivity()).getAllCategories().size();
         if (allItemCategory <= visibleCategoriesCount) {
             listHeight = allItemCategory * categoryItemHeight;
             listHeight = (listHeight + ((1 * categoryHeight) / 100));
@@ -284,7 +301,7 @@ public class FragmentGame extends Fragment {
                             MainActivity.onClickWellDone = false;
                             MainPlayer.getInstance(getActivity()).pause();
 
-                            background.setImageResource(R.drawable.welldone);
+                            background.setImageResource(getLoader(getActivity()).getImageIdByName(IMAGE.WELLDONE_BG));
                             contentGame.setVisibility(View.INVISIBLE);
                             if (additionalPanel.getTag().equals("open")) {
                                 contentGirl.setTranslationX(0);
@@ -295,7 +312,7 @@ public class FragmentGame extends Fragment {
                             v1.setDrawingCacheEnabled(true);
                             bitmap = v1.getDrawingCache();
 
-                            background.setImageResource(R.drawable.game);
+                            background.setImageResource(getLoader(getActivity()).getImageIdByName(IMAGE.GAME_BG));
                             contentGame.setVisibility(View.VISIBLE);
                             if (additionalPanel.getTag().equals("open")) {
                                 contentGirl.setTranslationX(-additionalPanel.getWidth());
@@ -353,7 +370,7 @@ public class FragmentGame extends Fragment {
         List<CategoryWrapper> categoryWrappers = new ArrayList<>();
 
         List<Category> categories = null;
-        categories = ApplicationPropertiesLoader.getLoader(getActivity()).getAllCategories();
+        categories = getLoader(getActivity()).getAllCategories();
 
         for (Category category : categories) {
             categoryWrappers.add(new CategoryWrapper(category, getActivity(), contentGirl));

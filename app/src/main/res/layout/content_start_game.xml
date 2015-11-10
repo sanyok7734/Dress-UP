@@ -10,9 +10,9 @@
         android:layout_weight="1">
 
         <LinearLayout
+            android:id="@+id/background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/splash"
             android:orientation="vertical">
 
             <ImageView
@@ -44,8 +44,7 @@
                         android:id="@+id/image_help"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:src="@drawable/faq" />
+                        android:layout_gravity="center"/>
 
                     <TextView
                         android:id="@+id/button_help"
@@ -70,8 +69,7 @@
                         android:id="@+id/image_more"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:src="@drawable/more" />
+                        android:layout_gravity="center"/>
 
                     <TextView
                         android:id="@+id/button_more"
@@ -96,8 +94,7 @@
                         android:id="@+id/image_start"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_alignParentRight="true"
-                        android:src="@drawable/start" />
+                        android:layout_alignParentRight="true"/>
 
                     <TextView
                         android:id="@+id/button_start"

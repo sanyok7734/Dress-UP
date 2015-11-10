@@ -35,6 +35,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnTouch;
 
+import static com.raccoonapps.worksimple.controller.ApplicationPropertiesLoader.BUTTON;
+import static com.raccoonapps.worksimple.controller.ApplicationPropertiesLoader.getLoader;
+
 public class FragmentWellDone extends Fragment {
 
     public static final String WHATSAPP = "whatsapp";
@@ -121,13 +124,17 @@ public class FragmentWellDone extends Fragment {
     }
 
     private void setIcon() {
-        buttonRestartBackground.setImageResource(R.drawable.restart);
-        buttonBackBackground.setImageResource(R.drawable.back);
-        backgroundEmail.setImageResource(R.drawable.email);
-        backgroundWa.setImageResource(R.drawable.wa);
-        backgroundTwi.setImageResource(R.drawable.tw);
-        backgroundFb.setImageResource(R.drawable.fb);
-        backgroundPhoto.setImageResource(R.drawable.photo);
+        buttonRestartBackground.setImageResource(setIcon(BUTTON.RESTART));
+        buttonBackBackground.setImageResource(setIcon(BUTTON.BACK));
+        backgroundEmail.setImageResource(setIcon(BUTTON.EMAIL));
+        backgroundWa.setImageResource(setIcon(BUTTON.WHATSAPP));
+        backgroundTwi.setImageResource(setIcon(BUTTON.TWITTER));
+        backgroundFb.setImageResource(setIcon(BUTTON.FACEBOOK));
+        backgroundPhoto.setImageResource(setIcon(BUTTON.PHOTO));
+    }
+
+    private int setIcon(BUTTON button) {
+        return getLoader(getActivity()).getButtonIdByName(button);
     }
 
 

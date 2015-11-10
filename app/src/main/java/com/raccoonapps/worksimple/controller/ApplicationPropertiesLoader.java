@@ -36,8 +36,8 @@ public class ApplicationPropertiesLoader {
         SCROLL, SCROLL_PRESSED, START, TWITTER, WHATSAPP
     }
 
-    enum IMAGE {
-        GIRL, GAME_BG, SPLASH, WELLDONE_BG
+    public enum IMAGE {
+        GIRL, GAME_BG, SPLASH, WELLDONE_BG, NINJA
     }
 
     public enum TRACK {
