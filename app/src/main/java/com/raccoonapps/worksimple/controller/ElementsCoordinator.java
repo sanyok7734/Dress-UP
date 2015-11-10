@@ -1,4 +1,4 @@
-package com.raccoonapps.worksimple.model;
+package com.raccoonapps.worksimple.controller;
 
 import android.graphics.drawable.BitmapDrawable;
 import android.widget.FrameLayout;
@@ -7,12 +7,12 @@ import android.widget.ImageView;
 import com.raccoonapps.worksimple.MainActivity;
 import com.raccoonapps.worksimple.components.AccessoryWrapper;
 
-public class CoordinatorElements {
+public class ElementsCoordinator {
 
     private FrameLayout root;
     private ImageView girlImage;
 
-    public CoordinatorElements(FrameLayout root, ImageView girlImage) {
+    public ElementsCoordinator(FrameLayout root, ImageView girlImage) {
         this.root = root;
         this.girlImage = girlImage;
     }

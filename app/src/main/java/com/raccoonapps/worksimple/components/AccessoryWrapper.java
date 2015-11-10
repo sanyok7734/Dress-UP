@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.raccoonapps.worksimple.model.Squeezing;
+import com.raccoonapps.worksimple.controller.Squeezing;
 
 /**
  * Created by sanyok on 09.11.15.
@@ -16,6 +16,7 @@ import com.raccoonapps.worksimple.model.Squeezing;
 public class AccessoryWrapper implements Comparable<AccessoryWrapper> {
 
     private ImageView accessoryImage;
+    private CategoryWrapper categoryWrapper;
     private int tag;
     private int layer;
     private double fromX;
@@ -26,8 +27,9 @@ public class AccessoryWrapper implements Comparable<AccessoryWrapper> {
     private int Y;
 
 
-    public AccessoryWrapper(Context context) {
+    public AccessoryWrapper(Context context, CategoryWrapper categoryWrapper) {
         accessoryImage = new ImageView(context);
+        this.categoryWrapper = categoryWrapper;
     }
 
     public ImageView getAccessoryImage() {
@@ -134,9 +136,13 @@ public class AccessoryWrapper implements Comparable<AccessoryWrapper> {
     @Override
     public int compareTo(@NonNull AccessoryWrapper another) {
         if (this.getLayer()<another.getLayer()){
-            return 1;
-        }else{
             return -1;
+        }else{
+            return 1;
         }
+    }
+
+    public CategoryWrapper getCategoryWrapper() {
+        return categoryWrapper;
     }
 }

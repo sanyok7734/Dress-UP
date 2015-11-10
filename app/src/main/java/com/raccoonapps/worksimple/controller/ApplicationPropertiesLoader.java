@@ -1,9 +1,12 @@
-package com.raccoonapps.worksimple.model;
+package com.raccoonapps.worksimple.controller;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.raccoonapps.worksimple.R;
+import com.raccoonapps.worksimple.model.Accessory;
+import com.raccoonapps.worksimple.model.Category;
+import com.raccoonapps.worksimple.model.Coordinates;
 
 import org.json.JSONArray;
 import org.json.JSONException;

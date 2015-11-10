@@ -10,7 +10,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -28,10 +27,10 @@ import com.raccoonapps.worksimple.components.CategoryWrapper;
 import com.raccoonapps.worksimple.controller.AccessoryController;
 import com.raccoonapps.worksimple.eventbus.BusProvider;
 import com.raccoonapps.worksimple.model.Accessory;
-import com.raccoonapps.worksimple.model.ApplicationPropertiesLoader;
+import com.raccoonapps.worksimple.controller.ApplicationPropertiesLoader;
 import com.raccoonapps.worksimple.model.Category;
-import com.raccoonapps.worksimple.model.CoordinatorElements;
-import com.raccoonapps.worksimple.model.Squeezing;
+import com.raccoonapps.worksimple.controller.ElementsCoordinator;
+import com.raccoonapps.worksimple.controller.Squeezing;
 import com.raccoonapps.worksimple.music.MainPlayer;
 import com.squareup.otto.Subscribe;
 
@@ -105,8 +104,8 @@ public class FragmentGame extends Fragment {
         girlImage.setLayoutParams(layoutParam);
         girlImage.setImageDrawable(Squeezing.getImageGirl());
         //coordination girl
-        girlImage.setTranslationX(CoordinatorElements.setCoordinatorGirlX(Squeezing.occupyWidthGirl(), 50));
-        girlImage.setTranslationY(CoordinatorElements.setCoordinatorGirlY(Squeezing.occupyHeightGirl(), 50));
+        girlImage.setTranslationX(ElementsCoordinator.setCoordinatorGirlX(Squeezing.occupyWidthGirl(), 50));
+        girlImage.setTranslationY(ElementsCoordinator.setCoordinatorGirlY(Squeezing.occupyHeightGirl(), 50));
 
         categoryWrappers = getCategoryWrappers();
 
@@ -147,7 +146,7 @@ public class FragmentGame extends Fragment {
 
         switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_UP:
-                ArrayList<AccessoryWrapper> deleteAccessory = new ArrayList<>();
+                ArrayList<AccessoryWrapper> deleteAccessories = new ArrayList<>();
 
                 int pressX = (int) motionEvent.getX();
                 int pressY = (int) motionEvent.getY();
@@ -164,17 +163,16 @@ public class FragmentGame extends Fragment {
                             AccessoryController.getAccessoryWrapper(i).setY(pressY - fromY);
                             //sorry but now night and I can not think
                             if (AccessoryController.getAccessoryWrapper(i).isRemove()) {
-                                deleteAccessory.add(AccessoryController.getAccessoryWrapper(i));
+                                deleteAccessories.add(AccessoryController.getAccessoryWrapper(i));
                             }
                         }
                     }
                 }
 
-                Collections.sort(deleteAccessory);
-                Log.d("TAPGIRL", "s = " + deleteAccessory.size());
-                if (deleteAccessory.size() != 0) {
-                    categoryWrapper.setCoordinateImage(deleteAccessory.get(deleteAccessory.size() - 1).getTag(), null, 0, 0);
-                    Log.d("TAPGIRL", "l = " + deleteAccessory.get(deleteAccessory.size() - 1).getLayer());
+                Collections.sort(deleteAccessories);
+                if (deleteAccessories.size() != 0) {
+                    AccessoryWrapper deleteAccessory = deleteAccessories.get(deleteAccessories.size() - 1);
+                    deleteAccessory.getCategoryWrapper().deleteAccesorry(deleteAccessory.getTag());
                 }
                 break;
         }

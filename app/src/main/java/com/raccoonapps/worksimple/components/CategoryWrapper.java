@@ -10,7 +10,7 @@ import com.raccoonapps.worksimple.R;
 import com.raccoonapps.worksimple.model.Accessory;
 import com.raccoonapps.worksimple.controller.AccessoryController;
 import com.raccoonapps.worksimple.model.Category;
-import com.raccoonapps.worksimple.model.CoordinatorElements;
+import com.raccoonapps.worksimple.controller.ElementsCoordinator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public class CategoryWrapper {
     private static FrameLayout screen;
     private AccessoryWrapper accessoryImage = null;
 
-    private CoordinatorElements coordinatorElements;
+    private ElementsCoordinator elementsCoordinator;
 
 
     private List<AccessoryWrapper> imageViews = new ArrayList<>();
@@ -45,7 +45,7 @@ public class CategoryWrapper {
 
 
         //coordinator elements initialization
-        coordinatorElements = new CoordinatorElements(screen, girl);
+        elementsCoordinator = new ElementsCoordinator(screen, girl);
 
         //set accessor for girl
         this.accessories = category.getAccessories();
@@ -116,13 +116,15 @@ public class CategoryWrapper {
     }
 
     private void createImage(int tag, BitmapDrawable drawable, double X, double Y) {
-        accessoryImage = new AccessoryWrapper(context);
-        accessoryImage.setTag(tag);
-        accessoryImage.setAccessoryImage(drawable);
-        imageViews.add(accessoryImage);
-        screen.addView(accessoryImage.getAccessoryImage());
-        AccessoryController.add(accessoryImage);
-        coordinatorElements.imageCoordinator(accessoryImage, drawable, X, Y);
+        if (drawable != null) {
+            accessoryImage = new AccessoryWrapper(context, this);
+            accessoryImage.setTag(tag);
+            accessoryImage.setAccessoryImage(drawable);
+            imageViews.add(accessoryImage);
+            screen.addView(accessoryImage.getAccessoryImage());
+            AccessoryController.add(accessoryImage);
+        }
+        elementsCoordinator.imageCoordinator(accessoryImage, drawable, X, Y);
     }
 
 
