@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,7 +23,9 @@ import com.raccoonapps.worksimple.MainActivity;
 import com.raccoonapps.worksimple.R;
 import com.raccoonapps.worksimple.adapters.AdapterAccessory;
 import com.raccoonapps.worksimple.adapters.AdapterCategory;
+import com.raccoonapps.worksimple.components.AccessoryWrapper;
 import com.raccoonapps.worksimple.components.CategoryWrapper;
+import com.raccoonapps.worksimple.controller.AccessoryController;
 import com.raccoonapps.worksimple.eventbus.BusProvider;
 import com.raccoonapps.worksimple.model.Accessory;
 import com.raccoonapps.worksimple.model.ApplicationPropertiesLoader;
@@ -33,6 +36,7 @@ import com.raccoonapps.worksimple.music.MainPlayer;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.Bind;
@@ -137,6 +141,46 @@ public class FragmentGame extends Fragment {
 
         return view;
     }
+
+    @OnTouch(R.id.content_girl)
+    public boolean touchContentGirl(View view, MotionEvent motionEvent) {
+
+        switch (motionEvent.getAction()) {
+            case MotionEvent.ACTION_UP:
+                ArrayList<AccessoryWrapper> deleteAccessory = new ArrayList<>();
+
+                int pressX = (int) motionEvent.getX();
+                int pressY = (int) motionEvent.getY();
+
+                for (int i = 0; i < AccessoryController.size(); i++) {
+                    int fromX = (int) AccessoryController.getAccessoryWrapper(i).getFromX();
+                    int toX = (int) AccessoryController.getAccessoryWrapper(i).getToX();
+                    int fromY = (int) AccessoryController.getAccessoryWrapper(i).getFromY();
+                    int toY = (int) AccessoryController.getAccessoryWrapper(i).getToY();
+
+                    if (AccessoryController.contain(pressX, fromX, toX)) {
+                        if (AccessoryController.contain(pressY, fromY, toY)) {
+                            AccessoryController.getAccessoryWrapper(i).setX(pressX - fromX);
+                            AccessoryController.getAccessoryWrapper(i).setY(pressY - fromY);
+                            //sorry but now night and I can not think
+                            if (AccessoryController.getAccessoryWrapper(i).isRemove()) {
+                                deleteAccessory.add(AccessoryController.getAccessoryWrapper(i));
+                            }
+                        }
+                    }
+                }
+
+                Collections.sort(deleteAccessory);
+                Log.d("TAPGIRL", "s = " + deleteAccessory.size());
+                if (deleteAccessory.size() != 0) {
+                    categoryWrapper.setCoordinateImage(deleteAccessory.get(deleteAccessory.size() - 1).getTag(), null, 0, 0);
+                    Log.d("TAPGIRL", "l = " + deleteAccessory.get(deleteAccessory.size() - 1).getLayer());
+                }
+                break;
+        }
+        return true;
+    }
+
 
     private int getCategoriesListHeight() {
         int allItemCategory = 7;

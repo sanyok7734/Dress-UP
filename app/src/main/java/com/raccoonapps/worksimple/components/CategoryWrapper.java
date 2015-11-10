@@ -8,6 +8,7 @@ import android.widget.ImageView;
 
 import com.raccoonapps.worksimple.R;
 import com.raccoonapps.worksimple.model.Accessory;
+import com.raccoonapps.worksimple.controller.AccessoryController;
 import com.raccoonapps.worksimple.model.Category;
 import com.raccoonapps.worksimple.model.CoordinatorElements;
 
@@ -26,7 +27,7 @@ public class CategoryWrapper {
     private Drawable drawableButton;
     private Drawable drawableButtonPressed;
     private Drawable drawableButtonDefault;
-    private FrameLayout screen;
+    private static FrameLayout screen;
     private AccessoryWrapper accessoryImage = null;
 
     private CoordinatorElements coordinatorElements;
@@ -86,6 +87,7 @@ public class CategoryWrapper {
             if (imageViews.get(i).getTag() == tag) {
                 screen.removeView(imageViews.get(i).getAccessoryImage());
                 imageViews.remove(imageViews.get(i));
+                AccessoryController.remove(tag);
                 return;
             }
         }
@@ -93,11 +95,23 @@ public class CategoryWrapper {
         if (!lamination) {
             if (accessoryImage != null) {
                 screen.removeView(accessoryImage.getAccessoryImage());
+                AccessoryController.remove(accessoryImage.getTag());
                 imageViews.clear();
             }
             createImage(tag, drawable, X, Y);
         } else {
             createImage(tag, drawable, X, Y);
+        }
+    }
+
+    public void deleteAccesorry(int tag) {
+        for (int i = 0; i < imageViews.size(); i++) {
+            if (imageViews.get(i).getTag() == tag) {
+                screen.removeView(imageViews.get(i).getAccessoryImage());
+                imageViews.remove(imageViews.get(i));
+                AccessoryController.remove(tag);
+                return;
+            }
         }
     }
 
@@ -107,9 +121,14 @@ public class CategoryWrapper {
         accessoryImage.setAccessoryImage(drawable);
         imageViews.add(accessoryImage);
         screen.addView(accessoryImage.getAccessoryImage());
+        AccessoryController.add(accessoryImage);
         coordinatorElements.imageCoordinator(accessoryImage, drawable, X, Y);
     }
 
+
+    public AccessoryWrapper getAccessoryImage() {
+        return accessoryImage;
+    }
 
     public boolean isSelectedCategory() {
         return selectedCategory;

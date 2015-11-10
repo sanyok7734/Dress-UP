@@ -37,10 +37,17 @@ public class CoordinatorElements {
             image.getAccessoryImage().setTranslationY((float) (lengthBeforeYGirl + (translationHairY - centerHairsY)));
 
             image.setImageDrawable(drawable);
+
+            image.setFromX((lengthBeforeXGirl + (translationHairX - centerHairsX)));
+            image.setToX((Squeezing.occupyWidthAccessory(drawable)) + (lengthBeforeXGirl + (translationHairX - centerHairsX)));
+
+            image.setFromY((lengthBeforeYGirl + (translationHairY - centerHairsY)));
+            image.setToY((Squeezing.occupyHeightAccessory(drawable)) + (lengthBeforeYGirl + (translationHairY - centerHairsY)));
         } else {
-            root.removeView(image.getAccessoryImage());
+          //  root.removeView(image.getAccessoryImage());
         }
     }
+
 
     public static float setCoordinatorGirlX(int widthImage, double percentCoordinateGirlX) {
         return ((float)(((percentCoordinateGirlX* MainActivity.screenWidth)/100) - (widthImage/2)));
