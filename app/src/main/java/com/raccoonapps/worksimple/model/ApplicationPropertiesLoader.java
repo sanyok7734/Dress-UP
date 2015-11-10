@@ -32,6 +32,10 @@ public class ApplicationPropertiesLoader {
         START, MORE, CIRCLE, RIGHT
     }
 
+    enum IMAGE {
+        GIRL, GAME_BG, WELLDONE_BG
+    }
+
     public enum TRACK {
         MAIN
     }
@@ -61,6 +65,17 @@ public class ApplicationPropertiesLoader {
             e.printStackTrace();
         }
         return categories;
+    }
+
+    public int getImageIdByName(IMAGE image) {
+        String imageName = null;
+        try {
+            JSONObject images = properties.getJSONObject("general_data").getJSONObject("images");
+            imageName = images.getString(image.name().toLowerCase());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return (imageName != null) ? context.getResources().getIdentifier("drawable/" + imageName.split("\\.")[0], null, context.getPackageName()) : 0;
     }
 
     public int getButtonIdByName(BUTTON button) {

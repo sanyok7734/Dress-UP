@@ -145,7 +145,7 @@ public class FragmentGame extends Fragment {
     }
 
     private int getCategoriesListHeight() {
-        int allItemCategory = 7;
+        int categoriesCount = 7;
         double listHeight;
         double nBtnSize = (int) getResources().getDimension(R.dimen.buttonNextWidthHeight);
         double mTopBtnSize = (int) getResources().getDimension(R.dimen.buttonNextTop);
@@ -157,9 +157,9 @@ public class FragmentGame extends Fragment {
         double categoryHeight = MainActivity.screenHeight - sumSizeButton;
 
         visibleCategoriesCount = (int) (categoryHeight / categoryItemHeight);
-        allItemCategory = ApplicationPropertiesLoader.getLoader(getActivity()).getAllCategories().size();
-        if (allItemCategory <= visibleCategoriesCount) {
-            listHeight = allItemCategory * categoryItemHeight;
+        categoriesCount = ApplicationPropertiesLoader.getLoader(getActivity()).getAllCategories().size();
+        if (categoriesCount <= visibleCategoriesCount) {
+            listHeight = categoriesCount * categoryItemHeight;
             scrollCategory.setVisibility(View.GONE);
         } else {
             listHeight = visibleCategoriesCount * categoryItemHeight;
@@ -194,7 +194,6 @@ public class FragmentGame extends Fragment {
             animSet.start();
             additionalPanel.setTag("close");
         }
-        Log.d("TESTSANO", "panelAccessoryHide");
     }
 
     // pressing on accessory for him placement

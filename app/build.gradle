@@ -2,19 +2,39 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.1 "
+    buildToolsVersion "23.0.1"
 
     defaultConfig {
-        applicationId "com.raccoonapps.worksimple"
+        applicationId project.PACKAGE_NAME
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode Integer.parseInt(project.VERSION_CODE)
+        versionName project.VERSION_NAME
+
+        multiDexEnabled false
     }
+
+    productFlavors {
+        quickAppNinja {
+            resValue "string", "app_name", project.GAME_TITLE
+            resValue "string", "white_label", project.WHITE_LABEL
+        }
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("keystore.jks")
+            storePassword "password123"
+            keyAlias "owner"
+            keyPassword "ownerpassword123"
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 }

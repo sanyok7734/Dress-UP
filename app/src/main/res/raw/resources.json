@@ -1,6 +1,10 @@
 {
   "general_data": {
-    "app_logo": "logo.png",
+    "images": {
+      "girl": "girls.png",
+      "game_bg": "game.png",
+      "welldone_bg": "welldone.png"
+    },
     "buttons": {
       "more": "more_btn.png",
       "start": "start_btn.png",
