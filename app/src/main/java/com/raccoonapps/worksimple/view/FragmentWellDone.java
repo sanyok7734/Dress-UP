@@ -41,6 +41,7 @@ public class FragmentWellDone extends Fragment {
     public static final String TWITTER = "twitter";
     public static final String FACEBOOK = "facebook";
 
+    private View view;
     /**
      * Default pictures directory in Android
      */
@@ -54,7 +55,7 @@ public class FragmentWellDone extends Fragment {
     FrameLayout root;
     @Bind(R.id.buttons)
     RelativeLayout buttons;
-    @Bind(R.id.banner_well_done)
+    @Bind(R.id.banner_layout)
     FrameLayout banner;
 
     @Bind(R.id.button_restart_background)
@@ -96,7 +97,7 @@ public class FragmentWellDone extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.content_well_done, container, false);
+        view = inflater.inflate(R.layout.content_well_done, container, false);
         ButterKnife.bind(this, view);
         setIcon();
 
@@ -112,21 +113,21 @@ public class FragmentWellDone extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        BusProvider.getInstanceGame().post(true);
+        MainActivity.preferenceBanner(view, getActivity(), false);
+    }
+
     private void setIcon() {
-        buttonRestartBackground.setImageResource(R.drawable.btn_circle);
-        buttonRestartIcon.setImageResource(R.drawable.refresh);
-        buttonBackBackground.setImageResource(R.drawable.btn_circle);
-        buttonBackIcon.setImageResource(R.drawable.back);
+        buttonRestartBackground.setImageResource(R.drawable.restart);
+        buttonBackBackground.setImageResource(R.drawable.back);
         backgroundEmail.setImageResource(R.drawable.email);
-        iconEmail.setImageResource(R.drawable.mail);
-        backgroundWa.setImageResource(R.drawable.sharing_wa);
-        iconWa.setImageResource(R.drawable.whatsapp);
-        backgroundTwi.setImageResource(R.drawable.sharing_twi);
-        iconTwi.setImageResource(R.drawable.twitter);
-        backgroundFb.setImageResource(R.drawable.sharing_fb);
-        iconFb.setImageResource(R.drawable.facebook);
-        backgroundPhoto.setImageResource(R.drawable.photo_btn);
-        iconPhoto.setImageResource(R.drawable.photo);
+        backgroundWa.setImageResource(R.drawable.wa);
+        backgroundTwi.setImageResource(R.drawable.tw);
+        backgroundFb.setImageResource(R.drawable.fb);
+        backgroundPhoto.setImageResource(R.drawable.photo);
     }
 
 
@@ -137,6 +138,7 @@ public class FragmentWellDone extends Fragment {
                 button.setAlpha(0.8f);
                 break;
             case MotionEvent.ACTION_UP:
+                MainActivity.onClickWellDone = true;
                 button.setAlpha(1);
 
                 String externalStorageDirectory = Environment.getExternalStorageDirectory() + "/DRESS_UP";
@@ -253,12 +255,6 @@ public class FragmentWellDone extends Fragment {
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        BusProvider.getInstanceGame().post(true);
-    }
-
     //TODO {PHOTO BUTTON}
     @OnTouch(R.id.button_photo)
     public boolean onTouchPhoto(View button, MotionEvent event) {
@@ -267,6 +263,7 @@ public class FragmentWellDone extends Fragment {
                 button.setAlpha(0.8f);
                 break;
             case MotionEvent.ACTION_UP:
+                splash();
                 button.setAlpha(1);
                 if (externalStoragePicturesDirectory.exists()) {
                     File fullPath = new File(externalStoragePicturesDirectory.getAbsolutePath() + "/DressUp");
@@ -275,9 +272,6 @@ public class FragmentWellDone extends Fragment {
                 }
                 else
                     savePicture(getActivity().getApplication().getFilesDir().getAbsolutePath());
-                Log.d("SPLAH", "Before splashing");
-                splash();
-                Log.d("SPLAH", "After splashing");
                 break;
         }
         return true;

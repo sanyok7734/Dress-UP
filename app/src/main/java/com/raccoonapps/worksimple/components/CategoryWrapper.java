@@ -3,15 +3,14 @@ package com.raccoonapps.worksimple.components;
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.raccoonapps.worksimple.R;
 import com.raccoonapps.worksimple.model.Accessory;
+import com.raccoonapps.worksimple.controller.AccessoryController;
 import com.raccoonapps.worksimple.model.Category;
-import com.raccoonapps.worksimple.model.CoordinatorElements;
-import com.raccoonapps.worksimple.model.Squeezing;
+import com.raccoonapps.worksimple.controller.ElementsCoordinator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,34 +22,42 @@ public class CategoryWrapper {
     private boolean lamination = false;
 
     private Context context;
-    private Drawable drawableCategory;
+    //private Drawable drawableCategory;
+    private Category category;
     private Drawable drawableButton;
-    private FrameLayout screen;
-    private ImageView accessoryImage;
+    private Drawable drawableButtonPressed;
+    private Drawable drawableButtonDefault;
+    private static FrameLayout screen;
+    private AccessoryWrapper accessoryImage = null;
 
-    private CoordinatorElements coordinatorElements;
+    private ElementsCoordinator elementsCoordinator;
 
 
-    private List<ImageView> imageViews = new ArrayList<>();
+    private List<AccessoryWrapper> imageViews = new ArrayList<>();
     private List<Accessory> accessories = new ArrayList<>();
 
 
     public CategoryWrapper(Category category, Context context, FrameLayout contentGirl) {
         this.context = context;
         this.screen = contentGirl;
+        this.category = category;
         ImageView girl = (ImageView) contentGirl.findViewById(R.id.girl);
 
-
         //coordinator elements initialization
-        coordinatorElements = new CoordinatorElements(screen, girl);
+        elementsCoordinator = new ElementsCoordinator(screen, girl);
 
         //set accessor for girl
         this.accessories = category.getAccessories();
 
         //set image in button
         int identifier = context.getResources().getIdentifier("drawable/" + category.getCategoryIcon(), null, context.getPackageName());
-        drawableCategory = context.getResources().getDrawable(identifier);
-        drawableButton = context.getResources().getDrawable(R.drawable.btn_right);
+        int identifierPressed = context.getResources().getIdentifier("drawable/" + category.getCategoryIconPressed(), null, context.getPackageName());
+        //заполняю в зависимости от текущего состояния
+        drawableButton = context.getResources().getDrawable(identifier);
+
+        //два состояния нажатое и дефолтное
+        drawableButtonPressed = context.getResources().getDrawable(identifierPressed);
+        drawableButtonDefault = context.getResources().getDrawable(identifier);
     }
 
     public CategoryWrapper(Category category, Context context, Boolean lamination, FrameLayout contentGirl) {
@@ -58,46 +65,70 @@ public class CategoryWrapper {
         this.lamination = lamination;
     }
 
-    public void setDrawableButton(int buttonDrawable) {
-        drawableButton = context.getResources().getDrawable(buttonDrawable);
+    public Drawable getDrawableButtonPressed() {
+        return drawableButtonPressed;
+    }
+
+    public Drawable getDrawableButtonDefault() {
+        return drawableButtonDefault;
+    }
+
+    public void setDrawableButton(Drawable buttonDrawable) {
+        drawableButton = buttonDrawable;
+    }
+
+    public Drawable getDrawableButton() {
+        return drawableButton;
     }
 
     public void setCoordinateImage(int tag, BitmapDrawable drawable, double X, double Y) {
         for (int i = 0; i < imageViews.size(); i++) {
-            if (imageViews.get(i).getTag().equals(tag)) {
-                screen.removeView(imageViews.get(i));
+            if (imageViews.get(i).getTag() == tag) {
+                screen.removeView(imageViews.get(i).getAccessoryImage());
                 imageViews.remove(imageViews.get(i));
+                AccessoryController.remove(tag);
                 return;
             }
         }
 
         if (!lamination) {
-            screen.removeView(accessoryImage);
-            imageViews.clear();
+            if (accessoryImage != null) {
+                screen.removeView(accessoryImage.getAccessoryImage());
+                AccessoryController.remove(accessoryImage.getTag());
+                imageViews.clear();
+            }
             createImage(tag, drawable, X, Y);
         } else {
             createImage(tag, drawable, X, Y);
         }
     }
 
+    public void deleteAccesorry(int tag) {
+        for (int i = 0; i < imageViews.size(); i++) {
+            if (imageViews.get(i).getTag() == tag) {
+                screen.removeView(imageViews.get(i).getAccessoryImage());
+                imageViews.remove(imageViews.get(i));
+                AccessoryController.remove(tag);
+                return;
+            }
+        }
+    }
+
     private void createImage(int tag, BitmapDrawable drawable, double X, double Y) {
-        accessoryImage = new ImageView(context);
-        LayoutParams layoutParam = new LayoutParams(
-                Squeezing.occupyWidthAccessory(drawable), Squeezing.occupyHeightAccessory(drawable));
-        accessoryImage.setLayoutParams(layoutParam);
-        accessoryImage.setTag(tag);
-        imageViews.add(accessoryImage);
-        screen.addView(accessoryImage);
-        coordinatorElements.imageCoordinator(accessoryImage, drawable, X, Y);
+        if (drawable != null) {
+            accessoryImage = new AccessoryWrapper(context, this);
+            accessoryImage.setTag(tag);
+            accessoryImage.setAccessoryImage(drawable);
+            imageViews.add(accessoryImage);
+            screen.addView(accessoryImage.getAccessoryImage());
+            AccessoryController.add(accessoryImage);
+        }
+        elementsCoordinator.imageCoordinator(accessoryImage, drawable, X, Y);
     }
 
 
-    public Drawable getDrawableCategory() {
-        return drawableCategory;
-    }
-
-    public Drawable getDrawableButton() {
-        return drawableButton;
+    public AccessoryWrapper getAccessoryImage() {
+        return accessoryImage;
     }
 
     public boolean isSelectedCategory() {

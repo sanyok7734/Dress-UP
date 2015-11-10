@@ -7,9 +7,9 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,22 +22,24 @@ import com.raccoonapps.worksimple.MainActivity;
 import com.raccoonapps.worksimple.R;
 import com.raccoonapps.worksimple.adapters.AdapterAccessory;
 import com.raccoonapps.worksimple.adapters.AdapterCategory;
+import com.raccoonapps.worksimple.components.AccessoryWrapper;
 import com.raccoonapps.worksimple.components.CategoryWrapper;
+import com.raccoonapps.worksimple.controller.AccessoryController;
 import com.raccoonapps.worksimple.eventbus.BusProvider;
 import com.raccoonapps.worksimple.model.Accessory;
-import com.raccoonapps.worksimple.model.ApplicationPropertiesLoader;
+import com.raccoonapps.worksimple.controller.ApplicationPropertiesLoader;
 import com.raccoonapps.worksimple.model.Category;
-import com.raccoonapps.worksimple.model.CoordinatorElements;
-import com.raccoonapps.worksimple.model.Squeezing;
+import com.raccoonapps.worksimple.controller.ElementsCoordinator;
+import com.raccoonapps.worksimple.controller.Squeezing;
 import com.raccoonapps.worksimple.music.MainPlayer;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.OnTouch;
 
 public class FragmentGame extends Fragment {
@@ -45,6 +47,8 @@ public class FragmentGame extends Fragment {
     private AdapterCategory adapterCategory;
     private LinearLayoutManager mLayoutManager;
     private RecyclerView.LayoutManager layoutAccessory;
+
+    private GestureDetectorCompat detector;
 
     private Bitmap bitmap = null;
 
@@ -74,18 +78,13 @@ public class FragmentGame extends Fragment {
     //button game
     @Bind(R.id.button_back_background)
     ImageView buttonBackBackground;
-    @Bind(R.id.button_back_image)
-    ImageView buttonBackImage;
 
     @Bind(R.id.button_sound_background)
     ImageView buttonSoundBackground;
-    @Bind(R.id.button_sound_image)
-    ImageView buttonSoundImage;
 
     @Bind(R.id.button_next_background)
     ImageView buttonNextBackground;
-    @Bind(R.id.button_next_image)
-    ImageView buttonNextImage;
+
     private int visibleCategoriesCount;
 
     @Nullable
@@ -104,9 +103,11 @@ public class FragmentGame extends Fragment {
         layoutParam.width = Squeezing.occupyWidthGirl();
         girlImage.setLayoutParams(layoutParam);
         girlImage.setImageDrawable(Squeezing.getImageGirl());
+
+        //TODO coordination girl
         //coordination girl
-        girlImage.setTranslationX(CoordinatorElements.setCoordinatorGirlX(Squeezing.occupyWidthGirl(), 50));
-        girlImage.setTranslationY(CoordinatorElements.setCoordinatorGirlY(Squeezing.occupyHeightGirl(), 50));
+        girlImage.setTranslationX(ElementsCoordinator.setCoordinatorGirlX(Squeezing.occupyWidthGirl(), 50));
+        girlImage.setTranslationY(ElementsCoordinator.setCoordinatorGirlY(Squeezing.occupyHeightGirl(), 50));
 
         categoryWrappers = getCategoryWrappers();
 
@@ -114,7 +115,7 @@ public class FragmentGame extends Fragment {
         layoutAccessory = new LinearLayoutManager(getActivity());
         additionalPanel.setLayoutManager(layoutAccessory);
 
-        adapterCategory = new AdapterCategory(categoryWrappers);
+        adapterCategory = new AdapterCategory(categoryWrappers, getActivity());
         mLayoutManager = new LinearLayoutManager(getActivity());
         listCategory.setLayoutManager(mLayoutManager);
         listCategory.setAdapter(adapterCategory);
@@ -124,15 +125,13 @@ public class FragmentGame extends Fragment {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if(mLayoutManager.findFirstCompletelyVisibleItemPosition()==0) {
-                    Log.d("SCROLL", "TOP");
-                    scrollCategory.setImageResource(R.drawable.scroll_ic);
+                if (mLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                    scrollCategory.setImageResource(R.drawable.scroll);
                 }
                 int allItemCategory = 0;
                 allItemCategory = ApplicationPropertiesLoader.getLoader(getActivity()).getAllCategories().size();
                 if (mLayoutManager.findLastCompletelyVisibleItemPosition() == allItemCategory - 1) {
-                    Log.d("SCROLL", "END");
-                    scrollCategory.setImageResource(R.drawable.refresh);
+                    scrollCategory.setImageResource(R.drawable.scroll_p);
                 }
             }
         });
@@ -144,8 +143,47 @@ public class FragmentGame extends Fragment {
         return view;
     }
 
+    @OnTouch(R.id.content_girl)
+    public boolean touchContentGirl(View view, MotionEvent motionEvent) {
+
+        switch (motionEvent.getAction()) {
+            case MotionEvent.ACTION_UP:
+                ArrayList<AccessoryWrapper> deleteAccessories = new ArrayList<>();
+
+                int pressX = (int) motionEvent.getX();
+                int pressY = (int) motionEvent.getY();
+
+                for (int i = 0; i < AccessoryController.size(); i++) {
+                    int fromX = (int) AccessoryController.getAccessoryWrapper(i).getFromX();
+                    int toX = (int) AccessoryController.getAccessoryWrapper(i).getToX();
+                    int fromY = (int) AccessoryController.getAccessoryWrapper(i).getFromY();
+                    int toY = (int) AccessoryController.getAccessoryWrapper(i).getToY();
+
+                    if (AccessoryController.contain(pressX, fromX, toX)) {
+                        if (AccessoryController.contain(pressY, fromY, toY)) {
+                            AccessoryController.getAccessoryWrapper(i).setX(pressX - fromX);
+                            AccessoryController.getAccessoryWrapper(i).setY(pressY - fromY);
+                            //sorry but now night and I can not think
+                            if (AccessoryController.getAccessoryWrapper(i).isRemove()) {
+                                deleteAccessories.add(AccessoryController.getAccessoryWrapper(i));
+                            }
+                        }
+                    }
+                }
+
+                Collections.sort(deleteAccessories);
+                if (deleteAccessories.size() != 0) {
+                    AccessoryWrapper deleteAccessory = deleteAccessories.get(deleteAccessories.size() - 1);
+                    deleteAccessory.getCategoryWrapper().deleteAccesorry(deleteAccessory.getTag());
+                }
+                break;
+        }
+        return true;
+    }
+
+
     private int getCategoriesListHeight() {
-        int categoriesCount = 7;
+        int allItemCategory = 7;
         double listHeight;
         double nBtnSize = (int) getResources().getDimension(R.dimen.buttonNextWidthHeight);
         double mTopBtnSize = (int) getResources().getDimension(R.dimen.buttonNextTop);
@@ -157,15 +195,16 @@ public class FragmentGame extends Fragment {
         double categoryHeight = MainActivity.screenHeight - sumSizeButton;
 
         visibleCategoriesCount = (int) (categoryHeight / categoryItemHeight);
-        categoriesCount = ApplicationPropertiesLoader.getLoader(getActivity()).getAllCategories().size();
-        if (categoriesCount <= visibleCategoriesCount) {
-            listHeight = categoriesCount * categoryItemHeight;
+        allItemCategory = ApplicationPropertiesLoader.getLoader(getActivity()).getAllCategories().size();
+        if (allItemCategory <= visibleCategoriesCount) {
+            listHeight = allItemCategory * categoryItemHeight;
+            listHeight = (listHeight + ((1 * categoryHeight) / 100));
             scrollCategory.setVisibility(View.GONE);
         } else {
             listHeight = visibleCategoriesCount * categoryItemHeight;
             scrollCategory.setVisibility(View.VISIBLE);
         }
-        return (int) listHeight;
+        return (int) (listHeight);
     }
 
     @Subscribe
@@ -209,22 +248,6 @@ public class FragmentGame extends Fragment {
     }
 
 
-    @OnClick(R.id.scroll_category)
-    public void scrollCategory() {
-        if (scroll) {
-            int itemHeight = listCategory.getChildAt(0).getHeight();
-            int countCategory = categoryWrappers.size() - visibleCategoriesCount;
-            listCategory.smoothScrollBy(itemHeight, itemHeight * countCategory);
-            scroll = false;
-        } else {
-            int itemHeight = listCategory.getChildAt(0).getHeight();
-            int countCategory = categoryWrappers.size() - visibleCategoriesCount;
-            listCategory.smoothScrollBy(itemHeight, -itemHeight * countCategory);
-            scroll = true;
-        }
-    }
-
-
     @Override
     public void onDestroy() {
         super.onPause();
@@ -242,6 +265,7 @@ public class FragmentGame extends Fragment {
                 v.setAlpha(1);
                 switch (v.getId()) {
                     case R.id.button_back:
+                        MainActivity.onClickStart = true;
                         MainActivity.fragmentManager.popBackStack();
                         break;
                     case R.id.button_sound:
@@ -256,32 +280,35 @@ public class FragmentGame extends Fragment {
                         }
                         break;
                     case R.id.button_next:
-                        MainPlayer.getInstance(getActivity()).pause();
+                        if (MainActivity.onClickWellDone) {
+                            MainActivity.onClickWellDone = false;
+                            MainPlayer.getInstance(getActivity()).pause();
 
-                        background.setImageResource(R.drawable.welldone);
-                        contentGame.setVisibility(View.INVISIBLE);
-                        if (additionalPanel.getTag().equals("open")) {
-                            contentGirl.setTranslationX(0);
-                            additionalPanel.setVisibility(View.INVISIBLE);
+                            background.setImageResource(R.drawable.welldone);
+                            contentGame.setVisibility(View.INVISIBLE);
+                            if (additionalPanel.getTag().equals("open")) {
+                                contentGirl.setTranslationX(0);
+                                additionalPanel.setVisibility(View.INVISIBLE);
+                            }
+
+                            View v1 = contentGirl.getRootView();
+                            v1.setDrawingCacheEnabled(true);
+                            bitmap = v1.getDrawingCache();
+
+                            background.setImageResource(R.drawable.game);
+                            contentGame.setVisibility(View.VISIBLE);
+                            if (additionalPanel.getTag().equals("open")) {
+                                contentGirl.setTranslationX(-additionalPanel.getWidth());
+                                additionalPanel.setVisibility(View.VISIBLE);
+                            }
+
+                            Bundle bundle = new Bundle();
+                            bundle.putParcelable("well_done", bitmap);
+                            FragmentWellDone fragmentWellDone = new FragmentWellDone();
+                            fragmentWellDone.setArguments(bundle);
+                            BusProvider.getInstanceMain().post(fragmentWellDone);
+                            break;
                         }
-
-                        View v1 = contentGirl.getRootView();
-                        v1.setDrawingCacheEnabled(true);
-                        bitmap = v1.getDrawingCache();
-
-                        background.setImageResource(R.drawable.game);
-                        contentGame.setVisibility(View.VISIBLE);
-                        if (additionalPanel.getTag().equals("open")) {
-                            contentGirl.setTranslationX(-additionalPanel.getWidth());
-                            additionalPanel.setVisibility(View.VISIBLE);
-                        }
-
-                        Bundle bundle = new Bundle();
-                        bundle.putParcelable("well_done", bitmap);
-                        FragmentWellDone fragmentWellDone = new FragmentWellDone();
-                        fragmentWellDone.setArguments(bundle);
-                        BusProvider.getInstanceMain().post(fragmentWellDone);
-                        break;
                 }
                 break;
         }
@@ -290,9 +317,12 @@ public class FragmentGame extends Fragment {
 
     @Subscribe
     public void refreshScreen(String refresh) {
-        if (refresh.equals("RefreshGameScreen")){
+        if (refresh.equals("RefreshGameScreen")) {
             panelAccessoryHide("Panel");
             adapterCategory.resetCategoryIcon();
+            int itemHeight = listCategory.getChildAt(0).getHeight();
+            int countCategory = categoryWrappers.size() - visibleCategoriesCount;
+            listCategory.smoothScrollBy(itemHeight, -itemHeight * countCategory - 10);
         }
     }
 
@@ -303,13 +333,13 @@ public class FragmentGame extends Fragment {
             MainPlayer.getInstance(getActivity()).resume();
             isResumed = false;
         }
+        MainActivity.onClickWellDone = true;
     }
 
     @Subscribe
     public void subscribeSomeStuff(Boolean object) {
         if (object)
             MainPlayer.getInstance(getActivity()).pause();
-        Log.d("TESTSANO", "subscribeSomeStuff");
     }
 
     @Override
@@ -326,10 +356,7 @@ public class FragmentGame extends Fragment {
         categories = ApplicationPropertiesLoader.getLoader(getActivity()).getAllCategories();
 
         for (Category category : categories) {
-            if (category.getCategoryTitle().equals("dress"))
-                categoryWrappers.add(new CategoryWrapper(category, getActivity(), true, contentGirl));
-            else
-                categoryWrappers.add(new CategoryWrapper(category, getActivity(), contentGirl));
+            categoryWrappers.add(new CategoryWrapper(category, getActivity(), contentGirl));
         }
         return categoryWrappers;
     }
