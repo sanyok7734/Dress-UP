@@ -13,8 +13,8 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-import static com.raccoonapps.worksimple.model.ApplicationPropertiesLoader.BUTTON;
-import static com.raccoonapps.worksimple.model.ApplicationPropertiesLoader.getLoader;
+import static com.raccoonapps.worksimple.controller.ApplicationPropertiesLoader.BUTTON;
+import static com.raccoonapps.worksimple.controller.ApplicationPropertiesLoader.getLoader;
 
 /**
  * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>

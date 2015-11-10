@@ -21,7 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.raccoonapps.worksimple.eventbus.BusProvider;
-import com.raccoonapps.worksimple.model.Squeezing;
+import com.raccoonapps.worksimple.controller.Squeezing;
 import com.raccoonapps.worksimple.view.FragmentStart;
 import com.squareup.otto.Subscribe;
 

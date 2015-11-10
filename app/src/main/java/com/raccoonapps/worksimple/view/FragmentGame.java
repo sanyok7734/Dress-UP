@@ -22,17 +22,20 @@ import com.raccoonapps.worksimple.MainActivity;
 import com.raccoonapps.worksimple.R;
 import com.raccoonapps.worksimple.adapters.AdapterAccessory;
 import com.raccoonapps.worksimple.adapters.AdapterCategory;
+import com.raccoonapps.worksimple.components.AccessoryWrapper;
 import com.raccoonapps.worksimple.components.CategoryWrapper;
+import com.raccoonapps.worksimple.controller.AccessoryController;
 import com.raccoonapps.worksimple.eventbus.BusProvider;
 import com.raccoonapps.worksimple.model.Accessory;
-import com.raccoonapps.worksimple.model.ApplicationPropertiesLoader;
+import com.raccoonapps.worksimple.controller.ApplicationPropertiesLoader;
 import com.raccoonapps.worksimple.model.Category;
-import com.raccoonapps.worksimple.model.CoordinatorElements;
-import com.raccoonapps.worksimple.model.Squeezing;
+import com.raccoonapps.worksimple.controller.ElementsCoordinator;
+import com.raccoonapps.worksimple.controller.Squeezing;
 import com.raccoonapps.worksimple.music.MainPlayer;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.Bind;
@@ -102,8 +105,9 @@ public class FragmentGame extends Fragment {
         girlImage.setImageDrawable(Squeezing.getImageGirl());
 
         //TODO coordination girl
-        girlImage.setTranslationX(CoordinatorElements.setCoordinatorGirlX(Squeezing.occupyWidthGirl(), 50));
-        girlImage.setTranslationY(CoordinatorElements.setCoordinatorGirlY(Squeezing.occupyHeightGirl(), 50));
+        //coordination girl
+        girlImage.setTranslationX(ElementsCoordinator.setCoordinatorGirlX(Squeezing.occupyWidthGirl(), 50));
+        girlImage.setTranslationY(ElementsCoordinator.setCoordinatorGirlY(Squeezing.occupyHeightGirl(), 50));
 
         categoryWrappers = getCategoryWrappers();
 
@@ -138,6 +142,45 @@ public class FragmentGame extends Fragment {
 
         return view;
     }
+
+    @OnTouch(R.id.content_girl)
+    public boolean touchContentGirl(View view, MotionEvent motionEvent) {
+
+        switch (motionEvent.getAction()) {
+            case MotionEvent.ACTION_UP:
+                ArrayList<AccessoryWrapper> deleteAccessories = new ArrayList<>();
+
+                int pressX = (int) motionEvent.getX();
+                int pressY = (int) motionEvent.getY();
+
+                for (int i = 0; i < AccessoryController.size(); i++) {
+                    int fromX = (int) AccessoryController.getAccessoryWrapper(i).getFromX();
+                    int toX = (int) AccessoryController.getAccessoryWrapper(i).getToX();
+                    int fromY = (int) AccessoryController.getAccessoryWrapper(i).getFromY();
+                    int toY = (int) AccessoryController.getAccessoryWrapper(i).getToY();
+
+                    if (AccessoryController.contain(pressX, fromX, toX)) {
+                        if (AccessoryController.contain(pressY, fromY, toY)) {
+                            AccessoryController.getAccessoryWrapper(i).setX(pressX - fromX);
+                            AccessoryController.getAccessoryWrapper(i).setY(pressY - fromY);
+                            //sorry but now night and I can not think
+                            if (AccessoryController.getAccessoryWrapper(i).isRemove()) {
+                                deleteAccessories.add(AccessoryController.getAccessoryWrapper(i));
+                            }
+                        }
+                    }
+                }
+
+                Collections.sort(deleteAccessories);
+                if (deleteAccessories.size() != 0) {
+                    AccessoryWrapper deleteAccessory = deleteAccessories.get(deleteAccessories.size() - 1);
+                    deleteAccessory.getCategoryWrapper().deleteAccesorry(deleteAccessory.getTag());
+                }
+                break;
+        }
+        return true;
+    }
+
 
     private int getCategoriesListHeight() {
         int allItemCategory = 7;

@@ -1,4 +1,4 @@
-package com.raccoonapps.worksimple.model;
+package com.raccoonapps.worksimple.controller;
 
 import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
