@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.raccoonapps.worksimple.controller.ApplicationPropertiesLoader;
 import com.raccoonapps.worksimple.eventbus.BusProvider;
 import com.raccoonapps.worksimple.controller.Squeezing;
+import com.raccoonapps.worksimple.music.MainPlayer;
 import com.raccoonapps.worksimple.view.FragmentStart;
 import com.squareup.otto.Subscribe;
 
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(LAYOUT);
+        MainPlayer.getInstance(getApplicationContext()).resetPlayer();
         //getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
