@@ -11,6 +11,7 @@ import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Pair;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -270,7 +271,8 @@ public class FragmentGame extends Fragment {
     public void onDestroy() {
         super.onPause();
         BusProvider.getInstanceGame().unregister(this);
-        MainPlayer.getInstance(getActivity()).stop();
+        MainPlayer.getInstance(getActivity()).resetPlayer();
+        Log.d("MUSICTEST", "onDestroy");
     }
 
 
