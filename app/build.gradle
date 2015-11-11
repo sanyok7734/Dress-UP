@@ -37,6 +37,12 @@ android {
             signingConfig signingConfigs.release
         }
     }
+
+    sourceSets {
+        main {
+            res.srcDirs = [project.RES_DIR_PATH]
+        }
+    }
 }
 
 dependencies {

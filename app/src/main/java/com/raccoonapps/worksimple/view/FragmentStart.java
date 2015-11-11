@@ -87,7 +87,8 @@ public class FragmentStart extends Fragment {
         super.onResume();
         MainActivity.onClickStart = true;
         MainActivity.onClickWellDone = true;
-        MainActivity.preferenceBanner(view, getActivity(), true);
+        boolean whiteLabel = Boolean.parseBoolean(getString(R.string.white_label));
+        MainActivity.preferenceBanner(view, getActivity(), whiteLabel);
     }
 
     @OnTouch({R.id.button_start, R.id.button_more, R.id.button_help})
