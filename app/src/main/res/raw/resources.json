@@ -1,7 +1,10 @@
 {
   "general_data": {
+    "girl": {
+      "image": "girls.png",
+      "coordinates": [50.0, 50.0]
+    },
     "images": {
-      "girl": "girls.png",
       "game_bg": "game.png",
       "splash": "splash.png",
       "welldone_bg": "welldone.png",

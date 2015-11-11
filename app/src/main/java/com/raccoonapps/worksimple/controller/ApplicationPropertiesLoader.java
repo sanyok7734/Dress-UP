@@ -2,6 +2,7 @@ package com.raccoonapps.worksimple.controller;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Pair;
 
 import com.raccoonapps.worksimple.R;
 import com.raccoonapps.worksimple.model.Accessory;
@@ -37,7 +38,7 @@ public class ApplicationPropertiesLoader {
     }
 
     public enum IMAGE {
-        GIRL, GAME_BG, SPLASH, WELLDONE_BG, NINJA
+        GAME_BG, SPLASH, WELLDONE_BG, NINJA
     }
 
     public enum TRACK {
@@ -70,6 +71,26 @@ public class ApplicationPropertiesLoader {
             e.printStackTrace();
         }
         return categories;
+    }
+
+    public Pair<Integer, Coordinates> getGirlInfo() {
+        int imageId;
+        String imageName = null;
+        Coordinates coordinates = null;
+        try {
+            imageName = properties.getJSONObject("general_data").getJSONObject("girl").getString("image");
+            JSONArray coordsArray = properties.getJSONObject("general_data").getJSONObject("girl").getJSONArray("coordinates");
+            coordinates = new Coordinates(coordsArray.getDouble(0), coordsArray.getDouble(1));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        if (coordinates != null && imageName != null) {
+            imageId = context.getResources().getIdentifier("drawable/" + imageName.split("\\.")[0], null, context.getPackageName());
+            return new Pair<>(imageId, coordinates);
+        }
+
+        return null;
     }
 
     public int getImageIdByName(IMAGE image) {

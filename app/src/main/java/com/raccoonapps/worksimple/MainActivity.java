@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
     //TODO image girl json
     private void calculateOccupy() {
-        BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(ApplicationPropertiesLoader.getLoader(getApplicationContext()).getImageIdByName(ApplicationPropertiesLoader.IMAGE.GIRL));
+        BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(ApplicationPropertiesLoader.getLoader(getApplicationContext()).getGirlInfo().first);
         Squeezing.squeezingPercentage(drawable, screenWidth1, screenHeight1);
     }
 

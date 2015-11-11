@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -30,6 +31,7 @@ import com.raccoonapps.worksimple.controller.Squeezing;
 import com.raccoonapps.worksimple.eventbus.BusProvider;
 import com.raccoonapps.worksimple.model.Accessory;
 import com.raccoonapps.worksimple.model.Category;
+import com.raccoonapps.worksimple.model.Coordinates;
 import com.raccoonapps.worksimple.music.MainPlayer;
 import com.squareup.otto.Subscribe;
 
@@ -109,10 +111,9 @@ public class FragmentGame extends Fragment {
         girlImage.setLayoutParams(layoutParam);
         girlImage.setImageDrawable(Squeezing.getImageGirl());
 
-        //TODO coordination girl
-        //coordination girl
-        girlImage.setTranslationX(ElementsCoordinator.setCoordinatorGirlX(Squeezing.occupyWidthGirl(), 50));
-        girlImage.setTranslationY(ElementsCoordinator.setCoordinatorGirlY(Squeezing.occupyHeightGirl(), 50));
+        Pair<Integer, Coordinates> girl = getLoader(getActivity()).getGirlInfo();
+        girlImage.setTranslationX(ElementsCoordinator.setCoordinatorGirlX(Squeezing.occupyWidthGirl(), girl.second.getX()));
+        girlImage.setTranslationY(ElementsCoordinator.setCoordinatorGirlY(Squeezing.occupyHeightGirl(), girl.second.getY()));
 
         categoryWrappers = getCategoryWrappers();
 
