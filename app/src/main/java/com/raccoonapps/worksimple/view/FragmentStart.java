@@ -87,8 +87,12 @@ public class FragmentStart extends Fragment {
         super.onResume();
         MainActivity.onClickStart = true;
         MainActivity.onClickWellDone = true;
-        boolean whiteLabel = Boolean.parseBoolean(getString(R.string.white_label));
-        MainActivity.preferenceBanner(view, getActivity(), whiteLabel);
+        boolean whiteLabel = Boolean.parseBoolean(getActivity().getResources().getString(R.string.white_label));
+        if (whiteLabel) {
+            MainActivity.preferenceBanner(view, getActivity(), View.VISIBLE);
+        } else {
+            MainActivity.preferenceBanner(view, getActivity(), View.GONE);
+        }
     }
 
     @OnTouch({R.id.button_start, R.id.button_more, R.id.button_help})

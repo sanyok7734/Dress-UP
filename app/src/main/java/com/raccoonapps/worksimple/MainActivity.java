@@ -37,8 +37,8 @@ public class MainActivity extends AppCompatActivity {
     public static boolean onClickStart = true;
     public static boolean onClickWellDone = true;
 
-    public  double screenWidth1;
-    public  double screenHeight1;
+    public double screenWidth1;
+    public double screenHeight1;
     public static double screenWidth;
     public static double screenHeight;
 
@@ -99,10 +99,8 @@ public class MainActivity extends AppCompatActivity {
         Squeezing.squeezingPercentage(drawable, screenWidth1, screenHeight1);
     }
 
-    public static void preferenceBanner(View view, final Context context, boolean visible) {
-
+    public static void preferenceBanner(View view, final Context context, int visible) {
         Typeface typefaceLogo = Typeface.createFromAsset(context.getAssets(), MainActivity.FONT_PATH_LOGO);
-
         FrameLayout banner = (FrameLayout) view.findViewById(R.id.banner_layout);
         final TextView textLogo = (TextView) view.findViewById(R.id.text_logo);
         final ImageView bannerLogo = (ImageView) view.findViewById(R.id.banner_logo);
@@ -134,8 +132,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        if (visible)
-            banner.setVisibility(View.VISIBLE);
+        banner.setVisibility(visible);
+
 
         final Intent openLink = new Intent(Intent.ACTION_VIEW, ADDRESS_BANNER);
         banner.setOnClickListener(new View.OnClickListener() {
