@@ -93,7 +93,6 @@ public class FragmentStart extends Fragment {
         } else {
             MainActivity.preferenceBanner(view, getActivity(), View.GONE);
         }
-
     }
 
     @OnTouch({R.id.button_start, R.id.button_more, R.id.button_help})
