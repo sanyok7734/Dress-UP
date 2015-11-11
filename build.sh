@@ -30,13 +30,13 @@ echo 'Res directory : ' $RES_DIR
 echo 'Package name : ' $ANDROID_PACKAGE_NAME
 echo 'GAME_TITLE : ' $ANDROID_GAME_TITLE
 
-#sudo chmod +x gradlew
+sudo chmod +x gradlew
 
 echo "Gralde cleaning project"
 sudo ./gradlew clean
 
 echo "Gralde build started"
-sudo ./gradlew $BUILD_TASK -P GAME_TITLE=$ANDROID_GAME_TITLE -P PACKAGE_NAME=$ANDROID_PACKAGE_NAME -P RES_DIR_PATH="$RES_DIR" -P VERSION_NAME=$ANDROID_VERSION_NAME -P VERSION_CODE=$ANDROID_VERSION_CODE -P WHITE_LABEL=$APPLICATION_WHITE_LABEL
+sudo ./gradlew $BUILD_TASK -P RES_DIR_PATH=$RES_DIR -P GAME_TITLE=$ANDROID_GAME_TITLE -P PACKAGE_NAME=$ANDROID_PACKAGE_NAME -P VERSION_NAME=$ANDROID_VERSION_NAME -P VERSION_CODE=$ANDROID_VERSION_CODE -P WHITE_LABEL=$APPLICATION_WHITE_LABEL
 echo "Gralde build finished"
 
 sudo cp -R app/build/outputs/apk/$BUILD_APK_NAME ~/Documents/

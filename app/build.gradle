@@ -40,7 +40,7 @@ android {
 
     sourceSets {
         main {
-            res.srcDirs = [project.RES_DIR]
+            res.srcDirs = [project.RES_DIR_PATH]
         }
     }
 }
