@@ -120,7 +120,8 @@ public class FragmentWellDone extends Fragment {
     public void onResume() {
         super.onResume();
         BusProvider.getInstanceGame().post(true);
-        MainActivity.preferenceBanner(view, getActivity(), false);
+        boolean whiteLabel = Boolean.parseBoolean(getActivity().getResources().getString(R.string.white_label));
+        MainActivity.preferenceBanner(view, getActivity(), whiteLabel);
     }
 
     private void setIcon() {
