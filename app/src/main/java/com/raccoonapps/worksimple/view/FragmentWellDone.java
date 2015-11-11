@@ -120,7 +120,7 @@ public class FragmentWellDone extends Fragment {
     public void onResume() {
         super.onResume();
         BusProvider.getInstanceGame().post(true);
-        MainActivity.preferenceBanner(view, getActivity(), false);
+        MainActivity.preferenceBanner(view, getActivity(), View.INVISIBLE);
     }
 
     private void setIcon() {
@@ -270,7 +270,6 @@ public class FragmentWellDone extends Fragment {
                 button.setAlpha(0.8f);
                 break;
             case MotionEvent.ACTION_UP:
-                splash();
                 button.setAlpha(1);
                 if (externalStoragePicturesDirectory.exists()) {
                     File fullPath = new File(externalStoragePicturesDirectory.getAbsolutePath() + "/DressUp");
@@ -285,6 +284,7 @@ public class FragmentWellDone extends Fragment {
     }
 
     private String savePicture(String rootPath) {
+        splash();
         Bitmap bitmap = getBitmap();
         FileOutputStream fos;
         String fullPath = null;
@@ -302,7 +302,8 @@ public class FragmentWellDone extends Fragment {
 
     private Bitmap getBitmap() {
         buttons.setVisibility(View.INVISIBLE);
-        banner.setVisibility(View.VISIBLE);
+        if (Boolean.parseBoolean(getActivity().getResources().getString(R.string.white_label)))
+            banner.setVisibility(View.VISIBLE);
         wellDoneGirl.setVisibility(View.VISIBLE);
 
         View rootView = (View) root;
@@ -317,7 +318,7 @@ public class FragmentWellDone extends Fragment {
 
     private void splash() {
         ObjectAnimator animator = ObjectAnimator.ofFloat(splash, "Alpha", 0, 1);
-        animator.setDuration(100).addListener(new Animator.AnimatorListener() {
+        animator.setDuration(120).addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
 

@@ -269,6 +269,7 @@ public class FragmentGame extends Fragment {
     public void onDestroy() {
         super.onPause();
         BusProvider.getInstanceGame().unregister(this);
+        MainPlayer.getInstance(getActivity()).stop();
     }
 
 
