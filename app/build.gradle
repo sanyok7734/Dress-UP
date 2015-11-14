@@ -16,8 +16,6 @@ android {
 
     productFlavors {
         quickAppNinja {
-            resValue "string", "app_name", project.GAME_TITLE
-            resValue "string", "white_label", project.WHITE_LABEL
         }
     }
 

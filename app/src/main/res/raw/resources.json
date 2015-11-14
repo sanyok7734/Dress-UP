@@ -28,7 +28,8 @@
     },
     "sounds": {
       "main": "main_theme.mp3"
-    }
+    },
+    "white_label": "true"
   },
   "categories": [
     {

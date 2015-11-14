@@ -23,11 +23,11 @@ import android.widget.RelativeLayout;
 
 import com.raccoonapps.worksimple.MainActivity;
 import com.raccoonapps.worksimple.R;
+import com.raccoonapps.worksimple.controller.PictureSaver;
 import com.raccoonapps.worksimple.eventbus.BusProvider;
 import com.raccoonapps.worksimple.music.MainPlayer;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -151,7 +151,7 @@ public class FragmentWellDone extends Fragment {
                 String externalStorageDirectory = Environment.getExternalStorageDirectory() + "/DRESS_UP";
                 if (!new File(externalStorageDirectory).exists())
                     new File(externalStorageDirectory).mkdirs();
-                String cachedPicture = savePicture(externalStorageDirectory);
+                String cachedPicture = PictureSaver.savePicture(getBitmap(), externalStorageDirectory, getActivity());
                 switch (button.getId()) {
                     case R.id.button_back:
                         MainPlayer.getInstance(getActivity()).resume();
@@ -180,9 +180,8 @@ public class FragmentWellDone extends Fragment {
             case MotionEvent.ACTION_UP:
                 button.setAlpha(1);
                 String externalStorageDirectory = Environment.getExternalStorageDirectory() + "/DRESS_UP";
-                if (!new File(externalStorageDirectory).exists())
-                    new File(externalStorageDirectory).mkdirs();
-                String cachedPicture = savePicture(externalStorageDirectory);
+                String cachedPicture = PictureSaver.savePicture(getBitmap(), externalStorageDirectory);
+                Log.d("SHARING", cachedPicture);
                 switch (button.getId()) {
 
                     case R.id.button_back:
@@ -262,7 +261,6 @@ public class FragmentWellDone extends Fragment {
         }
     }
 
-    //TODO {PHOTO BUTTON}
     @OnTouch(R.id.button_photo)
     public boolean onTouchPhoto(View button, MotionEvent event) {
         switch (event.getAction()) {
@@ -274,35 +272,19 @@ public class FragmentWellDone extends Fragment {
                 if (externalStoragePicturesDirectory.exists()) {
                     File fullPath = new File(externalStoragePicturesDirectory.getAbsolutePath() + "/DressUp");
                     fullPath.mkdirs();
-                    savePicture(fullPath.getAbsolutePath());
+                    PictureSaver.savePicture(getBitmap(), fullPath.getAbsolutePath(), getActivity());
                 }
                 else
-                    savePicture(getActivity().getApplication().getFilesDir().getAbsolutePath());
+                    PictureSaver.savePicture(getBitmap(), getActivity().getApplication().getFilesDir().getAbsolutePath(), getActivity());
+                splash();
                 break;
         }
         return true;
     }
 
-    private String savePicture(String rootPath) {
-        splash();
-        Bitmap bitmap = getBitmap();
-        FileOutputStream fos;
-        String fullPath = null;
-        try {
-            fullPath = rootPath + "/" + "Dress_UP_"
-                    + System.currentTimeMillis() + ".jpg";
-            fos = new FileOutputStream(fullPath);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
-            fos.flush();
-            fos.close();
-        } catch (Exception ignored) {
-        }
-        return fullPath == null ? "" : fullPath;
-    }
-
     private Bitmap getBitmap() {
         buttons.setVisibility(View.INVISIBLE);
-        if (Boolean.parseBoolean(getActivity().getResources().getString(R.string.white_label)))
+        if (getLoader(getActivity()).getWhiteLabelValue())
             banner.setVisibility(View.VISIBLE);
         wellDoneGirl.setVisibility(View.VISIBLE);
 
