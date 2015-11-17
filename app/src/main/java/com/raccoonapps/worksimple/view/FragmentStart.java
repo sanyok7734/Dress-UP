@@ -87,7 +87,7 @@ public class FragmentStart extends Fragment {
         super.onResume();
         MainActivity.onClickStart = true;
         MainActivity.onClickWellDone = true;
-        boolean whiteLabel = Boolean.parseBoolean(getActivity().getResources().getString(R.string.white_label));
+        Boolean whiteLabel = getLoader(getActivity()).getWhiteLabelValue();
         if (whiteLabel) {
             MainActivity.preferenceBanner(view, getActivity(), View.VISIBLE);
         } else {

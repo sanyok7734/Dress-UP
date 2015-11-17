@@ -73,6 +73,16 @@ public class ApplicationPropertiesLoader {
         return categories;
     }
 
+    public Boolean getWhiteLabelValue() {
+        try {
+            String whiteLabel = properties.getJSONObject("general_data").getString("white_label");
+            return Boolean.parseBoolean(whiteLabel);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public Pair<Integer, Coordinates> getGirlInfo() {
         int imageId;
         String imageName = null;
