@@ -1,6 +1,6 @@
 #!/bin/bash
 
-USAGE=$'Run this script from the root directory of the poject\nFirst argument: resources directory\nSecond argument: package name\nThird argument: version code\nFourth argument: version name\n'
+USAGE=$'Run this script from the root directory of the poject\nFirst argument: absolute path to resources directory\nSecond argument: package name\nThird argument: version code\nFourth argument: version name\n'
 
 
 args=("$@")
@@ -29,8 +29,9 @@ echo 'Package name : ' $ANDROID_PACKAGE_NAME
 
 RESULT_APK='dressup.apk'
 
-sudo rm $RESULT_APK
-
+if [ -f ./$RESULT_APK ]; then
+	sudo rm $RESULT_APK
+fi
 sudo chmod +x gradlew
 
 echo "Gralde cleaning project"
@@ -44,5 +45,7 @@ sudo cp -R app/build/outputs/apk/$BUILD_APK_NAME ./
 
 sudo mv $BUILD_APK_NAME ./$RESULT_APK
 
-echo 'Generated file: ' $RESULT_APK
-echo 'Done!'
+if [ -f ./$RESULT_APK ]; then
+	echo 'Generated file: ' $RESULT_APK
+	echo 'Done!'
+fi
